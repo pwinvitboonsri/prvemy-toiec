@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import ThemeToggleButtonPolygon from "@/Components/ui/ThemeToggle";
 import { Card } from "@/Components/ui/Card";
@@ -6,6 +8,8 @@ import { Grid } from "@/Components/layout/Grid";
 import { PageWrapper } from "@/Components/layout/PageWrapper";
 import { Section } from "@/Components/layout/Section";
 import { AnimatedSlideButton } from "@/Components/ui/Button/AnimatedSlideButton";
+import { CounterComponent } from "@/Components/ui/Button/CounterComponent";
+import { FlipButton } from "@/Components/ui/shadcn-io/flip-button";
 
 export default function Home() {
   return (
@@ -61,6 +65,15 @@ export default function Home() {
               </Card>
             </Section>
           </Grid>
+          <CounterComponent
+            defaultValue={10}
+            min={0}
+            max={100}
+            step={5}
+            onChange={(val) => console.log("Current value:", val)}
+            className="mt-6"
+          />
+          <FlipButton />
           <ThemeToggleButtonPolygon />
         </div>
       </main>
