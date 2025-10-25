@@ -3,53 +3,66 @@
 import * as React from "react";
 import {
   Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
+  CardAction,
+  CardContent,
+  CardFooter,
 } from "@/Components/ui/shadcn-lib/card";
 import { cn } from "@/lib/utils";
 
-export type CardProps = {
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  actions?: React.ReactNode;
-  content?: React.ReactNode;
+type FormCardProps = {
+  title: string;
+  description?: string;
+  actionLabel?: string;
+  onActionClick?: () => void;
+  children: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
-  headerClassName?: string;
-  contentClassName?: string;
-  footerClassName?: string;
 };
 
 export function CardComponent({
   title,
   description,
-  actions,
-  content,
+  actionLabel,
+  onActionClick,
+  children,
   footer,
   className,
-  headerClassName,
-  contentClassName,
-  footerClassName,
-}: CardProps) {
+}: FormCardProps) {
   return (
-    <Card className={cn("w-full max-w-sm", className)}>
-      {(title || description || actions) && (
-        <CardHeader className={headerClassName}>
-          {title && <CardTitle>{title}</CardTitle>}
-          {description && <CardDescription>{description}</CardDescription>}
-          {actions && <CardAction>{actions}</CardAction>}
-        </CardHeader>
-      )}
+    <Card className={cn("w-full max-w-md", className)}>
+      <CardHeader>
+        <div className="flex items-start justify-between">
+          <div>
+            <CardTitle>{title}</CardTitle>
+            {description && (
+              <CardDescription className="mt-1">
+                {description}
+              </CardDescription>
+            )}
+          </div>
+          {actionLabel && onActionClick && (
+            <CardAction>
+              <button
+                onClick={onActionClick}
+                className="text-sm text-primary underline-offset-4 hover:underline"
+              >
+                {actionLabel}
+              </button>
+            </CardAction>
+          )}
+        </div>
+      </CardHeader>
 
-      {content && (
-        <CardContent className={contentClassName}>{content}</CardContent>
-      )}
+      <CardContent className="space-y-6">{children}</CardContent>
 
-      {footer && <CardFooter className={footerClassName}>{footer}</CardFooter>}
+      {footer && (
+        <CardFooter className="flex flex-col gap-2 w-full [&>*]:w-full">
+          {footer}
+        </CardFooter>
+      )}
     </Card>
   );
 }
