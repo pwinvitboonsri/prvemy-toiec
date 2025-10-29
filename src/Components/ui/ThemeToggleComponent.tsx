@@ -7,7 +7,11 @@ import {
   useThemeTransition,
 } from "@/Components/ui/shadcn-io/theme-toggle-button";
 
-const ThemeToggleButtonPolygon = () => {
+type Props = {
+  className?: string;
+};
+
+export const ThemeToggleButtonComponent = ({ className }: Props) => {
   const { setTheme, resolvedTheme } = useTheme();
   const { startTransition } = useThemeTransition();
   const [mounted, setMounted] = useState(false);
@@ -26,14 +30,11 @@ const ThemeToggleButtonPolygon = () => {
   if (!mounted) return null;
 
   return (
-    <div className="flex items-center justify-center p-8">
-      <ThemeToggleButton
-        theme={resolvedTheme === "dark" ? "dark" : "light"}
-        onClick={handleThemeToggle}
-        variant="polygon"
-      />
-    </div>
+    <ThemeToggleButton
+      theme={resolvedTheme === "dark" ? "dark" : "light"}
+      onClick={handleThemeToggle}
+      variant="polygon"
+      className={className}
+    />
   );
 };
-
-export default ThemeToggleButtonPolygon;
