@@ -25,7 +25,6 @@ export function AuthFormLayout({
 }: Props) {
   return (
     <div className="flex items-center justify-center overflow-hidden">
-      {/* ✅ Background Image */}
       <Image
         src={RightPhoto}
         alt="Background"
@@ -35,11 +34,7 @@ export function AuthFormLayout({
           filter brightness-90 dark:brightness-40 
           contrast-100 dark:contrast-90"
       />
-
-      {/* ✅ Overlay (optional for readability) */}
       <div className="absolute inset-0 bg-background/60 z-10" />
-
-      {/* ✅ Foreground Auth Card */}
       <div className="relative z-20 px-4 py-8 w-full max-w-md">
         <div className="mb-4 text-xl font-bold text-primary text-center">
           PRVEMY-<span className="text-destructive">TOEIC</span>

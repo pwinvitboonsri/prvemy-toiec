@@ -13,7 +13,7 @@ import {
 } from "@/Components/ui/shadcn-lib/drawer";
 import { ThemeToggleButtonComponent } from "@/Components/ui/ThemeToggleComponent";
 
-const isAuthenticated = true;
+const isAuthenticated = false;
 
 const guestLinks = [
   { label: "Home", href: "/" },
@@ -48,7 +48,7 @@ export function NavbarComponent({ className }: { className?: string }) {
       <div className="flex justify-between items-center max-w-7xl mx-auto">
         {/* Logo */}
         <Link href="/" className="text-lg font-bold tracking-wide text-primary">
-          prvemy
+          PRVEMY -<span className="text-destructive">TOIEC</span>
         </Link>
 
         {/* Desktop Links */}
@@ -83,16 +83,16 @@ export function NavbarComponent({ className }: { className?: string }) {
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm">
-                Login
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                className="border-white text-white hover:bg-white/10 hover:text-white"
-              >
-                Register Free
-              </Button>
+              <Link href="/auth/login">
+                <Button variant="ghost" size="sm">
+                  Login
+                </Button>
+              </Link>
+              <Link href="/auth/register">
+                <Button size="sm" variant="outline">
+                  Register Free
+                </Button>
+              </Link>
             </>
           )}
         </div>

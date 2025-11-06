@@ -35,7 +35,7 @@ export function CardComponent({
 }: FormCardProps) {
   return (
     <Card
-      className={cn("w-full max-w-md h-[70vh] flex flex-col", className)} // <- 💡 Use flex-col + fixed height
+      className={cn("w-full max-w-md h-[70vh] flex flex-col ", className)} // <- 💡 Use flex-col + fixed height
     >
       <CardHeader>
         <div className="flex items-start justify-between">

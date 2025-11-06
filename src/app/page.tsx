@@ -1,11 +1,19 @@
-"use client";
+import { createClient } from "../../utils/supabase/server";
 
-import { PageWrapper } from "@/Components/layout/PageWrapper";
+export default async function Page() {
+  const supabase = await createClient(); // ✅ no cookies() needed here
+  const { data: todos, error } = await supabase.from("todos").select("*");
+  console.log("🚀 ~ Page ~ data:", todos)
 
-export default function Home() {
+  if (error) {
+    console.error("Error loading todos:", error.message);
+  }
+
   return (
-    <PageWrapper>
-      <main className=" font-bold  "></main>
-    </PageWrapper>
+    <ul>
+      {todos?.map((todo) => (
+        <li key={todo.id}>{todo.title}</li>
+      ))}
+    </ul>
   );
 }

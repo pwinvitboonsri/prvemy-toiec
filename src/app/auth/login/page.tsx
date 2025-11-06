@@ -1,11 +1,37 @@
+'use client'
+
+import { useState } from "react";
 import { AuthFormLayout } from "@/Components/page/auth/AuthFormLayout";
 import { SignInForm } from "@/Components/page/auth/SignInForm";
+import { useSignInStore } from "@/lib/store/useSignInStore";
+import { signInWithEmail } from "@/lib/auth/actions";
+
 import { RippleButtonComponent } from "@/Components/ui/Button";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { SiLine } from "react-icons/si";
 
 export default function LoginPage() {
+  const { email, password} = useSignInStore();
+  const [isLoading, setLoading] = useState<boolean>(false)
+
+  const handleSignIn = async () => {
+    setLoading(true)
+
+    const { data, error} = await signInWithEmail(email, password)
+    console.log("🚀 ~ handleSignIn ~ data:", data, error)
+    
+    setLoading(false);
+
+    if (error) {
+      console.error("Login failed:", error.message);
+      alert("Login failed: " + error.message);
+    } else {
+      console.log("Login success:", data);
+      // redirect, show toast, etc.
+    }
+  }
+
   return (
     <AuthFormLayout
       title="Sign In"
@@ -15,7 +41,7 @@ export default function LoginPage() {
       footer={
         <>
           <div className="space-y-2">
-            <RippleButtonComponent className="w-full">
+            <RippleButtonComponent className="w-full" onClick={handleSignIn}>
               Sign In
             </RippleButtonComponent>
 
