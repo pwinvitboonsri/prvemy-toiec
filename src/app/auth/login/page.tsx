@@ -1,47 +1,88 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import { AuthFormLayout } from "@/Components/page/auth/AuthFormLayout";
 import { SignInForm } from "@/Components/page/auth/SignInForm";
 import { useSignInStore } from "@/lib/store/useSignInStore";
 import { signInWithEmail } from "@/lib/auth/actions";
-
 import { RippleButtonComponent } from "@/Components/ui/Button";
+import { AlertComponent } from "@/Components/ui/AlertComponent";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { SiLine } from "react-icons/si";
+import { AlertCircle } from "lucide-react";
+import { validateLoginInput } from "./utils/signinValidation";
 
 export default function LoginPage() {
-  const { email, password} = useSignInStore();
-  const [isLoading, setLoading] = useState<boolean>(false)
+  const { email, password, error, setError } = useSignInStore();
+
+  const [isLoading, setLoading] = useState(false);
 
   const handleSignIn = async () => {
-    setLoading(true)
+    const validation = validateLoginInput(email, password);
 
-    const { data, error} = await signInWithEmail(email, password)
-    console.log("🚀 ~ handleSignIn ~ data:", data, error)
-    
-    setLoading(false);
-
-    if (error) {
-      console.error("Login failed:", error.message);
-      alert("Login failed: " + error.message);
-    } else {
-      console.log("Login success:", data);
-      // redirect, show toast, etc.
+    if (!validation.valid) {
+      setError({
+        title: validation.errorTitle!,
+        message: validation.errorMessage!,
+      });
+      return;
     }
-  }
+
+    try {
+      setError(null);
+      setLoading(true);
+      const { data, error } = await signInWithEmail(email, password);
+
+      if (error) {
+        setError({
+          title: "Login failed",
+          message: error.message,
+        });
+        return;
+      }
+
+      // ✅ success: navigate, toast, etc.
+      console.log("Login success", data);
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setError({
+        title: "Unexpected error",
+        message: err?.message || "Something went wrong. Try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <AuthFormLayout
-      title="Sign In"
-      bottomText="Don't have an account?"
-      bottomLinkText="Create one →"
-      bottomLinkHref="/auth/register"
-      footer={
-        <>
+    <>
+      {error && (
+        <AlertComponent
+          icon={AlertCircle}
+          variant="destructive"
+          key={error.title + error.message}
+          title={error.title}
+          description={error.message}
+          isClosable
+          positionTop
+          timeout={5000}
+        />
+      )}
+
+      <AuthFormLayout
+        title="Sign In"
+        bottomText="Don't have an account?"
+        bottomLinkText="Create one →"
+        bottomLinkHref="/auth/register"
+        footer={
           <div className="space-y-2">
-            <RippleButtonComponent className="w-full" onClick={handleSignIn}>
+            <RippleButtonComponent
+              className="w-full"
+              onClick={handleSignIn}
+              disabled={isLoading}
+            >
               Sign In
             </RippleButtonComponent>
 
@@ -69,10 +110,10 @@ export default function LoginPage() {
               </RippleButtonComponent>
             </div>
           </div>
-        </>
-      }
-    >
-      <SignInForm />
-    </AuthFormLayout>
+        }
+      >
+        <SignInForm />
+      </AuthFormLayout>
+    </>
   );
 }

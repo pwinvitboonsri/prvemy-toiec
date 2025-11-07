@@ -6,7 +6,17 @@ import Link from "next/link";
 import { useSignInStore } from "@/lib/store/useSignInStore";
 
 export function SignInForm() {
-  const { email, password, setEmail, setPassword} = useSignInStore()
+  const {
+    email,
+    password,
+    rememberME,
+    error,
+    setEmail,
+    setPassword,
+    setRememberMe,
+  } = useSignInStore();
+  console.log("🚀 ~ SignInForm ~ error:", error);
+
   return (
     <form className="space-y-4 flex flex-col">
       <InputComponent
@@ -27,7 +37,11 @@ export function SignInForm() {
       />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Checkbox id="remember" />
+          <Checkbox
+            id="remember"
+            checked={rememberME}
+            onCheckedChange={(e: boolean) => setRememberMe(e)}
+          />
           <label htmlFor="remember" className="text-sm">
             Remember me
           </label>

@@ -3,7 +3,7 @@
 import * as React from "react";
 import type { ComponentProps } from "react";
 import { RippleButton } from "@/Components/ui/shadcn-io/ripple-button";
-import { SkeletonComponent } from "@/Components/ui/SkeletonComponent";
+import { Spinner } from "../spinner";
 
 type RippleButtonComponentProps = ComponentProps<typeof RippleButton> & {
   loading?: boolean;
@@ -11,7 +11,6 @@ type RippleButtonComponentProps = ComponentProps<typeof RippleButton> & {
 
 export function RippleButtonComponent({
   children,
-  loading = false,
   variant = "default",
   size = "default",
   disabled = false,
@@ -22,17 +21,6 @@ export function RippleButtonComponent({
   onClick,
   ...props
 }: RippleButtonComponentProps) {
-  if (loading) {
-    return (
-      <SkeletonComponent
-        height="2.5rem"
-        width="100%"
-        className="inline-block"
-        rounded
-      />
-    );
-  }
-
   return (
     <RippleButton
       variant={variant}
@@ -45,6 +33,7 @@ export function RippleButtonComponent({
       onClick={onClick}
       {...props}
     >
+      {disabled && <Spinner />}
       {children}
     </RippleButton>
   );
