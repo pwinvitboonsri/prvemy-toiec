@@ -6,6 +6,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/Components/utility/Error/ErrorFallback";
 import { NavbarComponent } from "@/Components/page/Nav&Footer/NavbarComponent";
 import { FooterComponent } from "@/Components/page/Nav&Footer/Footer";
+import { GlobalErrorAlerts } from "@/Components/utility/Error/GlobalErrorAlerts";
 
 import "./globals.css";
 
@@ -49,6 +50,7 @@ export default function RootLayout({
           </ErrorBoundary>
           <FooterComponent />
         </ThemeProvider>
+        <GlobalErrorAlerts />
       </body>
     </html>
   );
