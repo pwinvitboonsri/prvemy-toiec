@@ -11,8 +11,10 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { SiLine } from "react-icons/si";
 import { validateLoginInput } from "./utils/signinValidation";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter()
   const { email, password } = useSignInStore();
   const addError = useErrorStore((state) => state.addError);
 
@@ -51,8 +53,8 @@ export default function LoginPage() {
         return;
       }
 
-      // ✅ success: navigate, toast, etc.
       console.log("Login success", data);
+      router.push("/");
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
