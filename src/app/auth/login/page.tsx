@@ -14,7 +14,6 @@ import { validateLoginInput } from "./utils/signinValidation";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const router = useRouter()
   const { email, password } = useSignInStore();
   const addError = useErrorStore((state) => state.addError);
 
