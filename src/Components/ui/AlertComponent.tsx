@@ -21,6 +21,7 @@ type AlertComponentProps = {
   isClosable?: boolean;
   positionTop?: boolean;
   invert?: boolean; // NEW: for color invert toggle
+  onDismiss?: (event: { reason: "timeout" | "manual" }) => void;
 };
 
 export function AlertComponent({
@@ -33,15 +34,24 @@ export function AlertComponent({
   isClosable = false,
   positionTop = false,
   invert = true,
+  onDismiss,
 }: AlertComponentProps) {
   const [visible, setVisible] = React.useState(true);
 
+  const handleDismiss = React.useCallback(
+    (reason: "timeout" | "manual") => {
+      setVisible(false);
+      onDismiss?.({ reason });
+    },
+    [onDismiss]
+  );
+
   React.useEffect(() => {
     if (timeout) {
-      const timer = setTimeout(() => setVisible(false), timeout);
+      const timer = setTimeout(() => handleDismiss("timeout"), timeout);
       return () => clearTimeout(timer);
     }
-  }, [timeout]);
+  }, [handleDismiss, timeout]);
 
   return (
     <AnimatePresence mode="wait">
@@ -73,7 +83,7 @@ export function AlertComponent({
             {description && <AlertDescription>{description}</AlertDescription>}
             {isClosable && (
               <button
-                onClick={() => setVisible(false)}
+                onClick={() => handleDismiss("manual")}
                 className="absolute top-2 right-2 text-muted-foreground hover:text-foreground transition"
                 aria-label="Close alert"
               >
