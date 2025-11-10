@@ -4,17 +4,17 @@ import { useState } from "react";
 import { AuthFormLayout } from "@/Components/page/auth/AuthFormLayout";
 import { SignInForm } from "@/Components/page/auth/SignInForm";
 import { useSignInStore } from "@/lib/store/useSignInStore";
+import { useErrorStore } from "@/lib/store/error/useErrorStore";
 import { signInWithEmail } from "@/lib/auth/actions";
 import { RippleButtonComponent } from "@/Components/ui/Button";
-import { AlertComponent } from "@/Components/ui/AlertComponent";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { SiLine } from "react-icons/si";
-import { AlertCircle } from "lucide-react";
 import { validateLoginInput } from "./utils/signinValidation";
 
 export default function LoginPage() {
-  const { email, password, error, setError } = useSignInStore();
+  const { email, password } = useSignInStore();
+  const addError = useErrorStore((state) => state.addError);
 
   const [isLoading, setLoading] = useState(false);
 
@@ -22,22 +22,31 @@ export default function LoginPage() {
     const validation = validateLoginInput(email, password);
 
     if (!validation.valid) {
-      setError({
-        title: validation.errorTitle!,
-        message: validation.errorMessage!,
+      addError({
+        id: crypto.randomUUID(),
+        source: "form",
+        title: validation.errorTitle ?? "Invalid credentials",
+        message:
+          validation.errorMessage ??
+          "Please double-check your email and password before trying again.",
+        timestamp: Date.now(),
+        autoDismiss: true,
       });
       return;
     }
 
     try {
-      setError(null);
       setLoading(true);
       const { data, error } = await signInWithEmail(email, password);
 
       if (error) {
-        setError({
+        addError({
+          id: crypto.randomUUID(),
+          source: "auth",
           title: "Login failed",
           message: error.message,
+          timestamp: Date.now(),
+          autoDismiss: true,
         });
         return;
       }
@@ -47,9 +56,13 @@ export default function LoginPage() {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setError({
+      addError({
+        id: crypto.randomUUID(),
+        source: "auth",
         title: "Unexpected error",
         message: err?.message || "Something went wrong. Try again.",
+        timestamp: Date.now(),
+        autoDismiss: true,
       });
     } finally {
       setLoading(false);
@@ -58,19 +71,6 @@ export default function LoginPage() {
 
   return (
     <>
-      {error && (
-        <AlertComponent
-          icon={AlertCircle}
-          variant="destructive"
-          key={error.title + error.message}
-          title={error.title}
-          description={error.message}
-          isClosable
-          positionTop
-          timeout={5000}
-        />
-      )}
-
       <AuthFormLayout
         title="Sign In"
         bottomText="Don't have an account?"
