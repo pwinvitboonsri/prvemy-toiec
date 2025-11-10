@@ -15,6 +15,6 @@ export type AppError = {
   title: string;
   message: string;
   page?: string;
-  timestamp: string;
+  timestamp: number;
   autoDismiss?: boolean;
 };
