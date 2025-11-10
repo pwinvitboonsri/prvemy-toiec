@@ -48,7 +48,7 @@ export function NavbarComponent({ className }: { className?: string }) {
       <div className="flex justify-between items-center max-w-7xl mx-auto">
         {/* Logo */}
         <Link href="/" className="text-lg font-bold tracking-wide text-primary">
-          PRVEMY -<span className="text-destructive">TOIEC</span>
+          PRVEMY - <span className="text-destructive">TOIEC</span>
         </Link>
 
         {/* Desktop Links */}
