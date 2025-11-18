@@ -6,6 +6,7 @@ import { SignInForm } from "@/Components/page/auth/SignInForm";
 import { useSignInStore } from "@/lib/store/useSignInStore";
 import { useErrorStore } from "@/lib/store/error/useErrorStore";
 import { signInWithEmail } from "@/lib/auth/actions";
+import { useSessionStore } from "@/lib/store/auth/useSessionStore";
 import { RippleButtonComponent } from "@/Components/ui/Button";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
@@ -14,8 +15,10 @@ import { validateLoginInput } from "./utils/signinValidation";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const { email, password } = useSignInStore();
+  const { email, password, rememberME } = useSignInStore();
   const addError = useErrorStore((state) => state.addError);
+  const setSession = useSessionStore((state) => state.setSession);
+  const router = useRouter();
 
   const [isLoading, setLoading] = useState(false);
 
@@ -53,6 +56,9 @@ export default function LoginPage() {
       }
 
       console.log("Login success", data);
+      if (data.session) {
+        setSession(data.session, rememberME);
+      }
       router.push("/");
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

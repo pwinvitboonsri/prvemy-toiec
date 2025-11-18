@@ -9,14 +9,13 @@ export function useRedirect() {
     const target = to ?? '/';
 
     if (delayMs > 0) {
-      const timer = setTimeout(() => {
+      setTimeout(() => {
         router.push(target);
       }, delayMs);
 
-      return () => clearTimeout(timer);
+      return;
     }
 
     router.push(target);
-    return undefined;
   };
 }
