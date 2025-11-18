@@ -1,10 +1,11 @@
-import { storeSession } from "./storeSession";
+import { storeSession } from "@/lib/session/storeSession";
 import type { SessionData } from "@/types/session";
 
 type ActionSessionProps = {
-  data: { session?: any }; // Supabase login response
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: { session: any };
   rememberMe: boolean;
-  setSession: (s: SessionData) => void;
+  setSession: (session: SessionData) => void;
   redirect: (path: string) => void;
 };
 
@@ -13,36 +14,25 @@ export const actionSession = ({
   rememberMe,
   setSession,
   redirect,
-}: ActionSessionProps): void => {
-  const sessionRaw = data?.session;
-  if (!sessionRaw) return;
+}: ActionSessionProps) => {
+  if (!data?.session) return;
 
-  const {
-    access_token,
-    refresh_token,
-    expires_at,
-    user,
-  } = sessionRaw;
-
-  // Defensive checks
-  if (!access_token || !refresh_token || !user?.id || !user?.email) {
-    console.warn("Invalid session response:", sessionRaw);
-    return;
-  }
+  const { access_token, refresh_token, expires_at, user } = data.session;
 
   const session: SessionData = {
     accessToken: access_token,
-    refreshToken: refresh_token,
-    expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // fallback = 1 week
+    refreshToken: rememberMe ? refresh_token : null, // ✅ key logic
+    // expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // fallback: 7 days
+    expiresAt: Date.now() + 30 * 1000, // fallback: 7 days
 
     user: {
       id: user.id,
-      email: user.email,
-      role: user.role ?? "user", // fallback role if undefined
+      email: user.email ?? "",
+      role: user.role ?? "user",
     },
   };
 
-  setSession(session);               // 🔁 Zustand (memory)
-  storeSession(session, rememberMe); // 💾 Persist if requested
-  redirect("/");                     // 🧭 Done
+  setSession(session);
+  storeSession(session); // ✅ always store
+  redirect("/");
 };

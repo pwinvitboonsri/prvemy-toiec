@@ -1,8 +1,10 @@
-// src/lib/session/storeSession.ts
-import type { SessionData } from "@/store/session/useSessionStore";
+// lib/session/storeSession.ts
+import type { SessionData } from "@/types/session";
 
-export function storeSession(session: SessionData, rememberMe: boolean) {
-  if (rememberMe) {
-    localStorage.setItem("supabase.session", JSON.stringify(session));
+const SESSION_KEY = "supabase.session";
+
+export const storeSession = (session: SessionData, persist: boolean = true) => {
+  if (persist && typeof window !== "undefined") {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(session));
   }
-}
+};

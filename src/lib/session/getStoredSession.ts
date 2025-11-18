@@ -1,11 +1,15 @@
-// src/lib/session/getStoredSession.ts
-import type { SessionData } from "@/store/session/useSessionStore";
+import type { SessionData } from "@/types/session";
 
-export function getStoredSession(): SessionData | null {
-  const raw = localStorage.getItem("supabase.session");
+const SESSION_KEY = "supabase.session";
+
+export const getStoredSession = (): SessionData | null => {
+  if (typeof window === "undefined") return null;
+  const stored = localStorage.getItem(SESSION_KEY);
+  if (!stored) return null;
+
   try {
-    return raw ? JSON.parse(raw) : null;
+    return JSON.parse(stored) as SessionData;
   } catch {
     return null;
   }
-}
+};

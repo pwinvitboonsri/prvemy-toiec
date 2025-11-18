@@ -7,7 +7,6 @@ import { ErrorFallback } from "@/Components/utility/Error/ErrorFallback";
 import { NavbarComponent } from "@/Components/page/Nav&Footer/NavbarComponent";
 import { FooterComponent } from "@/Components/page/Nav&Footer/Footer";
 import { GlobalErrorAlerts } from "@/Components/utility/Error/GlobalErrorAlerts";
-import { loadSessionFromStorage } from "@/lib/session/loadSessionFromStorage";
 import { SessionLoader } from "@/Components/utility/session/SessionLoader";
 
 import "./globals.css";

@@ -1,19 +1,21 @@
-// lib/session/loadSessionFromStorage.ts
 import { useSessionStore } from "@/store/session/useSessionStore";
-import { getStoredSession } from "./getStoredSession";
-import { clearSession } from "./clearSession";
+import type { SessionData } from "@/types/session";
 
 export function loadSessionFromStorage() {
-  const stored = getStoredSession();
+  const raw = localStorage.getItem("supabase.session");
+  if (!raw) return;
 
-  if (!stored) return;
+  try {
+    const session: SessionData = JSON.parse(raw);
 
-  const now = Date.now();
+    if (Date.now() > session.expiresAt) {
+      // expired — clear storage
+      localStorage.removeItem("supabase.session");
+      return;
+    }
 
-  if (stored.expiresAt < now) {
-    clearSession(); // remove from Zustand + localStorage
-    return;
+    useSessionStore.getState().setSession(session);
+  } catch {
+    localStorage.removeItem("supabase.session");
   }
-
-  useSessionStore.getState().setSession(stored);
 }
