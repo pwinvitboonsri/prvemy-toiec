@@ -6,6 +6,7 @@ import { SignInForm } from "@/Components/page/auth/SignInForm";
 import { useSignInStore } from "@/store/auth/useSignInStore";
 import { useErrorStore } from "@/store/error/useErrorStore";
 import { signInWithEmail } from "@/lib/auth/actions";
+import { useSessionStore } from "@/lib/store/auth/useSessionStore";
 import { RippleButtonComponent } from "@/Components/ui/Button";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";

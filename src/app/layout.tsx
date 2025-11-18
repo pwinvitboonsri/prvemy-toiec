@@ -45,6 +45,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <SessionBootstrap />
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <SessionLoader />
             <NavbarComponent />
