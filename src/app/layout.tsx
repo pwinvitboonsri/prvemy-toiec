@@ -7,7 +7,7 @@ import { ErrorFallback } from "@/Components/utility/Error/ErrorFallback";
 import { NavbarComponent } from "@/Components/page/Nav&Footer/NavbarComponent";
 import { FooterComponent } from "@/Components/page/Nav&Footer/Footer";
 import { GlobalErrorAlerts } from "@/Components/utility/Error/GlobalErrorAlerts";
-import { SessionBootstrap } from "./SessionBootstrap";
+import { SessionLoader } from "@/Components/utility/session/SessionLoader";
 
 import "./globals.css";
 
@@ -47,6 +47,7 @@ export default function RootLayout({
         >
           <SessionBootstrap />
           <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <SessionLoader />
             <NavbarComponent />
             <main className="flex-grow">{children}</main>
           </ErrorBoundary>

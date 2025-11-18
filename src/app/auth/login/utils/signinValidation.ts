@@ -1,7 +1,10 @@
-type ValidationResult = {
+// src/app/auth/login/utils/signinValidation.ts
+
+export type ValidationResult = {
   valid: boolean;
   errorTitle?: string;
   errorMessage?: string;
+  field?: string; // ✅ new
 };
 
 export function validateLoginInput(
@@ -13,6 +16,7 @@ export function validateLoginInput(
       valid: false,
       errorTitle: "Missing Information",
       errorMessage: "Please enter your email and password.",
+      field: "form",
     };
   }
 
@@ -21,16 +25,17 @@ export function validateLoginInput(
       valid: false,
       errorTitle: "Missing Email",
       errorMessage: "Please enter your email address.",
+      field: "email",
     };
   }
 
-  // ✅ Email format check (simple regex)
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return {
       valid: false,
       errorTitle: "Invalid Email",
       errorMessage: "Please enter a valid email address.",
+      field: "email",
     };
   }
 
@@ -39,6 +44,7 @@ export function validateLoginInput(
       valid: false,
       errorTitle: "Missing Password",
       errorMessage: "Please enter your password.",
+      field: "password",
     };
   }
 

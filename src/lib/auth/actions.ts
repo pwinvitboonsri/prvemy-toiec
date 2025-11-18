@@ -1,5 +1,6 @@
 // lib/auth/actions.ts
-import { supabase } from "../../../utils/supabase/client";
+
+import { supabase } from "@/utils/supabase/client";
 
 export async function signInWithEmail(email: string, password: string) {
   return await supabase.auth.signInWithPassword({ email, password });

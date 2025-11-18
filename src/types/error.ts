@@ -8,13 +8,13 @@ export type ErrorSource =
   | 'network'
   | 'unexpected';
 
-// Shared app error structure
 export type AppError = {
   id: string;
-  source: ErrorSource;
+  source: ErrorSource
   title: string;
   message: string;
-  page?: string;
+  field?: string; // ✅ can be any field like "email", "username", "price", etc.
+  location?: string; // ✅ optional: page/component like "LoginPage", "RegisterForm"
   timestamp: number;
   autoDismiss?: boolean;
 };
