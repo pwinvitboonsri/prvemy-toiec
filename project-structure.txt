@@ -34,11 +34,8 @@
 │   ├── vercel.svg
 │   └── window.svg
 ├── src
+│   ├── .DS_Store
 │   ├── Components
-│   │   ├── SAVEFORLATER.md
-│   │   ├── image-1.png
-│   │   ├── image-2.png
-│   │   ├── image.png
 │   │   ├── layout
 │   │   │   ├── Container.tsx
 │   │   │   ├── Grid.tsx
@@ -113,8 +110,12 @@
 │   │   └── utility
 │   │       ├── Error
 │   │       │   ├── ErrorBoundary.tsx
-│   │       │   └── ErrorFallback.tsx
-│   │       └── ToastProvider.tsx
+│   │       │   ├── ErrorFallback.tsx
+│   │       │   ├── GlobalErrorAlerts.tsx
+│   │       │   └── GlobalErrorDisplay.tsx
+│   │       ├── ToastProvider.tsx
+│   │       └── session
+│   │           └── SessionLoader.tsx
 │   ├── app
 │   │   ├── ThemeProvider.tsx
 │   │   ├── api
@@ -156,33 +157,46 @@
 │   │   ├── use-event-listener.ts
 │   │   ├── use-is-mounted.tsx
 │   │   ├── use-isomorphic-layout-effect.tsx
-│   │   └── use-on-click-outside.tsx
+│   │   ├── use-on-click-outside.tsx
+│   │   └── useFieldError.ts
 │   ├── lib
 │   │   ├── auth
 │   │   │   └── actions.ts
-│   │   ├── store
-│   │   │   ├── auth
-│   │   │   ├── error
-│   │   │   ├── useCounterStore.ts
-│   │   │   └── useSignInStore.ts
+│   │   ├── session
+│   │   │   ├── actionSession.ts
+│   │   │   ├── checkSession.ts
+│   │   │   ├── clearSession.ts
+│   │   │   ├── getStoredSession.ts
+│   │   │   ├── loadSessionFromStorage.ts
+│   │   │   └── storeSession.ts
+│   │   ├── utils
+│   │   │   └── redirect.ts
 │   │   └── utils.ts
-│   └── types
-│       ├── api.ts
-│       ├── css.d.ts
-│       ├── enums.ts
-│       ├── error.ts
-│       ├── page.ts
-│       ├── supabase.ts
-│       ├── ui.ts
-│       ├── user.ts
-│       └── util.ts
-├── tsconfig.json
-└── utils
-    └── supabase
-        ├── client.ts
-        ├── middleware.ts
-        └── server.ts
+│   ├── store
+│   │   ├── auth
+│   │   │   └── useSignInStore.ts
+│   │   ├── error
+│   │   │   ├── handleSupabaseError.ts
+│   │   │   └── useErrorStore.ts
+│   │   └── session
+│   │       └── useSessionStore.ts
+│   ├── types
+│   │   ├── api.ts
+│   │   ├── css.d.ts
+│   │   ├── enums.ts
+│   │   ├── error.ts
+│   │   ├── page.ts
+│   │   ├── session.ts
+│   │   ├── supabase.ts
+│   │   ├── ui.ts
+│   │   ├── user.ts
+│   │   └── util.ts
+│   └── utils
+│       ├── supabase
+│       │   ├── client.ts
+│       │   ├── middleware.ts
+│       │   └── server.ts
+│       └── test
+└── tsconfig.json
 
-55 directories, 129 files
-
-tree -a -I "node_modules|.git|.next|dist|build" > project-structure.txt
+60 directories, 140 files
