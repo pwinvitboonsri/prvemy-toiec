@@ -1,6 +1,6 @@
 "use client";
 
-import { supabase } from "../../../../utils/supabase/client";
+import { supabase } from "@/utils/supabase/client";
 import type { Session } from "@supabase/supabase-js";
 import { create } from "zustand";
 

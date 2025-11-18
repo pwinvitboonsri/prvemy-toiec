@@ -1,9 +1,8 @@
-import { createClient } from "../../utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 
 export default async function Page() {
   const supabase = await createClient(); // ✅ no cookies() needed here
   const { data: todos, error } = await supabase.from("todos").select("*");
-  console.log("🚀 ~ Page ~ data:", todos)
 
   if (error) {
     console.error("Error loading todos:", error.message);

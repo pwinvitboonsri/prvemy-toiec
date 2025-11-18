@@ -47,6 +47,7 @@ export default function RootLayout({
         >
           <SessionBootstrap />
           <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <SessionLoader />
             <NavbarComponent />
             <main className="flex-grow">{children}</main>
           </ErrorBoundary>
