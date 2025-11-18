@@ -12,8 +12,7 @@ import {
   DrawerContent,
 } from "@/Components/ui/shadcn-lib/drawer";
 import { ThemeToggleButtonComponent } from "@/Components/ui/ThemeToggleComponent";
-
-const isAuthenticated = false;
+import { useSessionStore } from "@/store/session/useSessionStore";
 
 const guestLinks = [
   { label: "Home", href: "/" },
@@ -36,6 +35,10 @@ const authLinks = [
 
 export function NavbarComponent({ className }: { className?: string }) {
   const pathname = usePathname();
+  const session = useSessionStore((state) => {
+    return state.session;
+  });
+  const isAuthenticated = Boolean(session);
   const links = isAuthenticated ? authLinks : guestLinks;
 
   return (
@@ -129,8 +132,12 @@ export function NavbarComponent({ className }: { className?: string }) {
                     </>
                   ) : (
                     <>
-                      <Button variant="ghost">Login</Button>
-                      <Button variant="outline">Register Free</Button>
+                      <Link href="/auth/login">
+                        <Button variant="ghost">Login</Button>
+                      </Link>
+                      <Link href="/auth/register">
+                        <Button variant="outline">Register Free</Button>
+                      </Link>
                     </>
                   )}
                 </div>

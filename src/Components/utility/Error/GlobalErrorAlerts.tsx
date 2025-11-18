@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { AlertComponent } from "@/Components/ui/AlertComponent";
-import { useErrorStore } from "@/lib/store/error/useErrorStore";
+import { useErrorStore } from "@/store/error/useErrorStore";
 import type { ErrorSource } from "@/types/error";
 
 const AUTO_DISMISS_MS = 5000;
