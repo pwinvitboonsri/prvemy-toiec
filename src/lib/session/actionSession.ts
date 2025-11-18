@@ -22,8 +22,7 @@ export const actionSession = ({
   const session: SessionData = {
     accessToken: access_token,
     refreshToken: rememberMe ? refresh_token : null, // ✅ key logic
-    // expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // fallback: 7 days
-    expiresAt: Date.now() + 30 * 1000, // fallback: 7 days
+    expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000, // fallback: 7 days
 
     user: {
       id: user.id,

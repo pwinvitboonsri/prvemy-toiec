@@ -46,10 +46,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     const refreshedSession: SessionData = {
       accessToken: newSession.access_token,
       refreshToken: newSession.refresh_token,
-      expiresAt: newSession.expires_at
-        ? newSession.expires_at * 1000
-        : Date.now() + 30 * 1000,
-      // : Date.now() + 7 * 24 * 60 * 60 * 1000,
+      expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000,
       user: {
         id: newSession.user.id,
         email: newSession.user.email ?? "",
