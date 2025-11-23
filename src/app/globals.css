@@ -3,126 +3,148 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* RISO / RETRO ART STYLE CONFIGURATION
+  ------------------------------------
+  - Colors: Mapped from retro.jsx (Blue, Red, Yellow, Ink, Paper)
+  - Shadows: Hard, offset shadows (0px blur)
+  - Radius: Sharp corners (0px)
+  - Borders: Thick (2px) default
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #0a0a0a;
-  --card: #ffffff;
-  --card-foreground: #0a0a0a;
-  --popover: #ffffff;
-  --popover-foreground: #0a0a0a;
-  --primary: #171717;
-  --primary-foreground: #fafafa;
-  --secondary: #f5f5f5;
-  --secondary-foreground: #171717;
-  --muted: #f5f5f5;
-  --muted-foreground: #737373;
-  --accent: #f5f5f5;
-  --accent-foreground: #171717;
-  --destructive: #e7000b;
+  /* Core Riso Palette */
+  --riso-blue: #1d3b88;
+  --riso-red: #ff3333;
+  --riso-yellow: #ffe800;
+  --riso-paper: #f2f0e9;
+  --riso-ink: #111111;
+
+  /* Base System Colors */
+  --background: #f2f0e9; /* Riso Paper */
+  --foreground: #111111; /* Riso Ink */
+
+  /* Cards & Surfaces */
+  --card: #f2f0e9;
+  --card-foreground: #111111;
+  --popover: #f2f0e9;
+  --popover-foreground: #111111;
+
+  /* Semantic Colors */
+  --primary: #1d3b88; /* Riso Blue */
+  --primary-foreground: #ffffff;
+
+  --secondary: #f2f0e9; /* Paper (often used with borders) */
+  --secondary-foreground: #1d3b88; /* Blue Text */
+
+  --muted: #e6e4dd; /* Slightly darker paper */
+  --muted-foreground: #1d3b88; /* Blue text looks great as muted in this style */
+
+  --accent: #ffe800; /* Riso Yellow */
+  --accent-foreground: #111111;
+
+  --destructive: #ff3333; /* Riso Red */
   --destructive-foreground: #ffffff;
-  --border: #e5e5e5;
-  --input: #e5e5e5;
-  --ring: #a1a1a1;
-  --chart-1: #91c5ff;
-  --chart-2: #3a81f6;
-  --chart-3: #2563ef;
-  --chart-4: #1a4eda;
-  --chart-5: #1f3fad;
-  --sidebar: #fafafa;
-  --sidebar-foreground: #0a0a0a;
-  --sidebar-primary: #171717;
-  --sidebar-primary-foreground: #fafafa;
-  --sidebar-accent: #f5f5f5;
-  --sidebar-accent-foreground: #171717;
-  --sidebar-border: #e5e5e5;
-  --sidebar-ring: #a1a1a1;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-  --radius: 0.625rem;
-  --shadow-x: 0;
-  --shadow-y: 1px;
-  --shadow-blur: 3px;
+
+  /* Borders & Inputs */
+  --border: #111111; /* Thick Ink Borders */
+  --input: #111111;
+  --ring: #1d3b88;
+
+  /* Chart Colors (Mapped to Riso Palette) */
+  --chart-1: #1d3b88; /* Blue */
+  --chart-2: #ff3333; /* Red */
+  --chart-3: #ffe800; /* Yellow */
+  --chart-4: #111111; /* Ink */
+  --chart-5: #888888; /* Grey */
+
+  /* Sidebar */
+  --sidebar: #f2f0e9;
+  --sidebar-foreground: #111111;
+  --sidebar-primary: #1d3b88;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ffe800;
+  --sidebar-accent-foreground: #111111;
+  --sidebar-border: #111111;
+  --sidebar-ring: #1d3b88;
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Courier New", Courier, monospace; /* Using Mono for Serif slot in this theme */
+  --font-mono: "Courier New", Courier, monospace;
+
+  /* Shapes & sizes */
+  --radius: 0rem; /* Sharp corners for Brutalist/Retro feel */
+  --border-width: 2px; /* Default border width for the theme */
+
+  /* HARD SHADOWS (The "Riso" Look) 
+     Replacing soft blurs with solid offset colors 
+  */
+  --shadow-color: #1d3b88; /* Blue shadows by default */
+  --shadow-x: 4px;
+  --shadow-y: 4px;
+  --shadow-blur: 0px;
   --shadow-spread: 0px;
-  --shadow-opacity: 0.1;
-  --shadow-color: oklch(0 0 0);
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 2px 4px -1px hsl(0 0% 0% / 0.1);
-  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 4px 6px -1px hsl(0 0% 0% / 0.1);
-  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-  --tracking-normal: 0em;
-  --spacing: 0.25rem;
+
+  --shadow-sm: 2px 2px 0px var(--shadow-color);
+  --shadow: 4px 4px 0px var(--shadow-color);
+  --shadow-md: 6px 6px 0px var(--shadow-color);
+  --shadow-lg: 8px 8px 0px var(--shadow-color);
+  --shadow-xl: 12px 12px 0px var(--shadow-color);
+  --shadow-2xl: 16px 16px 0px var(--shadow-color);
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --card: #171717;
-  --card-foreground: #fafafa;
-  --popover: #262626;
-  --popover-foreground: #fafafa;
-  --primary: #e5e5e5;
-  --primary-foreground: #171717;
-  --secondary: #262626;
-  --secondary-foreground: #fafafa;
+  /* Dark Mode Riso Palette */
+  --riso-paper-dark: #1a1a1a;
+  --riso-ink-dark: #f2f0e9;
+  --riso-blue-dark: #4d7aff;
+  --riso-red-dark: #ff5555;
+  --riso-yellow-dark: #ffd500;
+
+  --background: #1a1a1a;
+  --foreground: #f2f0e9;
+
+  --card: #1a1a1a;
+  --card-foreground: #f2f0e9;
+  --popover: #1a1a1a;
+  --popover-foreground: #f2f0e9;
+
+  --primary: #4d7aff;
+  --primary-foreground: #ffffff;
+
+  --secondary: #1a1a1a;
+  --secondary-foreground: #4d7aff;
+
   --muted: #262626;
-  --muted-foreground: #a1a1a1;
-  --accent: #404040;
-  --accent-foreground: #fafafa;
-  --destructive: #ff6467;
-  --destructive-foreground: #fafafa;
-  --border: #282828;
-  --input: #343434;
-  --ring: #737373;
-  --chart-1: #91c5ff;
-  --chart-2: #3a81f6;
-  --chart-3: #2563ef;
-  --chart-4: #1a4eda;
-  --chart-5: #1f3fad;
-  --sidebar: #171717;
-  --sidebar-foreground: #fafafa;
-  --sidebar-primary: #1447e6;
-  --sidebar-primary-foreground: #fafafa;
-  --sidebar-accent: #262626;
-  --sidebar-accent-foreground: #fafafa;
-  --sidebar-border: #282828;
-  --sidebar-ring: #525252;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-  --radius: 0.625rem;
-  --shadow-x: 0;
-  --shadow-y: 1px;
-  --shadow-blur: 3px;
-  --shadow-spread: 0px;
-  --shadow-opacity: 0.1;
-  --shadow-color: oklch(0 0 0);
-  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
-  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 2px 4px -1px hsl(0 0% 0% / 0.1);
-  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 4px 6px -1px hsl(0 0% 0% / 0.1);
-  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1),
-    0 8px 10px -1px hsl(0 0% 0% / 0.1);
-  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --muted-foreground: #888888;
+
+  --accent: #ffd500;
+  --accent-foreground: #1a1a1a;
+
+  --destructive: #ff5555;
+  --destructive-foreground: #ffffff;
+
+  --border: #f2f0e9; /* Light borders in dark mode */
+  --input: #f2f0e9;
+  --ring: #4d7aff;
+
+  --chart-1: #4d7aff;
+  --chart-2: #ff5555;
+  --chart-3: #ffd500;
+  --chart-4: #f2f0e9;
+  --chart-5: #888888;
+
+  --sidebar: #1a1a1a;
+  --sidebar-foreground: #f2f0e9;
+  --sidebar-primary: #4d7aff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ffd500;
+  --sidebar-accent-foreground: #1a1a1a;
+  --sidebar-border: #f2f0e9;
+  --sidebar-ring: #4d7aff;
+
+  /* Shadows become light or colored in dark mode */
+  --shadow-color: #4d7aff;
 }
 
 @theme inline {
@@ -168,14 +190,13 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --shadow-2xs: var(--shadow-2xs);
-  --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
   --shadow: var(--shadow);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+
   --animate-aurora: aurora 60s linear infinite;
 
   @keyframes aurora {
@@ -194,14 +215,102 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Adding the grain texture globally to the body */
+    position: relative;
+  }
+
+  /* Global Grain Overlay */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    opacity: 0.12;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  /* Global Halftone (Optional, usually better on sections, but here for full effect) */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.06;
+    background-image: radial-gradient(var(--border) 1px, transparent 1px);
+    background-size: 6px 6px;
   }
 }
 
-@keyframes skeleton-loading {
+/* Utility class for the "Glitch" text effect seen in retro.jsx
+   Usage: <h1 class="glitch-text" data-text="LOGIN">LOGIN</h1>
+*/
+@layer utilities {
+  .glitch-text {
+    position: relative;
+  }
+  .glitch-text::before,
+  .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--background);
+  }
+  .glitch-text::before {
+    left: 2px;
+    text-shadow: -1px 0 var(--destructive);
+    clip-path: inset(0 0 0 0); /* Fallback */
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+  }
+  .glitch-text::after {
+    left: -2px;
+    text-shadow: -1px 0 var(--primary);
+    clip-path: inset(0 0 0 0);
+    animation: glitch-anim 2.5s infinite linear alternate-reverse;
+  }
+}
+
+@keyframes glitch-anim {
   0% {
-    background-position: 200% center;
+    clip-path: inset(10px 0 30px 0);
+  }
+  20% {
+    clip-path: inset(80px 0 10px 0);
+  }
+  40% {
+    clip-path: inset(40px 0 60px 0);
+  }
+  60% {
+    clip-path: inset(120px 0 140px 0);
+  }
+  80% {
+    clip-path: inset(20px 0 10px 0);
   }
   100% {
-    background-position: -200% center;
+    clip-path: inset(90px 0 110px 0);
+  }
+}
+@keyframes glitch-anim-2 {
+  0% {
+    clip-path: inset(120px 0 140px 0);
+  }
+  20% {
+    clip-path: inset(20px 0 100px 0);
+  }
+  40% {
+    clip-path: inset(90px 0 110px 0);
+  }
+  60% {
+    clip-path: inset(10px 0 30px 0);
+  }
+  80% {
+    clip-path: inset(80px 0 100px 0);
+  }
+  100% {
+    clip-path: inset(40px 0 60px 0);
   }
 }

@@ -1,62 +1,43 @@
 "use client";
 
-import { InputComponent } from "@/Components/ui/InputComponent";
-import { Checkbox } from "@/Components/ui/shadcn-lib/checkbox";
+import Image from "next/image";
 import Link from "next/link";
-import { useSignInStore } from "@/store/auth/useSignInStore";
-import { useFieldError } from "@/hooks/useFieldError"; // ✅ import
+import RightPhoto from "@/assets/photo/0f7901bdde99e71fb762f31ebcbead3c.jpg";
 
-export function SignInForm() {
-  const { email, password, rememberME, setEmail, setPassword, setRememberMe } =
-    useSignInStore();
-
-  const { error: emailError, clear: clearEmailError } = useFieldError("email");
-  const { error: passwordError, clear: clearPasswordError } =
-    useFieldError("password");
-
+export function SignInForm({ children }: { children: React.ReactNode }) {
   return (
-    <form className="space-y-4 flex flex-col">
-      <InputComponent
-        id="email"
-        type="email"
-        label="Email"
-        required
-        value={email}
-        onChange={(e) => {
-          setEmail(e.target.value);
-          if (emailError) clearEmailError(); // ✅ clear on change
-        }}
-        error={emailError?.message} // ✅ pass to input
-      />
+    <div className="flex min-h-screen w-full font-sans text-slate-900 antialiased">
+      {/* LEFT SIDE: The Form Container */}
+      <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8 bg-background">
+        <div className="w-full max-w-sm space-y-8">
+          {/* Logo Header */}
+          <div className="text-center">
+            <Link href="/" className="inline-block">
+              <span className="text-2xl font-black tracking-tighter uppercase">
+                PRVEMY<span className="text-red-600">-TOEIC</span>
+              </span>
+            </Link>
+          </div>
 
-      <InputComponent
-        id="password"
-        type="password"
-        label="Password"
-        required
-        value={password}
-        onChange={(e) => {
-          setPassword(e.target.value);
-          if (passwordError) clearPasswordError(); // ✅ clear on change
-        }}
-        error={passwordError?.message} // ✅ pass to input
-      />
-
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Checkbox
-            id="remember"
-            checked={rememberME}
-            onCheckedChange={(e: boolean) => setRememberMe(e)}
-          />
-          <label htmlFor="remember" className="text-sm">
-            Remember me
-          </label>
+          {/* The Actual Form (Children) goes here */}
+          {children}
         </div>
-        <Link href="#" className="text-sm text-primary hover:underline">
-          Forgot Password?
-        </Link>
       </div>
-    </form>
+
+      {/* RIGHT SIDE: The Image (Hidden on mobile) */}
+      <div className="hidden lg:block w-1/2 relative bg-black">
+        <Image
+          src={RightPhoto}
+          alt="Background"
+          fill
+          priority
+          className="object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        <div className="absolute bottom-10 left-10 text-white p-4">
+          <p className="text-xl font-bold">Master your goals.</p>
+        </div>
+      </div>
+    </div>
   );
 }

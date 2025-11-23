@@ -1,4 +1,4 @@
-import type { UserRole } from './user';
+import type { UserRole } from "./user";
 
 // Supabase table utility helpers
 export type SupabaseTable<TableName extends string, Row> = {
@@ -15,6 +15,26 @@ export type ProfileRow = {
   updated_at: string;
 };
 
-// Future table definitions
-// export type TestRow = { /* TODO: define test table schema */ };
-// export type BookRow = { /* TODO: define book table schema */ };
+export type Database = {
+  public: {
+    Tables: {
+      profiles: {
+        Row: {
+          id: string;
+          name: string;
+          role: "user" | "admin"; // or import UserRole
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          name?: string;
+          role?: "user" | "admin";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["profiles"]["Insert"]>;
+      };
+    };
+  };
+};

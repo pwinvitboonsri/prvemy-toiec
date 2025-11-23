@@ -1,11 +1,40 @@
 "use client";
 
 import * as React from "react";
-import { Label } from "@/Components/ui/shadcn-lib/label";
-import { cn } from "@/lib/utils";
 
-export type LabelComponentProps = React.ComponentPropsWithoutRef<typeof Label>;
+// --- MOCK UTILS ---
+function cn(...classes: (string | undefined | null | false)[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
-export function LabelComponent({ className, ...props }: LabelComponentProps) {
-  return <Label className={cn(className)} {...props} />;
+// --- MAIN LABEL COMPONENT ---
+
+export type LabelComponentProps =
+  React.LabelHTMLAttributes<HTMLLabelElement> & {
+    required?: boolean;
+  };
+
+export function LabelComponent({
+  className,
+  children,
+  required,
+  ...props
+}: LabelComponentProps) {
+  return (
+    <label
+      className={cn(
+        // Base Typography
+        "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+        // Riso Art Style Overrides
+        "font-mono text-xs font-bold uppercase tracking-wider",
+        "text-[var(--riso-blue)]",
+        "mb-1.5 block", // Ensure spacing below label
+        className
+      )}
+      {...props}
+    >
+      {children}
+      {required && <span className="text-[var(--riso-red)] ml-1">*</span>}
+    </label>
+  );
 }

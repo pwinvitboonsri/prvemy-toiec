@@ -1,0 +1,189 @@
+|-- .env.local
+|-- components.json
+|-- db
+|  |-- migrations
+|  |  |-- 0001_extensions.sql
+|  |  |-- 0002_helpers.sql
+|  |  |-- 0003_tables_core.sql
+|  |  |-- 0004_rls_enable.sql
+|  |  |-- 0005_policies_core.sql
+|  |  |-- 0006_grants_core.sql
+|  |  |-- 0007_content_tables.sql
+|  |  |-- 0008_policies_content.sql
+|  |  |-- 0009_rls_force.sql
+|  |-- README.migrations.md
+|  |-- seeds
+|  |  |-- 0001_base_seed.sql
+|-- eslint.config.mjs
+|-- generate_tree.ps1
+|-- next.config.ts
+|-- next-env.d.ts
+|-- package.json
+|-- package-lock.json
+|-- postcss.config.mjs
+|-- public
+|  |-- file.svg
+|  |-- globe.svg
+|  |-- next.svg
+|  |-- vercel.svg
+|  |-- window.svg
+|-- README.md
+|-- src
+|  |-- app
+|  |  |-- (protected)
+|  |  |  |-- bookmark
+|  |  |  |  |-- page.tsx
+|  |  |  |-- dashboard
+|  |  |  |  |-- page.tsx
+|  |  |  |-- goal
+|  |  |  |  |-- page.tsx
+|  |  |  |-- setting
+|  |  |  |  |-- page.tsx
+|  |  |  |-- shop
+|  |  |  |  |-- page.tsx
+|  |  |  |-- test
+|  |  |  |  |-- page.tsx
+|  |  |-- (public)
+|  |  |  |-- books
+|  |  |  |  |-- [id]
+|  |  |  |  |  |-- page.tsx
+|  |  |  |  |-- page.tsx
+|  |  |  |-- login
+|  |  |  |  |-- page.tsx
+|  |  |  |  |-- utils
+|  |  |  |  |  |-- signinValidation.ts
+|  |  |  |-- page.tsx
+|  |  |  |-- register
+|  |  |  |  |-- page.tsx
+|  |  |-- favicon.ico
+|  |  |-- globals.css
+|  |  |-- layout.tsx
+|  |  |-- not-found.tsx
+|  |  |-- ThemeProvider.tsx
+|  |-- assets
+|  |  |-- photo
+|  |  |  |-- 0f7901bdde99e71fb762f31ebcbead3c.jpg
+|  |  |  |-- horse.png
+|  |-- Components
+|  |  |-- layout
+|  |  |  |-- Container.tsx
+|  |  |  |-- Grid.tsx
+|  |  |  |-- index.ts
+|  |  |  |-- PageWrapper.tsx
+|  |  |  |-- README.Layout.md
+|  |  |  |-- Section.tsx
+|  |  |  |-- Spacer.tsx
+|  |  |  |-- Split.tsx
+|  |  |  |-- Stack.tsx
+|  |  |-- page
+|  |  |  |-- auth
+|  |  |  |  |-- AuthFormLayout.tsx
+|  |  |  |  |-- SignInForm.tsx
+|  |  |  |  |-- SignUpForm.tsx
+|  |  |  |-- Nav&Footer
+|  |  |  |  |-- Footer.tsx
+|  |  |  |  |-- NavbarComponent.tsx
+|  |  |-- Text
+|  |  |-- ui
+|  |  |  |-- AlertComponent.tsx
+|  |  |  |-- AvatarComponent.tsx
+|  |  |  |-- BadgeComponent.tsx
+|  |  |  |-- Button
+|  |  |  |  |-- AnimatedSlideButton.tsx
+|  |  |  |  |-- Button.tsx
+|  |  |  |  |-- CounterComponent.tsx
+|  |  |  |  |-- FlipButton.tsx
+|  |  |  |  |-- IconButtonComp.tsx
+|  |  |  |  |-- index.ts
+|  |  |  |  |-- LiquidButtonComponent.tsx
+|  |  |  |  |-- README.button.md
+|  |  |  |  |-- RippleButtonComponent.tsx
+|  |  |  |-- CardComponent.tsx
+|  |  |  |-- InputComponent.tsx
+|  |  |  |-- LabelComponent.tsx
+|  |  |  |-- SelectComponent.tsx
+|  |  |  |-- shadcn-io
+|  |  |  |  |-- animated-modal
+|  |  |  |  |  |-- index.tsx
+|  |  |  |  |-- aurora-background
+|  |  |  |  |  |-- index.tsx
+|  |  |  |  |-- counter
+|  |  |  |  |  |-- index.tsx
+|  |  |  |  |-- flip-button
+|  |  |  |  |  |-- index.tsx
+|  |  |  |  |-- icon-button
+|  |  |  |  |  |-- index.tsx
+|  |  |  |  |-- liquid-button
+|  |  |  |  |  |-- index.tsx
+|  |  |  |  |-- ripple-button
+|  |  |  |  |  |-- index.tsx
+|  |  |  |  |-- sliding-number
+|  |  |  |  |  |-- index.tsx
+|  |  |  |  |-- theme-switcher
+|  |  |  |  |  |-- index.tsx
+|  |  |  |  |-- theme-toggle-button
+|  |  |  |  |  |-- index.tsx
+|  |  |  |-- shadcn-lib
+|  |  |  |  |-- alert.tsx
+|  |  |  |  |-- avatar.tsx
+|  |  |  |  |-- badge.tsx
+|  |  |  |  |-- card.tsx
+|  |  |  |  |-- checkbox.tsx
+|  |  |  |  |-- drawer.tsx
+|  |  |  |  |-- input.tsx
+|  |  |  |  |-- label.tsx
+|  |  |  |  |-- select.tsx
+|  |  |  |  |-- skeleton.tsx
+|  |  |  |-- SkeletonComponent.tsx
+|  |  |  |-- spinner.tsx
+|  |  |  |-- ThemeToggleComponent.tsx
+|  |  |-- utility
+|  |  |  |-- Error
+|  |  |  |  |-- ErrorBoundary.tsx
+|  |  |  |  |-- ErrorFallback.tsx
+|  |  |  |  |-- GlobalErrorAlerts.tsx
+|  |  |  |  |-- GlobalErrorDisplay.tsx
+|  |  |  |-- session
+|  |  |  |  |-- SessionLoader.tsx
+|  |  |  |-- ToastProvider.tsx
+|  |-- hooks
+|  |  |-- use-event-listener.ts
+|  |  |-- useFieldError.ts
+|  |  |-- use-is-mounted.tsx
+|  |  |-- use-isomorphic-layout-effect.tsx
+|  |  |-- use-on-click-outside.tsx
+|  |-- lib
+|  |  |-- auth
+|  |  |  |-- actions.ts
+|  |  |-- utils
+|  |  |-- utils.ts
+|  |  |  |-- redirect.ts
+|  |-- middleware.ts
+|  |-- store
+|  |  |-- auth
+|  |  |  |-- useSignInStore.ts
+|  |  |-- error
+|  |  |  |-- handleSupabaseError.ts
+|  |  |  |-- useErrorStore.ts
+|  |-- types
+|  |  |-- api.ts
+|  |  |-- css.d.ts
+|  |  |-- enums.ts
+|  |  |-- error.ts
+|  |  |-- page.ts
+|  |  |-- session.ts
+|  |  |-- SessionState.ts
+|  |  |-- supabase.ts
+|  |  |-- ui.ts
+|  |  |-- user.ts
+|  |  |-- util.ts
+|  |-- utils
+|  |  |-- supabase
+|  |  |  |-- client.ts
+|  |  |  |-- middleware.ts
+|  |  |  |-- server.ts
+|-- tsconfig.json
+
+-----------------------------
+Run this command to regenerate:
+powershell -ExecutionPolicy Bypass -File generate_tree.ps1

@@ -7,7 +7,7 @@ export default function RegisterPage() {
     <AuthFormLayout
       title="Create Account"
       bottomText="Already have an account?"
-      bottomLinkHref="/auth/login"
+      bottomLinkHref="/login"
       bottomLinkText="Sign in →"
       footer={
         <RippleButtonComponent className="w-full">

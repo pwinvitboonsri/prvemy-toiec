@@ -1,10 +1,29 @@
 "use client";
 
 import * as React from "react";
-import { Input } from "@/Components/ui/shadcn-lib/input";
-import { Label } from "@/Components/ui/shadcn-lib/label";
-import { SkeletonComponent } from "@/Components/ui/SkeletonComponent"; // 👈 import your custom skeleton
-import { cn } from "@/lib/utils";
+
+// --- MOCK UTILS ---
+function cn(...classes: (string | undefined | null | false)[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
+// --- RISO SKELETON ---
+const SkeletonComponent = ({
+  className,
+  width,
+  height,
+}: {
+  className?: string;
+  width?: string | number;
+  height?: string | number;
+}) => (
+  <div
+    className={cn("animate-pulse bg-[var(--riso-ink)]/10", className)}
+    style={{ width, height }}
+  />
+);
+
+// --- MAIN INPUT COMPONENT ---
 
 type FormInputProps = {
   id: string;
@@ -12,7 +31,7 @@ type FormInputProps = {
   description?: string;
   error?: string;
   className?: string;
-  loading?: boolean; // 👈 new
+  loading?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 export function InputComponent({
@@ -25,38 +44,66 @@ export function InputComponent({
   ...props
 }: FormInputProps) {
   return (
-    <div className="space-y-1 w-full">
-      {/* Label or its Skeleton */}
-      {label &&
-        (loading ? (
-          <SkeletonComponent width="30%" height="1rem" />
-        ) : (
-          <Label htmlFor={id} className="text-sm font-medium">
-            {label}
-          </Label>
-        ))}
+    <div className="space-y-1.5 w-full font-sans">
+      {/* LABEL SECTION */}
+      <div className="flex justify-between items-end">
+        {label &&
+          (loading ? (
+            <SkeletonComponent width="40%" height="0.75rem" />
+          ) : (
+            <label
+              htmlFor={id}
+              className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--riso-blue)]"
+            >
+              {label}
+            </label>
+          ))}
+      </div>
 
-      {/* Input or its Skeleton */}
+      {/* INPUT SECTION */}
       {loading ? (
-        <SkeletonComponent height="2.5rem" className="w-full" />
+        <SkeletonComponent height="3rem" className="w-full" />
       ) : (
-        <Input
-          id={id}
-          className={cn(
-            error && "border-destructive focus-visible:ring-destructive",
-            className
+        <div className="relative">
+          <input
+            id={id}
+            className={cn(
+              // Base Riso Styles
+              "flex h-12 w-full px-4 py-2",
+              "bg-[var(--riso-paper)] text-[var(--riso-ink)]",
+              "border-2 border-[var(--riso-ink)]",
+              "font-mono text-sm placeholder:text-[var(--riso-ink)]/30",
+              // Focus State (Hard Yellow Shadow)
+              "focus:outline-none focus:border-[var(--riso-ink)] focus:bg-white",
+              "focus:shadow-[4px_4px_0px_var(--riso-yellow)]",
+              "transition-all duration-100 ease-out",
+              // Error State (Red Border + Red Shadow)
+              error &&
+                "border-[var(--riso-red)] text-[var(--riso-red)] focus:shadow-[4px_4px_0px_var(--riso-red)] placeholder:text-[var(--riso-red)]/40",
+              className
+            )}
+            {...props}
+          />
+          {/* Decorative corner marker if error exists */}
+          {error && (
+            <div className="absolute top-0 right-0 w-0 h-0 border-t-[10px] border-r-[10px] border-t-transparent border-r-[var(--riso-red)] pointer-events-none" />
           )}
-          {...props}
-        />
+        </div>
       )}
 
-      {/* Description or Error — only if not loading */}
-      {!loading && description && !error && (
-        <p className="text-xs text-muted-foreground">{description}</p>
-      )}
-
-      {!loading && error && (
-        <p className="text-xs text-destructive font-medium">{error}</p>
+      {/* FOOTER SECTION (Description/Error) */}
+      {!loading && (
+        <div className="min-h-[1.25rem]">
+          {error ? (
+            <p className="font-mono text-[10px] font-bold text-[var(--riso-red)] uppercase tracking-wide flex items-center gap-1">
+              <span>[!]</span> {error}
+            </p>
+          ) : description ? (
+            <p className="font-mono text-[10px] text-[var(--riso-ink)] opacity-60">
+              {description}
+            </p>
+          ) : null}
+        </div>
       )}
     </div>
   );
