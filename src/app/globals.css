@@ -4,11 +4,11 @@
 @custom-variant dark (&:is(.dark *));
 
 /* RISO / RETRO ART STYLE CONFIGURATION
-  ------------------------------------
-  - Colors: Mapped from retro.jsx (Blue, Red, Yellow, Ink, Paper)
-  - Shadows: Hard, offset shadows (0px blur)
-  - Radius: Sharp corners (0px)
-  - Borders: Thick (2px) default
+   ------------------------------------
+   - Colors: Mapped from retro.jsx (Blue, Red, Yellow, Ink, Paper)
+   - Shadows: Hard, offset shadows (0px blur)
+   - Radius: Sharp corners (0px)
+   - Borders: Thick (2px) default
 */
 
 :root {

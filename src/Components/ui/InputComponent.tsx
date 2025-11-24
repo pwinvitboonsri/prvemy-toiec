@@ -1,13 +1,10 @@
 "use client";
 
 import * as React from "react";
-
-// --- MOCK UTILS ---
-function cn(...classes: (string | undefined | null | false)[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { cn } from "@/lib/utils";
 
 // --- RISO SKELETON ---
+// Matches the "Ink" color with low opacity for a rougher loading look
 const SkeletonComponent = ({
   className,
   width,
@@ -18,7 +15,10 @@ const SkeletonComponent = ({
   height?: string | number;
 }) => (
   <div
-    className={cn("animate-pulse bg-[var(--riso-ink)]/10", className)}
+    className={cn(
+      "animate-pulse bg-foreground/10 border-2 border-transparent", // specific riso tweak
+      className
+    )}
     style={{ width, height }}
   />
 );
@@ -45,61 +45,68 @@ export function InputComponent({
 }: FormInputProps) {
   return (
     <div className="space-y-1.5 w-full font-sans">
-      {/* LABEL SECTION */}
+      {/* 1. LABEL SECTION */}
       <div className="flex justify-between items-end">
         {label &&
           (loading ? (
-            <SkeletonComponent width="40%" height="0.75rem" />
+            <SkeletonComponent width="40%" height="1rem" />
           ) : (
             <label
               htmlFor={id}
-              className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--riso-blue)]"
+              className="font-mono text-xs font-bold uppercase tracking-wider text-primary"
             >
               {label}
             </label>
           ))}
       </div>
 
-      {/* INPUT SECTION */}
+      {/* 2. INPUT SECTION */}
       {loading ? (
-        <SkeletonComponent height="3rem" className="w-full" />
+        <SkeletonComponent
+          height="3rem"
+          className="w-full border-dashed border-foreground/20"
+        />
       ) : (
-        <div className="relative">
+        <div className="relative group">
           <input
             id={id}
             className={cn(
-              // Base Riso Styles
+              // --- BASE RISO STYLES ---
               "flex h-12 w-full px-4 py-2",
-              "bg-[var(--riso-paper)] text-[var(--riso-ink)]",
-              "border-2 border-[var(--riso-ink)]",
-              "font-mono text-sm placeholder:text-[var(--riso-ink)]/30",
-              // Focus State (Hard Yellow Shadow)
-              "focus:outline-none focus:border-[var(--riso-ink)] focus:bg-white",
-              "focus:shadow-[4px_4px_0px_var(--riso-yellow)]",
+              "bg-background text-foreground", // Paper bg, Ink text
+              "border-2 border-foreground", // Thick Ink Border
+              "font-mono text-sm placeholder:text-foreground/30",
+
+              // --- FOCUS STATE (The Signature Hard Yellow Shadow) ---
+              "focus:outline-none focus:border-foreground focus:bg-background",
+              "focus:shadow-[4px_4px_0px_var(--accent)]", // Hard Yellow Shadow
               "transition-all duration-100 ease-out",
-              // Error State (Red Border + Red Shadow)
+
+              // --- ERROR STATE (Red Border + Red Shadow) ---
               error &&
-                "border-[var(--riso-red)] text-[var(--riso-red)] focus:shadow-[4px_4px_0px_var(--riso-red)] placeholder:text-[var(--riso-red)]/40",
+                "border-destructive text-destructive focus:shadow-[4px_4px_0px_var(--destructive)] placeholder:text-destructive/40",
+
               className
             )}
             {...props}
           />
-          {/* Decorative corner marker if error exists */}
+
+          {/* Decorative corner marker if error exists (Brutalist detail) */}
           {error && (
-            <div className="absolute top-0 right-0 w-0 h-0 border-t-[10px] border-r-[10px] border-t-transparent border-r-[var(--riso-red)] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-0 h-0 border-t-[10px] border-r-[10px] border-t-transparent border-r-destructive pointer-events-none" />
           )}
         </div>
       )}
 
-      {/* FOOTER SECTION (Description/Error) */}
+      {/* 3. FOOTER SECTION (Description/Error) */}
       {!loading && (
         <div className="min-h-[1.25rem]">
           {error ? (
-            <p className="font-mono text-[10px] font-bold text-[var(--riso-red)] uppercase tracking-wide flex items-center gap-1">
+            <p className="font-mono text-[10px] font-bold text-destructive uppercase tracking-wide flex items-center gap-1 animate-in slide-in-from-left-1">
               <span>[!]</span> {error}
             </p>
           ) : description ? (
-            <p className="font-mono text-[10px] text-[var(--riso-ink)] opacity-60">
+            <p className="font-mono text-[10px] text-muted-foreground opacity-70">
               {description}
             </p>
           ) : null}
