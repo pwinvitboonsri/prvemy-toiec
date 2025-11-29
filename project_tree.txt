@@ -1,5 +1,7 @@
 |-- .env.local
 |-- components.json
+|-- config
+|  |-- route.ts
 |-- db
 |  |-- migrations
 |  |  |-- 0001_extensions.sql
@@ -11,6 +13,7 @@
 |  |  |-- 0007_content_tables.sql
 |  |  |-- 0008_policies_content.sql
 |  |  |-- 0009_rls_force.sql
+|  |  |-- 0010_add_auth_trigger.sql
 |  |-- README.migrations.md
 |  |-- seeds
 |  |  |-- 0001_base_seed.sql
@@ -55,6 +58,11 @@
 |  |  |  |-- page.tsx
 |  |  |  |-- register
 |  |  |  |  |-- page.tsx
+|  |  |  |-- verify-email
+|  |  |  |  |-- page.tsx
+|  |  |-- auth
+|  |  |  |-- callback
+|  |  |  |  |-- route.ts
 |  |  |-- favicon.ico
 |  |  |-- globals.css
 |  |  |-- layout.tsx
@@ -62,28 +70,21 @@
 |  |  |-- ThemeProvider.tsx
 |  |-- assets
 |  |  |-- photo
-|  |  |  |-- 0f7901bdde99e71fb762f31ebcbead3c.jpg
-|  |  |  |-- horse.png
 |  |-- Components
-|  |  |-- layout
-|  |  |  |-- Container.tsx
-|  |  |  |-- Grid.tsx
-|  |  |  |-- index.ts
-|  |  |  |-- PageWrapper.tsx
-|  |  |  |-- README.Layout.md
-|  |  |  |-- Section.tsx
-|  |  |  |-- Spacer.tsx
-|  |  |  |-- Split.tsx
-|  |  |  |-- Stack.tsx
 |  |  |-- page
 |  |  |  |-- auth
-|  |  |  |  |-- AuthFormLayout.tsx
-|  |  |  |  |-- SignInForm.tsx
-|  |  |  |  |-- SignUpForm.tsx
+|  |  |  |-- home
+|  |  |  |  |-- CommunityWidgets.tsx
+|  |  |  |  |-- LearningWidgets.tsx
+|  |  |  |  |-- WelcomeHeader.tsx
 |  |  |  |-- Nav&Footer
 |  |  |  |  |-- Footer.tsx
 |  |  |  |  |-- NavbarComponent.tsx
-|  |  |-- Text
+|  |  |  |-- setting
+|  |  |  |  |-- PreferencesTab.tsx
+|  |  |  |  |-- ProfileTab.tsx
+|  |  |  |  |-- SecurityTab.tsx
+|  |  |  |  |-- SettingsSidebar.tsx
 |  |  |-- ui
 |  |  |  |-- AlertComponent.tsx
 |  |  |  |-- AvatarComponent.tsx
@@ -136,6 +137,7 @@
 |  |  |  |  |-- skeleton.tsx
 |  |  |  |-- SkeletonComponent.tsx
 |  |  |  |-- spinner.tsx
+|  |  |  |-- SwitchComponent.tsx
 |  |  |  |-- ThemeToggleComponent.tsx
 |  |  |-- utility
 |  |  |  |-- Error

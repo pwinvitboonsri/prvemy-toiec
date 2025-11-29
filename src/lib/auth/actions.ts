@@ -3,6 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function signInWithEmail(prevState: any, formData: FormData) {
@@ -24,17 +25,30 @@ export async function signInWithEmail(prevState: any, formData: FormData) {
   redirect("/");
 }
 
-export async function signUpWithEmail(formData: FormData) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function signUpWithEmail(prevState: any, formData: FormData) {
   const supabase = await createClient();
 
+  const name = formData.get("full_name") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
 
-  const { data, error } = await supabase.auth.signUp({
+  if (password !== confirmPassword) {
+    return { error: "Passwords do not match" };
+  }
+
+  const origin = (await headers()).get("origin");
+
+  const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      // emailRedirectTo: `${origin}/auth/callback`, // Optional: if you have email confirmation on
+      data: {
+        name: name,
+        profile_picture_url: "",
+      },
+      emailRedirectTo: `${origin}/auth/callback`,
     },
   });
 
@@ -42,7 +56,8 @@ export async function signUpWithEmail(formData: FormData) {
     return { error: error.message };
   }
 
-  return { success: true };
+  // Redirect to the "Check your email" instruction page
+  redirect("/verify-email?message=check-email");
 }
 
 export async function signInWithMagicLink(formData: FormData) {

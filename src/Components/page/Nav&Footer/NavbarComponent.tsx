@@ -3,53 +3,12 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Bell, User as UserIcon } from "lucide-react";
+import { Menu, Bell, User as UserIcon, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggleButtonComponent } from "@/Components/ui/ThemeToggleComponent";
 import type { User } from "@supabase/supabase-js";
 import { GUEST_NAV_LINKS, AUTH_NAV_LINKS } from "../../../../config/route";
-
-// --- CUSTOM RISO COMPONENT STYLES ---
-
-// Local Riso Button Component to match the specific brutalist design
-// Uses standard Tailwind colors (blue-600, red-600, yellow-300) to match your mock
-const RisoButton = ({
-  variant = "primary",
-  size = "default",
-  children,
-  className = "",
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "ghost" | "outline";
-  size?: "default" | "sm" | "icon";
-}) => {
-  let baseStyles =
-    "inline-flex items-center justify-center whitespace-nowrap font-bold transition-all focus:outline-none border-2 border-black active:translate-x-[1px] active:translate-y-[1px] active:shadow-none";
-
-  // Size variants
-  if (size === "sm") baseStyles += " h-8 px-3 text-xs";
-  else if (size === "icon") baseStyles += " h-9 w-9";
-  else baseStyles += " h-10 px-4 text-sm";
-
-  // Style variants
-  if (variant === "ghost") {
-    baseStyles +=
-      " border-transparent shadow-none hover:bg-yellow-300 hover:border-black text-black";
-  } else if (variant === "outline") {
-    baseStyles +=
-      " bg-transparent text-black shadow-[2px_2px_0px_#2563eb] hover:shadow-[2px_2px_0px_#dc2626] hover:translate-x-[-1px] hover:translate-y-[-1px]";
-  } else {
-    // Default/Primary
-    baseStyles +=
-      " bg-blue-600 text-white shadow-[2px_2px_0px_black] hover:bg-red-600";
-  }
-
-  return (
-    <button className={cn(baseStyles, className)} {...props}>
-      {children}
-    </button>
-  );
-};
+import { Button } from "@/Components/ui/Button/Button";
 
 interface NavbarProps {
   className?: string;
@@ -64,158 +23,217 @@ export function NavbarComponent({ className, user }: NavbarProps) {
   const links = isAuthenticated ? AUTH_NAV_LINKS : GUEST_NAV_LINKS;
 
   return (
-    <nav
-      className={cn(
-        "sticky top-0 z-50 w-full border-b-2 border-black bg-white transition-all font-sans",
-        className
-      )}
-    >
-      <div className="flex justify-between items-center h-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* --- LOGO --- */}
-        <Link href="/" className="flex items-center gap-2 group no-underline">
-          <div className="w-8 h-8 bg-blue-600 flex items-center justify-center text-white font-black border-2 border-black shadow-[2px_2px_0px_black] group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-none transition-all">
-            P
-          </div>
-          <span className="text-lg font-black tracking-tighter uppercase text-black">
-            PRVEMY<span className="text-red-600">-TOIEC</span>
-          </span>
-        </Link>
-
-        {/* --- DESKTOP LINKS --- */}
-        <div className="hidden md:flex gap-8">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "text-xs font-bold font-mono uppercase tracking-widest transition-all decoration-2 underline-offset-4 no-underline",
-                pathname === link.href
-                  ? "text-blue-600 underline"
-                  : "text-black hover:text-red-600 hover:underline opacity-70 hover:opacity-100"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-
-        {/* --- DESKTOP ACTIONS --- */}
-        <div className="hidden md:flex gap-3 items-center">
-          {/* Theme Toggle - Styled to match Riso */}
-          <div className="border-2 border-black hover:bg-yellow-300 shadow-[2px_2px_0px_black] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all">
-            <ThemeToggleButtonComponent className="h-9 w-9 rounded-none border-none" />
-          </div>
-
-          {isAuthenticated ? (
-            <>
-              <Link
-                href="/notifications"
-                className="w-9 h-9 flex items-center justify-center border-2 border-black hover:bg-yellow-300 shadow-[2px_2px_0px_black] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all text-black"
-              >
-                <Bell className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/setting"
-                className="w-9 h-9 flex items-center justify-center border-2 border-black bg-blue-600 text-white shadow-[2px_2px_0px_black] hover:bg-red-600 transition-colors"
-              >
-                <UserIcon className="w-4 h-4" />
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link href="/login">
-                <RisoButton
-                  variant="ghost"
-                  size="sm"
-                  className="font-mono font-bold uppercase text-xs hover:bg-yellow-300 hover:text-black text-black"
-                >
-                  Login
-                </RisoButton>
-              </Link>
-              <Link href="/register">
-                <RisoButton
-                  size="sm"
-                  className="bg-black text-white border-2 border-black font-bold uppercase text-xs tracking-wide shadow-[3px_3px_0px_#2563eb] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all rounded-none"
-                >
-                  Register Free
-                </RisoButton>
-              </Link>
-            </>
-          )}
-        </div>
-
-        {/* --- MOBILE DRAWER TRIGGER --- */}
-        <div className="md:hidden flex items-center gap-2">
-          <div className="border-2 border-black rounded-none h-8 w-8 flex items-center justify-center">
-            <ThemeToggleButtonComponent className="h-full w-full rounded-none border-none" />
-          </div>
-          <RisoButton
-            variant="ghost"
-            size="icon"
-            className="border-2 border-black rounded-none hover:bg-yellow-300 h-8 w-8 p-0"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <Menu className="w-5 h-5" />
-          </RisoButton>
-        </div>
+    <>
+      {/* TOP STRIP (Decorative / Utility) - Hidden on Mobile (< 1024px) */}
+      <div className="w-full bg-background border-b-2 border-foreground py-1 px-4 hidden lg:flex justify-between items-center text-[10px] font-mono uppercase tracking-widest opacity-60">
+        <span>SYS: RISO_OS_V3.5</span>
+        <span className="flex items-center gap-4">
+          <span>SERVER: ONLINE</span>
+          <span>LOC: BANGKOK, TH</span>
+        </span>
       </div>
 
-      {/* --- MOBILE DRAWER CONTENT --- */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden border-t-2 border-black bg-white absolute top-full left-0 w-full shadow-xl z-40">
-          <div className="flex flex-col gap-6 px-6 py-8">
-            {links.map((link) => (
+      <nav
+        className={cn(
+          "sticky top-0 z-50 w-full border-b-2 border-foreground bg-background transition-all font-sans",
+          className
+        )}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* --- LOGO SECTION --- */}
+            <div className="flex-shrink-0 flex items-center">
               <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsMobileMenuOpen(false)} // Close on click
-                className={cn(
-                  "text-xl font-black uppercase tracking-tight transition-colors no-underline",
-                  pathname === link.href
-                    ? "text-blue-600 pl-4 border-l-4 border-blue-600"
-                    : "text-black hover:text-red-600"
-                )}
+                href="/"
+                className="group no-underline flex items-center gap-3"
               >
-                {link.label}
+                {/* Logo Box */}
+                <div className="w-10 h-10 bg-primary flex items-center justify-center text-primary-foreground font-black text-xl border-2 border-foreground shadow-[4px_4px_0px_var(--foreground)] group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-none transition-all">
+                  P
+                </div>
+                {/* Text Logo */}
+                <div className="flex flex-col leading-none">
+                  <span className="text-2xl font-black tracking-tighter uppercase text-foreground">
+                    PRVEMY<span className="text-destructive">/TOIEC</span>
+                  </span>
+                  <span className="font-mono text-[0.6rem] tracking-[0.2em] text-foreground/60">
+                    INTELLIGENT SYSTEM
+                  </span>
+                </div>
               </Link>
-            ))}
+            </div>
 
-            <div className="h-px bg-black opacity-20 my-2"></div>
+            {/* --- DESKTOP NAV LINKS --- */}
+            {/* Changed md:flex to lg:flex so it stays hidden until 1024px */}
+            <div className="hidden lg:flex items-center gap-8">
+              {links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "text-xs font-bold font-mono uppercase tracking-widest transition-all decoration-2 underline-offset-4",
+                    pathname === link.href
+                      ? "text-primary underline"
+                      : "text-foreground hover:text-destructive hover:underline opacity-70 hover:opacity-100"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
 
-            <div className="flex flex-col gap-3">
+            {/* --- DESKTOP ACTIONS --- */}
+            {/* Changed md:flex to lg:flex */}
+            <div className="hidden lg:flex items-center gap-4">
+              {/* Search Icon (Decorative) */}
+              <button className="p-2 hover:text-primary transition-colors">
+                <Search className="w-5 h-5" />
+              </button>
+
+              <div className="h-8 w-[2px] bg-foreground/20 mx-2"></div>
+
+              <ThemeToggleButtonComponent className="h-12 w-12 border-2 border-foreground rounded-none hover:bg-accent shadow-[2px_2px_0px_var(--foreground)] active:shadow-none transition-all" />
+
               {isAuthenticated ? (
-                <>
-                  <Link
-                    href="/notifications"
-                    className="flex items-center gap-2 font-mono font-bold text-sm text-black no-underline"
-                  >
-                    <Bell className="w-4 h-4" /> NOTIFICATIONS
+                <div className="flex items-center gap-3">
+                  <Link href="/notifications">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="shadow-[2px_2px_0px_var(--foreground)]"
+                    >
+                      <Bell className="w-4 h-4" />
+                    </Button>
                   </Link>
-                  <Link
-                    href="/setting"
-                    className="flex items-center gap-2 font-mono font-bold text-sm text-black no-underline"
-                  >
-                    <UserIcon className="w-4 h-4" /> PROFILE
+                  <Link href="/setting">
+                    <Button
+                      variant="default"
+                      size="icon"
+                      className="shadow-[2px_2px_0px_var(--foreground)] bg-primary text-white hover:bg-destructive"
+                    >
+                      <UserIcon className="w-4 h-4" />
+                    </Button>
                   </Link>
-                </>
+                </div>
               ) : (
-                <div className="grid grid-cols-2 gap-4">
-                  <Link href="/login" className="block w-full">
-                    <RisoButton className="w-full border-2 border-black bg-transparent text-black font-bold uppercase shadow-[2px_2px_0px_black] active:shadow-none active:translate-y-[2px]">
+                <div className="flex items-center gap-3">
+                  <Link href="/login">
+                    <Button
+                      variant="ghost"
+                      className="font-mono font-bold uppercase text-xs hover:bg-accent hover:text-foreground"
+                    >
                       Login
-                    </RisoButton>
+                    </Button>
                   </Link>
-                  <Link href="/register" className="block w-full">
-                    <RisoButton className="w-full border-2 border-black bg-red-600 text-white font-bold uppercase shadow-[2px_2px_0px_black] active:shadow-none active:translate-y-[2px]">
-                      Register
-                    </RisoButton>
+                  <Link href="/register">
+                    <Button className="bg-foreground text-background border-2 border-foreground font-bold uppercase text-xs tracking-wide shadow-[4px_4px_0px_var(--primary)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all rounded-none">
+                      Register Free
+                    </Button>
                   </Link>
                 </div>
               )}
             </div>
+
+            {/* --- MOBILE MENU TOGGLE --- */}
+            {/* Changed md:hidden to lg:hidden so it shows up on screens < 1024px */}
+            <div className="lg:hidden flex items-center gap-4">
+              <ThemeToggleButtonComponent className="h-9 w-9 border-2 border-foreground rounded-none" />
+              <Button
+                variant="outline"
+                size="icon"
+                className="border-2 border-foreground rounded-none hover:bg-accent h-10 w-10 shadow-[2px_2px_0px_var(--foreground)]"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                <Menu className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </div>
-      )}
-    </nav>
+
+        {/* --- MOBILE DRAWER --- */}
+        {/* Changed md:hidden to lg:hidden so it's visible on screens < 1024px */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden border-t-2 border-foreground bg-background absolute top-full left-0 w-full shadow-2xl z-40 animate-in slide-in-from-top-5 duration-200">
+            <div className="flex flex-col p-6 gap-6">
+              {/* Mobile Links */}
+              <div className="flex flex-col gap-4">
+                {links.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      "text-2xl font-black uppercase tracking-tighter transition-colors flex items-center gap-2",
+                      pathname === link.href
+                        ? "text-primary pl-4 border-l-4 border-primary"
+                        : "text-foreground hover:text-destructive"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+
+              <div className="h-[2px] bg-foreground/10 my-2"></div>
+
+              {/* Mobile Auth Actions */}
+              <div className="grid grid-cols-1 gap-4">
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      href="/notifications"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start font-mono"
+                      >
+                        <Bell className="mr-2 h-4 w-4" /> NOTIFICATIONS
+                      </Button>
+                    </Link>
+                    <Link
+                      href="/setting"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start font-mono"
+                      >
+                        <UserIcon className="mr-2 h-4 w-4" /> PROFILE SETTINGS
+                      </Button>
+                    </Link>
+                  </>
+                ) : (
+                  <div className="grid grid-cols-2 gap-4">
+                    <Link
+                      href="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Button variant="outline" className="w-full font-mono">
+                        LOGIN
+                      </Button>
+                    </Link>
+                    <Link
+                      href="/register"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Button className="w-full bg-destructive text-white font-mono shadow-[4px_4px_0px_var(--foreground)]">
+                        REGISTER
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Footer Decorative */}
+              <div className="flex justify-between items-end pt-4 opacity-50 font-mono text-[10px]">
+                <span>EST. 2025</span>
+                <span>PRVEMY-TOEIC®</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </nav>
+    </>
   );
 }

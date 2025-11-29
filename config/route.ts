@@ -26,12 +26,12 @@ export const GUEST_NAV_LINKS: NavLink[] = [
 ];
 
 export const AUTH_NAV_LINKS: NavLink[] = [
-  { label: "Home", href: "/" },
+  // { label: "Home", href: "/" },
   { label: "Dashboard", href: "/dashboard" },
   { label: "Goal", href: "/goal" },
+  { label: "Book", href: "/books" },
   { label: "Bookmark", href: "/bookmark" },
   { label: "Shop", href: "/shop" },
-  { label: "Test", href: "/test" },
-  { label: "Book List", href: "/books" },
-  { label: "Setting", href: "/setting" },
+  // { label: "Test", href: "/test" },
+  // { label: "Setting", href: "/setting" },
 ];
