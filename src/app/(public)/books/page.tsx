@@ -8,7 +8,7 @@ import { Button } from "@/Components/ui/Button/Button";
 import { cn } from "@/lib/utils";
 
 // --- MOCK DATA (Ideally fetched from DB) ---
-export const ALL_BOOKS: Book[] = [
+const ALL_BOOKS: Book[] = [
   // SCENARIO 1: The "Guest Hook"
   // DB: is_guest_accessible = true
   // UI: Show "Guest Friendly" badge. No Lock.

@@ -9,7 +9,7 @@ import type { ErrorSource } from "@/types/error";
 const AUTO_DISMISS_MS = 5000;
 const EXIT_BUFFER_MS = 300;
 
-type TimerId = ReturnType<typeof setTimeout> | undefined;
+type TimerId = number | ReturnType<typeof setTimeout> | undefined;
 
 const variantBySource: Record<ErrorSource, "default" | "destructive"> = {
   client: "default",
