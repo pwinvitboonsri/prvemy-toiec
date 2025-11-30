@@ -2,68 +2,120 @@
 
 import { useState } from "react";
 import { Search } from "lucide-react";
-// import { BookCard, type Book } from "@/Components/books/BookCard";
-import { BookCard, type Book } from "@/Components/page/books/BookCard";
+import { type Book } from "@/types/book";
+import { BookCard } from "@/Components/page/books/BookCard";
 import { Button } from "@/Components/ui/Button/Button";
 import { cn } from "@/lib/utils";
 
 // --- MOCK DATA (Ideally fetched from DB) ---
-const ALL_BOOKS: Book[] = [
+export const ALL_BOOKS: Book[] = [
+  // SCENARIO 1: The "Guest Hook"
+  // DB: is_guest_accessible = true
+  // UI: Show "Guest Friendly" badge. No Lock.
   {
     id: "TEST-01",
-    title: "ETS Simulation 01",
-    subtitle: "Official Format • 2024",
+    title: "ETS Simulation 2024 (Test 1)",
+    subtitle: "Official Format • Guest Allowed",
     category: "ETS",
     access: "guest",
     questions: 200,
     time: "2h",
     color: "blue",
+    description: "Try our full simulation mode without logging in.",
   },
-  {
-    id: "VOC-101",
-    title: "Vocabulary Booster",
-    subtitle: "600 Essential Words",
-    category: "VOC",
-    access: "free",
-    questions: 600,
-    color: "white",
-  },
+
+  // SCENARIO 2: The "Premium Gate" (Standard Subscription)
+  // DB: early_access_until = NULL, min_tier = 1
+  // UI: Show Lock Icon for Free users. Unlocked for Subs.
   {
     id: "TEST-02",
-    title: "ETS Simulation 02",
+    title: "ETS Simulation 2024 (Test 2)",
     subtitle: "Advanced Difficulty",
     category: "ETS",
     access: "premium",
     questions: 200,
     time: "2h",
     color: "red",
+    description: "Challenging questions for high scorers.",
   },
-  {
-    id: "BIZ-READ",
-    title: "Business Reading",
-    subtitle: "Advanced Topics",
-    category: "BIZ",
-    access: "premium",
-    color: "yellow",
-  },
+
+  // SCENARIO 3: The "Early Access" (FOMO Strategy)
+  // DB: early_access_until = Future Date
+  // UI: "Early Access" Badge. Locked for Basic Subs, Unlocked for Pro.
   {
     id: "TEST-03",
-    title: "ETS Simulation 03",
-    subtitle: "Coming Soon",
+    title: "ETS Simulation 2025 (Beta)",
+    subtitle: "Sneak Peek • New Format",
     category: "ETS",
     access: "premium",
     isEarlyAccess: true,
-    releaseDate: "Dec 1",
-    color: "white",
+    releaseDate: "Dec 15",
+    questions: 200,
+    time: "2h",
+    color: "purple",
+    description: "Available now for Pro Tier. Public release in 2 weeks.",
   },
+
+  // SCENARIO 4: The "Micro-Transaction" (Not Bought)
+  // DB: one_time_price_id = 'price_xxx', user_purchases = null
+  // UI: Show "Buy for ฿199" button.
+  {
+    id: "BIZ-PACK-01",
+    title: "Business Email Mastery",
+    subtitle: "Special Training Pack",
+    category: "BIZ",
+    access: "one-time-buy",
+    price: 199,
+    questions: 50,
+    time: "45m",
+    color: "yellow",
+    description: "Master Part 6 & 7 business vocabulary.",
+  },
+
+  // SCENARIO 5: The "Micro-Transaction" (Already Bought)
+  // DB: one_time_price_id = 'price_xxx', user_purchases = FOUND
+  // UI: Show "Start" (No price tag).
+  {
+    id: "BIZ-PACK-02",
+    title: "Office Meeting Vocabulary",
+    subtitle: "Special Training Pack",
+    category: "BIZ",
+    access: "one-time-buy",
+    isOwned: true, // <--- User already paid
+    price: 199,
+    questions: 50,
+    time: "45m",
+    color: "green",
+    description: "You own this pack.",
+  },
+
+  // SCENARIO 6: The "Free Resource" (Retention)
+  // DB: is_guest_accessible = false, min_tier = 0
+  // UI: Requires Login, but no payment.
+  {
+    id: "VOC-101",
+    title: "600 Essential Words",
+    subtitle: "Daily Vocabulary Booster",
+    category: "VOC",
+    access: "free",
+    questions: 600,
+    color: "white",
+    description: "Log in to track your progress.",
+  },
+
+  // SCENARIO 7: The "Drill Mode" (Short content)
+  // DB: part_number = 5 only
+  // UI: Shows "15m" instead of "2h". Good for quick study.
   {
     id: "GRAM-01",
-    title: "Grammar Intensive",
-    subtitle: "Part 5 & 6 Drills",
+    title: "Grammar Speed Drill",
+    subtitle: "Part 5 Rapid Fire",
     category: "GRAM",
     access: "free",
-    questions: 50,
-    color: "white",
+    questions: 30,
+    time: "10m",
+    color: "slate",
+    description: "Quick grammar fixes for your coffee break.",
   },
 ];
 
@@ -112,7 +164,7 @@ export default function BooksPage() {
         </div>
 
         {/* 3. STICKY FILTER BAR */}
-        <div className="sticky top-22 z-40 mb-10 flex flex-wrap items-center gap-4 border-2 border-foreground bg-background p-4 shadow-[4px_4px_0px_var(--foreground)]">
+        <div className="mb-10 flex flex-wrap items-center gap-4 border-2 border-foreground bg-background p-4 shadow-[4px_4px_0px_var(--foreground)]">
           <div className="mr-auto flex items-center gap-2 bg-muted px-3 py-2 border-2 border-foreground w-full md:w-64">
             <Search className="h-4 w-4 opacity-50" />
             <input
