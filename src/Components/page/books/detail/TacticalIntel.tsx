@@ -1,7 +1,6 @@
 "use client";
 
-import { Lightbulb, ScanEye, Lock } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ScanEye, Lock } from "lucide-react";
 import { Button } from "@/Components/ui/Button/Button";
 
 interface TacticalIntelProps {
@@ -10,185 +9,119 @@ interface TacticalIntelProps {
 
 export function TacticalIntel({ isLocked = false }: TacticalIntelProps) {
   return (
-    <div className="bg-card border-2 border-foreground p-0 flex flex-col relative overflow-visible h-[40%]">
-      {/* --- DECORATIVE: RIGHT SIDE TAB --- */}
-      {/* This creates the yellow "Restricted" tab sticking out the side */}
-      <div className="absolute -right-3 top-8 bottom-8 w-4 bg-accent rounded-r-md flex items-center justify-center border-l border-foreground shadow-sm z-0">
-        <span className="text-[8px] font-bold text-accent-foreground transform rotate-90 whitespace-nowrap tracking-widest opacity-60">
+    <div className="relative flex h-full min-h-[280px] flex-col overflow-visible border-2 border-[#111111] bg-white p-0">
+      
+      {/* Right-side Tab (Restricted - Yellow) */}
+      <div className="absolute -right-3 bottom-8 top-8 z-0 flex w-4 items-center justify-center rounded-r-md border-l border-[#111111] bg-[#ffe800] shadow-sm">
+        <span className="whitespace-nowrap text-[8px] font-bold tracking-widest text-[#111111] opacity-60 rotate-90 transform">
           RESTRICTED
         </span>
       </div>
 
-      {/* --- MAIN CARD CONTAINER --- */}
-      <div className="relative z-10 bg-card flex-1 flex flex-col h-full overflow-hidden border-2 border-transparent">
-        {/* HEADER */}
-        <div className="flex justify-between items-center p-4 border-b-2 border-foreground bg-muted/30">
+      <div className="relative z-10 flex h-full flex-1 flex-col overflow-hidden border-2 border-transparent bg-white">
+        
+        {/* Header */}
+        <div className="flex items-center justify-between border-b-2 border-[#111111] bg-gray-50 p-4">
           <div className="flex items-center gap-2">
-            <div className="bg-foreground text-background p-1">
-              <ScanEye className="w-3 h-3" />
+            <div className="bg-[#111111] p-1 text-white">
+              <ScanEye className="h-3 w-3" />
             </div>
-            <span className="text-xs font-black uppercase tracking-wider">
+            <span className="text-xs font-black uppercase tracking-wider text-[#111111]">
               Tactical Intel
             </span>
           </div>
-          <div className="flex gap-4">
-            <div className="p-2 w-16 text-center text-white shrink-0 bg-zinc-900">
-              <span className="block text-[8px] uppercase opacity-60">
-                Pace
-              </span>
-              <span className="block text-lg font-black leading-none">45s</span>
-              <span className="block text-[8px] opacity-60">/ Q</span>
-            </div>
-          </div>
+          <span className="font-mono text-[10px] opacity-50">REF: V-2024</span>
         </div>
 
-        {/* CONTENT AREA */}
         {isLocked ? (
-          /* --- LOCKED STATE (Classified) --- */
-          <div className="flex-1 relative bg-muted/10 p-6 flex flex-col justify-center items-center min-h-[240px]">
-            {/* REDACTED BACKGROUND LINES */}
-            <div className="absolute inset-0 p-8 opacity-10 select-none pointer-events-none flex flex-col justify-center gap-4">
-              <div className="h-3 w-full bg-foreground/80"></div>
-              <div className="h-3 w-3/4 bg-foreground/80"></div>
-              <div className="h-3 w-5/6 bg-foreground/80"></div>
-              <div className="h-3 w-full bg-foreground/80"></div>
-              <div className="h-3 w-1/2 bg-foreground/80"></div>
-              <div className="h-3 w-full bg-foreground/80"></div>
+          /* LOCKED STATE */
+          <div className="relative flex flex-1 flex-col items-center justify-center bg-gray-100 p-5">
+            {/* Background Redacted Effect */}
+            <div className="absolute inset-0 space-y-3 overflow-hidden p-6 opacity-10 pointer-events-none select-none">
+              <div className="h-2 w-full bg-black"></div>
+              <div className="h-2 w-3/4 bg-black"></div>
+              <div className="h-2 w-5/6 bg-black"></div>
+              <div className="h-2 w-full bg-black"></div>
+              <div className="h-2 w-1/2 bg-black"></div>
+              <div className="h-2 w-full bg-black"></div>
             </div>
 
-            {/* LOCK MODAL */}
-            <div className="relative z-10 bg-card border-2 border-accent p-6 shadow-[8px_8px_0px_var(--foreground)] text-center max-w-[260px] w-full">
-              <div className="w-12 h-12 bg-accent rounded-full border-2 border-foreground flex items-center justify-center mx-auto mb-4">
-                <Lock className="w-6 h-6 text-accent-foreground" />
+            {/* Lock Badge */}
+            <div className="relative z-10 max-w-[200px] border-2 border-[#ffe800] bg-white p-4 text-center shadow-[4px_4px_0px_#111111]">
+              <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full border border-[#111111] bg-[#ffe800]">
+                <Lock className="h-5 w-5 text-[#111111]" />
               </div>
-
-              <h3 className="font-black uppercase text-lg mb-2 tracking-tight">
-                Classified Data
-              </h3>
-
-              <p className="font-mono text-[10px] text-muted-foreground leading-tight mb-5">
-                Advanced threat analysis and keyword recon available for Premium
-                Agents only.
+              <h5 className="mb-1 text-sm font-black uppercase text-[#111111]">Classified Data</h5>
+              <p className="mb-3 font-mono text-[10px] leading-tight text-gray-500">
+                Advanced threat analysis and keyword recon available for Premium Agents only.
               </p>
-
-              <Button
-                variant="default"
-                className="w-full h-10 text-[10px] font-bold uppercase border-2 border-transparent hover:border-foreground"
-              >
+              <Button className="w-full h-auto py-2 text-[10px] font-bold uppercase bg-[#111111] text-white hover:bg-[#1d3b88] rounded-none border-0">
                 Upgrade Clearance
               </Button>
             </div>
           </div>
         ) : (
-          /* --- UNLOCKED STATE (Actual Data) --- */
-          <div
-            id="intel-unlocked"
-            className="flex flex-col flex-1 justify-center p-5 space-y-6"
-          >
-            {/* Section 1: Threat Level */}
+          /* UNLOCKED STATE */
+          <div className="flex flex-1 flex-col justify-center space-y-6 p-5">
+            {/* Row 1: Threat Level & Global */}
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <p className="mb-2 text-[10px] font-bold text-gray-400 uppercase">
-                  Threat Level
-                </p>
-                <div className="flex gap-1 mb-1">
-                  <div className="w-full h-2 bg-zinc-900"></div>
-                  <div className="w-full h-2 bg-zinc-900"></div>
-                  <div className="w-full h-2 bg-yellow-400 border border-zinc-900"></div>
-                  <div className="w-full h-2 bg-white border border-zinc-900"></div>
-                  <div className="w-full h-2 bg-white border border-zinc-900"></div>
+                <p className="mb-2 text-[10px] font-bold uppercase text-gray-400">Threat Level</p>
+                <div className="mb-1 flex gap-1">
+                  <div className="h-2 w-full bg-[#111111]"></div>
+                  <div className="h-2 w-full bg-[#111111]"></div>
+                  <div className="h-2 w-full border border-[#111111] bg-[#ffe800]"></div>
+                  <div className="h-2 w-full border border-[#111111] bg-white"></div>
                 </div>
                 <div className="flex justify-between font-mono text-[8px] uppercase opacity-60">
                   <span>Low</span>
-                  <span className="font-bold text-zinc-900">Medium</span>
+                  <span className="font-bold text-[#111111]">Medium</span>
                   <span>High</span>
                 </div>
               </div>
-
-              {/* Section 2: Global Avg */}
               <div>
-                <p className="mb-2 text-[10px] font-bold text-gray-400 uppercase">
-                  Global Avg.
-                </p>
+                <p className="mb-2 text-[10px] font-bold uppercase text-gray-400">Global Avg.</p>
                 <div className="flex items-end gap-2">
-                  <span className="text-2xl font-black text-blue-600">715</span>
-                  <span className="mb-1 text-[10px] font-bold text-gray-400">
-                    pts
-                  </span>
+                  <span className="text-2xl font-black text-[#1d3b88]">715</span>
+                  <span className="mb-1 text-[10px] font-bold text-gray-400">pts</span>
                 </div>
-                <div className="mt-1 w-full h-1 bg-gray-100">
-                  <div className="h-full bg-blue-600 w-[72%]"></div>
+                <div className="mt-1 h-1 w-full bg-gray-100">
+                  <div className="h-full bg-[#1d3b88]" style={{ width: "72%" }}></div>
                 </div>
               </div>
             </div>
 
-            {/* Section 3: Topic Composition */}
+            {/* Row 2: Vocabulary */}
             <div>
-              <div className="flex justify-between items-end mb-2">
-                <p className="text-[10px] font-bold text-gray-400 uppercase">
-                  Topic Composition
-                </p>
-              </div>
-              <div className="flex h-4 border shadow-sm border-zinc-900">
-                <div
-                  className="flex items-center justify-center w-[40%] text-[8px] font-bold text-white bg-blue-600"
-                  title="Corporate"
-                >
-                  CORP 40%
-                </div>
-                <div
-                  className="flex items-center justify-center w-[35%] text-[8px] font-bold text-white bg-red-500"
-                  title="Daily Life"
-                >
-                  DAILY 35%
-                </div>
-                <div
-                  className="flex items-center justify-center w-[25%] text-[8px] font-bold text-zinc-900 bg-yellow-400"
-                  title="Travel"
-                >
-                  TRVL 25%
-                </div>
-              </div>
-            </div>
-
-            {/* Section 4: High-Value Vocabulary */}
-            <div>
-              <p className="mb-2 text-[10px] font-bold text-gray-400 uppercase">
-                High-Value Vocabulary
-              </p>
+              <p className="mb-2 text-[10px] font-bold uppercase text-gray-400">High-Value Vocabulary</p>
               <div className="grid grid-cols-2 gap-2">
-                <div
-                  className="flex gap-2 items-center px-2 py-1 font-mono text-[10px] bg-white border cursor-help hover:bg-gray-50 border-zinc-900"
-                  title="Noun: An asset or object bought or obtained."
-                >
-                  <div className="w-1.5 h-1.5 bg-red-500 rounded-full"></div>
-                  Acquisition
-                </div>
-                <div
-                  className="flex gap-2 items-center px-2 py-1 font-mono text-[10px] bg-white border cursor-help hover:bg-gray-50 border-zinc-900"
-                  title="Noun: A planned route or journey."
-                >
-                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
-                  Itinerary
-                </div>
-                <div
-                  className="flex gap-2 items-center px-2 py-1 font-mono text-[10px] bg-white border cursor-help hover:bg-gray-50 border-zinc-900"
-                  title="Noun: The state of being responsible for something."
-                >
-                  <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full"></div>
-                  Liability
-                </div>
-                <div
-                  className="flex gap-2 items-center px-2 py-1 font-mono text-[10px] bg-white border cursor-help hover:bg-gray-50 border-zinc-900"
-                  title="Noun: A sum of money paid regularly by a company."
-                >
-                  <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                  Dividend
-                </div>
+                {[
+                    {w: "Acquisition", c: "bg-[#ff3333]"}, 
+                    {w: "Itinerary", c: "bg-[#1d3b88]"}, 
+                    {w: "Liability", c: "bg-[#ffe800]"}, 
+                    {w: "Dividend", c: "bg-gray-400"}
+                ].map((item) => (
+                    <div key={item.w} className="flex cursor-help items-center gap-2 border border-[#111111] bg-white px-2 py-1 font-mono text-[10px] hover:bg-gray-50">
+                        <div className={`h-1.5 w-1.5 rounded-full ${item.c}`}></div>
+                        {item.w}
+                    </div>
+                ))}
               </div>
             </div>
 
-            {/* Section 5: Footer / Pace */}
+            {/* Row 3: Pace */}
+            <div className="flex gap-4">
+                <div className="shrink-0 w-16 bg-[#111111] p-2 text-center text-white">
+                    <span className="block text-[8px] uppercase opacity-60">Pace</span>
+                    <span className="block text-lg font-black leading-none">45s</span>
+                    <span className="block text-[8px] opacity-60">/ Q</span>
+                </div>
+                <div className="flex-1 border-l-2 border-[#111111] bg-[#ffe800]/20 p-2 font-mono text-[10px]">
+                    <p className="leading-tight opacity-80">
+                        <strong>NOTE:</strong> Heavy focus on email threads in Part 7.
+                    </p>
+                </div>
+            </div>
           </div>
         )}
       </div>
