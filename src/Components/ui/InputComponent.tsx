@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 
 // --- RISO SKELETON ---
 // Matches the "Ink" color with low opacity for a rougher loading look

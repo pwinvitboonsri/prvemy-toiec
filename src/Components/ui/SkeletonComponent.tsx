@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 import { Skeleton as BaseSkeleton } from "./shadcn-lib/skeleton";
 
 export type SkeletonComponentProps = {

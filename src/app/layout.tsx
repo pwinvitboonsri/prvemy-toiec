@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 import { ThemeProvider } from "./ThemeProvider";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/Components/utility/Error/ErrorFallback";
-import { NavbarComponent } from "@/Components/page/Nav&Footer/NavbarComponent";
-import { FooterComponent } from "@/Components/page/Nav&Footer/Footer";
 import { GlobalErrorAlerts } from "@/Components/utility/Error/GlobalErrorAlerts";
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+import { ClientLayoutWrapper } from "@/Components/layout/ClientLayoutWrapper";
+import { getUserWithProfile } from "@/lib/auth/getUserProfile";
 
 import "./globals.css";
 
@@ -32,19 +30,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+  const user = getUserWithProfile();
 
   return (
     <html lang="en">
       <body
         suppressHydrationWarning
         className={cn(
-          "flex flex-col min-h-screen bg-background font-sans antialiased"
+          "flex flex-col min-h-screen bg-background font-sans antialiased",
+          geistSans.variable,
+          geistMono.variable
         )}
       >
         <ThemeProvider
@@ -54,10 +49,8 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <NavbarComponent user={user} />
-            <main className="flex-grow">{children}</main>
+            <ClientLayoutWrapper user={user}>{children}</ClientLayoutWrapper>
           </ErrorBoundary>
-          <FooterComponent />
         </ThemeProvider>
         <GlobalErrorAlerts />
       </body>

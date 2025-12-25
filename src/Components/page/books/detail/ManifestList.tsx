@@ -1,40 +1,70 @@
 "use client";
 
-const MANIFEST_ITEMS = [
-  { id: "01", type: "Photographs", count: 6 },
-  { id: "02", type: "Q&A", count: 25 },
-  { id: "03", type: "Conversations", count: 39 },
-  { id: "04", type: "Talks", count: 30 },
-  { id: "05", type: "Sentences", count: 30 },
-  { id: "06", type: "Completion", count: 16 },
-  { id: "07", type: "Reading Comp", count: 54 },
-];
+import { cn } from "@/lib/utils/utils";
+import { CardComponent } from "@/Components/ui/CardComponent";
+import { ManifestItem } from "@/types/library-data";
 
-export function ManifestList() {
+interface ManifestListProps {
+  items?: ManifestItem[];
+}
+
+export function ManifestList({ items = [] }: ManifestListProps) {
+  // Fallback for visual testing if DB is empty
+  const displayItems =
+    items.length > 0
+      ? items
+      : [
+          { partId: "1", number: 1, title: "Photographs", questionCount: 6 },
+          { partId: "2", number: 2, title: "Q&A", questionCount: 25 },
+          { partId: "3", number: 3, title: "Conversations", questionCount: 39 },
+          { partId: "4", number: 4, title: "Talks", questionCount: 30 },
+          { partId: "5", number: 5, title: "Sentences", questionCount: 30 },
+          { partId: "6", number: 6, title: "Completion", questionCount: 16 },
+          { partId: "7", number: 7, title: "Reading Comp", questionCount: 54 },
+        ];
+
+  // Calculate Total
+  const totalQs = displayItems.reduce((acc, i) => acc + i.questionCount, 0);
+
   return (
-    <div className="relative flex-1 border-2 border-[#111111] bg-white p-6 shadow-[4px_4px_0px_#1d3b88]">
-      {/* Yellow Tape Decoration */}
-      <div className="absolute -top-3 left-1/2 z-10 h-6 w-24 -translate-x-1/2 -rotate-1 bg-[#ffe800] shadow-sm opacity-90"></div>
-
-      {/* Header */}
-      <div className="mb-4 flex items-end justify-between border-b-2 border-[#111111] pb-2">
-        <h3 className="text-xl font-black uppercase text-[#111111]">Manifest</h3>
-        <span className="font-mono text-xs font-bold text-[#111111]">200 Qs</span>
-      </div>
-
-      {/* List */}
-      <div className="space-y-0 text-sm">
-        {MANIFEST_ITEMS.map((item) => (
-          <div
-            key={item.id}
-            className="grid grid-cols-12 gap-2 border-b border-dashed border-gray-300 py-2 text-[#111111] last:border-0"
-          >
-            <div className="col-span-2 font-mono text-xs opacity-60 pt-0.5">{item.id}</div>
-            <div className="col-span-8 font-bold uppercase text-xs md:text-sm">{item.type}</div>
-            <div className="col-span-2 text-right font-mono text-xs font-bold">{item.count}</div>
+    <CardComponent
+      taped={true}
+      className="relative w-full h-full max-w-full bg-white overflow-visible z-10"
+      noPadding={true}
+    >
+      <div className="flex flex-col h-full relative">
+        <div className="p-6">
+          {/* Header */}
+          <div className="mb-4 flex items-end justify-between border-b-2 border-[#111111] pb-2">
+            <h3 className="text-xl font-black uppercase text-[#111111]">
+              Manifest
+            </h3>
+            <span className="font-mono text-xs font-bold text-[#111111]">
+              {totalQs} Qs
+            </span>
           </div>
-        ))}
+
+          {/* List */}
+          <div className="space-y-0 text-sm">
+            {displayItems.map((item) => (
+              <div
+                key={item.partId}
+                className="grid grid-cols-12 gap-2 border-b border-dashed border-gray-300 py-2 text-[#111111] last:border-0"
+              >
+                <div className="col-span-2 font-mono text-xs opacity-60 pt-0.5">
+                  {item.number.toString().padStart(2, "0")}
+                </div>
+                <div className="col-span-8 font-bold uppercase text-xs md:text-sm truncate pr-2">
+                  {item.title}
+                </div>
+                <div className="col-span-2 text-right font-mono text-xs font-bold">
+                  {item.questionCount}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </CardComponent>
   );
 }

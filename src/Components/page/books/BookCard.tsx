@@ -1,232 +1,197 @@
 "use client";
 
-import { Lock, Crown, Clock, ShoppingBag, Check } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/Components/ui/Button/Button";
 import Link from "next/link";
-import { BookAccess, Book, BookCardProps } from "@/types/book";
+import { Lock, Crown, Clock, Check } from "lucide-react";
+import { cn } from "@/lib/utils/utils";
+import { LibraryBook, UserRole } from "@/types/library-data";
 
-export function BookCard({ book, userRole }: BookCardProps) {
-  // --- 2. ACCESS LOGIC ---
+interface LibraryBookCardProps {
+  book: LibraryBook;
+  userRole: UserRole;
+}
 
-  const roleHierarchy: Record<string, number> = {
-    guest: 0,
-    user: 1,
-    premium: 2,
-  };
-
-  const accessHierarchy: Record<BookAccess, number> = {
+export function LibraryBookCard({ book, userRole }: LibraryBookCardProps) {
+  // --- ACCESS LOGIC ---
+  // Added 'platinum' level
+  const roleLevels: Record<UserRole, number> = {
     guest: 0,
     free: 1,
     premium: 2,
-    "one-time-buy": 99, // 99 means no role automatically unlocks it (needs isOwned)
+    platinum: 3,
+  };
+  const accessLevels: Record<string, number> = {
+    guest: 0,
+    free: 1,
+    premium: 2,
+    "one-time": 99, // 99 means strictly locked unless Owned or Subscription override
   };
 
-  const userLevel = roleHierarchy[userRole] || 0;
-  const requiredLevel = accessHierarchy[book.access];
+  const userLevel = roleLevels[userRole];
+  const requiredLevel = accessLevels[book.access];
 
-  // Unlock if: User role is high enough OR they own the specific book
-  const hasAccess = userLevel >= requiredLevel || book.isOwned === true;
-  const isLocked = !hasAccess;
+  // 1. Basic Level Check
+  let isUnlocked = userLevel >= requiredLevel;
 
-  // --- 3. VISUAL STYLES ---
+  // 2. One-Time Buy Check
+  // In our logic, 'one-time' is level 99.
+  // However, Subscription users (Premium/Platinum) should unlock 'one-time' books automatically (included in sub).
+  // Free users see it as locked (buy button shows).
+  if (book.access === "one-time") {
+    isUnlocked = userRole === "premium" || userRole === "platinum";
+  }
 
-  const bookColorStyles: Record<string, string> = {
-    blue: "bg-primary text-primary-foreground border-foreground",
-    red: "bg-destructive text-destructive-foreground border-foreground",
-    yellow: "bg-accent text-accent-foreground border-foreground",
-    white: "bg-background text-foreground border-foreground",
-    black: "bg-foreground text-background border-foreground",
-    green: "bg-green-600 text-white border-foreground",
-    purple: "bg-purple-600 text-white border-foreground",
-    slate: "bg-slate-600 text-white border-foreground",
+  // 3. Early Access Override (The Platinum Rule)
+  if (book.isEarlyAccess) {
+    // Only Platinum unlocks early access
+    isUnlocked = userRole === "platinum";
+  }
+
+  // --- STYLE CONFIG ---
+  const getBadgeConfig = () => {
+    if (book.isEarlyAccess)
+      return { text: "Early Access", color: "bg-[#93c5fd] text-[#111111]" };
+    if (book.access === "premium")
+      return { text: "Premium", color: "bg-[#ffe800] text-[#111111]" };
+    if (book.access === "one-time")
+      return { text: "Store", color: "bg-[#111111] text-white" };
+    if (book.access === "guest")
+      return { text: "Guest Free", color: "bg-[#86efac] text-[#111111]" };
+    return { text: "Standard", color: "bg-[#e2e2e2] text-[#666]" };
   };
 
-  const renderBadge = () => {
-    // Priority 1: Owned
-    if (book.isOwned) {
-      return (
-        <span className="absolute top-3 right-3 bg-green-500 text-white border-2 border-foreground px-2 py-0.5 text-[10px] font-black uppercase shadow-sm z-20 flex items-center gap-1">
-          <Check className="w-3 h-3" strokeWidth={4} /> Owned
-        </span>
-      );
-    }
-    // Priority 2: Early Access
-    if (book.isEarlyAccess) {
-      return (
-        <span className="absolute top-3 right-3 bg-blue-200 text-blue-900 border-2 border-foreground px-2 py-0.5 text-[10px] font-black uppercase shadow-sm z-20">
-          Early Access
-        </span>
-      );
-    }
-    // Priority 3: Access Type
-    if (book.access === "premium") {
-      return (
-        <span className="absolute top-3 right-3 bg-accent text-accent-foreground border-2 border-foreground px-2 py-0.5 text-[10px] font-black uppercase shadow-sm z-20 flex items-center gap-1">
-          <Crown className="w-3 h-3" /> Premium
-        </span>
-      );
-    }
-    if (book.access === "one-time-buy") {
-      return (
-        <span className="absolute top-3 right-3 bg-foreground text-background border-2 border-foreground px-2 py-0.5 text-[10px] font-black uppercase shadow-sm z-20 flex items-center gap-1">
-          <ShoppingBag className="w-3 h-3" />{" "}
-          {book.price ? `$${book.price}` : "Paid"}
-        </span>
-      );
-    }
-    if (book.access === "guest") {
-      return (
-        <span className="absolute top-3 right-3 bg-green-300 text-green-900 border-2 border-foreground px-2 py-0.5 text-[10px] font-black uppercase shadow-sm z-20">
-          Free
-        </span>
-      );
-    }
-    return null;
-  };
+  const badge = getBadgeConfig();
 
-  const coverBgClass = bookColorStyles[book.color] || bookColorStyles.white;
+  // --- BUTTON TEXT ---
+  const getActionText = () => {
+    if (book.isEarlyAccess && !isUnlocked)
+      return `Available ${book.releaseDate}`;
+    if (book.access === "one-time" && !isUnlocked) return "Buy ฿199";
+    if (!isUnlocked)
+      return userRole === "guest" ? "Login Required" : "Upgrade Required";
+    return book.access === "free" ? "Continue" : "Start Test";
+  };
 
   return (
-    <div className="group relative flex flex-col border-2 border-foreground bg-card transition-all duration-200 hover:-translate-y-1 hover:shadow-[8px_8px_0px_var(--primary)] h-full">
-      {/* --- 1. COVER STAGE --- */}
-      <div
-        className={cn(
-          "relative aspect-square w-full border-b-2 border-foreground flex items-center justify-center overflow-hidden",
-          book.access === "premium" ? "bg-accent/10" : "bg-background"
-        )}
-      >
-        {renderBadge()}
-
-        {/* --- THE BOOK GRAPHIC --- */}
-        <div
+    <div
+      className={cn(
+        "group relative flex flex-col border-2 border-[#111111] bg-white transition-all duration-200 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0px_#2d3e75] z-10"
+      )}
+    >
+      {/* --- TOP COVER AREA --- */}
+      <div className="relative aspect-square flex items-center justify-center border-b-2 border-[#111111] bg-[#f2f0e9] overflow-hidden">
+        {/* Badge */}
+        <span
           className={cn(
-            "w-32 h-40 border-2 flex flex-col items-center justify-center text-center shadow-[4px_4px_0px_var(--foreground)] transition-transform duration-300 group-hover:scale-105 z-10 relative",
-            coverBgClass
+            "absolute top-3 right-3 px-2 py-1 text-[0.65rem] font-black uppercase border-2 border-[#111111] shadow-sm z-20",
+            badge.color
           )}
         >
-          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-black/10 border-r border-black/10"></div>
+          {badge.text}
+        </span>
 
-          <span className="font-black text-3xl uppercase leading-none z-10">
-            {book.category}
-          </span>
-          <span className="font-mono text-[10px] mt-1 opacity-80 z-10 uppercase tracking-widest truncate w-full px-2">
-            {book.id}
-          </span>
+        {/* Book Graphic */}
+        <div
+          className={cn(
+            "w-32 h-40 border-2 border-[#111111] flex flex-col items-center justify-center shadow-[4px_4px_0px_rgba(0,0,0,0.1)] transition-transform duration-300 group-hover:scale-105 relative z-10",
+            book.coverColor
+          )}
+        >
+          <div className="absolute left-0 top-0 bottom-0 w-2 bg-black/10 border-r border-[#111111]/20"></div>
+          <div
+            className={cn(
+              "text-center relative z-10",
+              book.coverColor === "bg-white" ? "text-[#111111]" : "text-white"
+            )}
+          >
+            <span className="block font-black text-3xl leading-none">
+              {book.category}
+            </span>
+            <span className="block font-mono text-[10px] mt-1 opacity-90">
+              {book.coverText}
+            </span>
+          </div>
         </div>
 
-        {/* Halftone Texture */}
+        {/* Background Pattern */}
         <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
+          className="absolute inset-0 pointer-events-none opacity-10"
           style={{
-            backgroundImage:
-              "radial-gradient(currentColor 1px, transparent 1px)",
+            backgroundImage: "radial-gradient(#111111 1px, transparent 1px)",
             backgroundSize: "6px 6px",
           }}
         ></div>
 
-        {/* --- LOCK OVERLAY --- */}
-        {isLocked && (
-          <div className="absolute inset-0 z-20 flex items-center justify-center bg-background/60 backdrop-blur-[1px]">
-            <div
-              className={cn(
-                "p-3 border-2 border-foreground shadow-lg transform rotate-2 flex flex-col items-center",
-                book.access === "premium"
-                  ? "bg-accent text-accent-foreground"
-                  : "bg-foreground text-background"
-              )}
-            >
-              {book.access === "premium" ? (
-                <Crown className="mb-1 h-5 w-5" />
-              ) : (
-                <Lock className="mb-1 h-5 w-5" />
-              )}
-              <span className="text-[10px] font-bold uppercase tracking-wider">
-                {book.access === "premium"
-                  ? "Premium Only"
-                  : book.access === "one-time-buy"
-                  ? "Purchase Required"
-                  : "Login Required"}
+        {/* --- OVERLAYS --- */}
+        {!isUnlocked && !book.isEarlyAccess && (
+          <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/60 backdrop-blur-[1px]">
+            <div className="bg-[#111111] text-white p-2 border-2 border-white shadow-lg transform -rotate-3">
+              <Lock className="w-4 h-4 mx-auto mb-1" />
+              <span className="text-[8px] font-bold uppercase block">
+                {book.access === "one-time" ? "Shop" : "Locked"}
               </span>
             </div>
           </div>
         )}
 
-        {/* Early Access Overlay */}
-        {book.isEarlyAccess && !isLocked && (
-          <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/40 backdrop-blur-[1px]">
-            <div className="bg-background text-primary p-3 border-2 border-primary shadow-lg text-center">
-              <Clock className="mx-auto mb-1 h-5 w-5" />
-              <span className="text-[10px] font-bold uppercase block">
-                Opens {book.releaseDate}
+        {book.isEarlyAccess && !isUnlocked && (
+          <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/60 backdrop-blur-[1px]">
+            <div className="bg-white text-[#2d3e75] p-2 border-2 border-[#2d3e75] shadow-lg">
+              <Clock className="w-4 h-4 mx-auto mb-1" />
+              <span className="text-[8px] font-bold uppercase block">
+                {book.releaseDate}
               </span>
             </div>
           </div>
         )}
       </div>
 
-      {/* --- 2. INFO SECTION --- */}
-      <div className="flex flex-1 flex-col p-4">
-        <h3 className="mb-1 text-lg font-black uppercase leading-tight tracking-tight">
-          {book.title}
-        </h3>
-        <p className="mb-4 font-mono text-xs opacity-60 line-clamp-2">
-          {book.subtitle}
-        </p>
+      {/* --- INFO CONTENT --- */}
+      <div className="flex-1 p-5 flex flex-col gap-3 text-center">
+        <div>
+          <h3 className="font-black text-lg uppercase leading-tight text-[#111111] mb-1">
+            {book.title}
+          </h3>
+          <p className="font-mono text-xs opacity-60 text-[#111111]">
+            {book.subtitle}
+          </p>
+        </div>
 
+        {/* Progress or Metadata */}
         <div className="mt-auto">
-          {/* Progress bar if owned/free, otherwise stats */}
-          {(book.access === "free" || book.isOwned) && !isLocked ? (
-            <div className="w-full h-1.5 bg-muted border border-foreground/20">
-              <div className="h-full bg-primary w-1/3"></div>
+          {isUnlocked && book.progress !== undefined ? (
+            <div className="w-full h-2 bg-gray-200 border border-[#111111] rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[#2d3e75]"
+                style={{ width: `${book.progress}%` }}
+              ></div>
             </div>
           ) : (
-            <div className="flex gap-2">
-              {book.questions && (
-                <span className="border border-foreground px-1.5 py-0.5 text-[10px] font-bold uppercase opacity-70">
-                  {book.questions} Qs
-                </span>
-              )}
-              {book.time && (
-                <span className="border border-foreground px-1.5 py-0.5 text-[10px] font-bold uppercase opacity-70">
-                  {book.time}
-                </span>
-              )}
+            <div className="flex justify-center">
+              <span className="border border-[#111111] bg-gray-50 px-2 py-0.5 text-[10px] font-bold uppercase text-[#111111]">
+                {book.questionCount
+                  ? `${book.questionCount} Qs`
+                  : "Full Series"}
+              </span>
             </div>
           )}
         </div>
       </div>
 
-      {/* --- 3. ACTION BUTTON --- */}
-      {isLocked || book.isEarlyAccess ? (
-        <Button
-          variant="ghost"
-          className={cn(
-            "w-full rounded-none border-t-2 border-x-0 border-b-0 border-foreground h-12 font-black uppercase tracking-widest text-xs",
-            isLocked &&
-              "bg-muted text-muted-foreground hover:bg-muted cursor-not-allowed"
-          )}
-          disabled
+      {/* --- ACTION BUTTON --- */}
+      {isUnlocked ? (
+        <Link
+          href={`/books/${book.id}`}
+          className="w-full p-4 font-black uppercase text-xs text-center border-t-2 border-[#111111] hover:bg-[#111111] hover:text-white transition-colors text-[#111111]"
         >
-          {/* Dynamic Button Text based on Lock Type */}
-          {book.isEarlyAccess
-            ? "Pre-Order"
-            : book.access === "one-time-buy"
-            ? `Buy Now $${book.price}`
-            : "Locked"}
-        </Button>
+          {getActionText()}
+        </Link>
       ) : (
-        <Button
-          asChild
-          variant="default"
-          className="w-full rounded-none border-t-2 border-x-0 border-b-0 border-foreground hover:bg-primary hover:text-primary-foreground h-12 font-black uppercase tracking-widest text-xs"
+        <button
+          disabled
+          className="w-full p-4 font-black uppercase text-xs text-center border-t-2 border-[#111111] bg-gray-100 text-gray-400 cursor-not-allowed"
         >
-          <Link href={`/books/${book.id}`}>
-            {book.isOwned || book.access === "free"
-              ? "Open Book"
-              : "Start Test"}
-          </Link>
-        </Button>
+          {getActionText()}
+        </button>
       )}
     </div>
   );

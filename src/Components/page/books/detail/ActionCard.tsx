@@ -1,6 +1,8 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
+import { Button } from "@/Components/ui/Button/Button";
+import { CardComponent } from "@/Components/ui/CardComponent";
 
 interface ActionCardProps {
   onEnterLobby: () => void;
@@ -8,38 +10,52 @@ interface ActionCardProps {
 
 export function ActionCard({ onEnterLobby }: ActionCardProps) {
   return (
-    <div className="relative z-20 shrink-0 overflow-hidden border-2 border-[#111111] bg-white shadow-[8px_8px_0px_#111111]">
-      {/* Header Bar */}
-      <div className="flex items-center justify-between border-b-2 border-[#111111] bg-[#111111] px-6 py-3 text-white">
-        <span className="text-xs font-black uppercase tracking-wider">
-          Mission Status: READY
-        </span>
-        <div className="h-3 w-3 animate-pulse rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex flex-col items-center gap-6 p-8 md:flex-row">
-        <div className="flex-1">
-          <h2 className="mb-2 text-3xl font-black uppercase leading-none text-[#111111]">
-            Initialize Mission
-          </h2>
-          <p className="max-w-sm font-mono text-xs leading-relaxed opacity-60 text-[#111111]">
-            Configure test parameters and launch simulation.
-            <br />
-            <span className="text-[#1d3b88]">Est. Duration: 2h 00m</span>
-          </p>
+    <CardComponent
+      // Added 'w-full max-w-full' to override the default 'max-w-md' of the CardComponent
+      // This ensures it fills the entire right column as seen in the reference.
+      className="h-auto w-full max-w-full shrink-0 z-20"
+    >
+      <div className="flex flex-col h-full -m-6">
+        {" "}
+        {/* Negative margin to counteract Card padding for full-width header */}
+        {/* Custom Header Bar */}
+        <div className="flex items-center justify-between border-b-2 border-[#111111] bg-[#111111] px-6 py-3 text-white shrink-0">
+          <span className="text-xs font-black uppercase tracking-wider">
+            Mission Status: READY
+          </span>
+          <div className="h-3 w-3 animate-pulse rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></div>
         </div>
+        {/* Main Content */}
+        <div className="flex flex-col items-center gap-6 p-8 md:flex-row flex-1 bg-white">
+          <div className="flex-1">
+            {/* Increased text size to 5xl/6xl to match the reference image */}
+            <h2 className="mb-2 text-4xl md:text-5xl font-black uppercase leading-[0.9] text-[#111111] tracking-tighter">
+              Initialize
+              <br />
+              Mission
+            </h2>
+            <p className="max-w-sm font-mono text-xs md:text-sm leading-relaxed opacity-60 text-[#111111] mt-2">
+              Configure test parameters and launch simulation.
+              <br />
+              <span className="text-[#1d3b88] font-bold">
+                Est. Duration: 2h 00m
+              </span>
+            </p>
+          </div>
 
-        {/* CTA Button */}
-        <div className="w-full md:w-auto">
-          <button
-            onClick={onEnterLobby}
-            className="group flex w-full items-center justify-center gap-2 border-2 border-[#111111] bg-[#111111] px-6 py-4 text-sm font-black uppercase text-white shadow-[4px_4px_0px_#111111] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_#111111] active:translate-y-0 active:shadow-none md:w-auto"
-          >
-            Enter Lobby <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </button>
+          {/* CTA Button using the reusable component */}
+          <div className="w-full md:w-auto">
+            <Button
+              onClick={onEnterLobby}
+              variant="default" // Uses the Primary (Ink/Blue) style
+              size="lg"
+              className="w-full md:w-auto h-14 text-base px-8" // Ensure large hit area
+            >
+              Enter Lobby <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </CardComponent>
   );
 }

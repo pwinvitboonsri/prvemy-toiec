@@ -8,7 +8,7 @@ import {
   type SlidingNumberProps,
 } from "@/Components/ui/shadcn-io/sliding-number";
 import { Button } from "@/Components/ui/Button/Button";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 
 type CounterProps = HTMLMotionProps<"div"> & {
   number: number;

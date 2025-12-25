@@ -1,14 +1,9 @@
 "use client";
 
 import * as React from "react";
-
-// --- MOCK UTILS (To ensure standalone functionality) ---
-function cn(...classes: (string | undefined | null | false)[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { cn } from "@/lib/utils/utils";
 
 // --- RISO SKELETON COMPONENT ---
-// Replaces standard skeleton with a style that matches the ink/paper theme
 const SkeletonComponent = ({
   className,
   width,
@@ -21,7 +16,7 @@ const SkeletonComponent = ({
   return (
     <div
       className={cn(
-        "animate-pulse bg-[var(--riso-ink)]/10", // Low opacity ink color
+        "animate-pulse bg-[#111111]/10", // Low opacity ink color
         className
       )}
       style={{ width, height }}
@@ -32,14 +27,28 @@ const SkeletonComponent = ({
 // --- MAIN CARD COMPONENT ---
 
 type FormCardProps = {
-  title: string;
+  title?: string;
   description?: string;
   actionLabel?: string;
   onActionClick?: () => void;
   children?: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
+  footerClassName?: string;
   loading?: boolean;
+
+  // Side Tag Props
+  sideLabel?: string;
+  sideLabelVariant?: "default" | "warning";
+
+  // Tape Decoration Prop
+  taped?: boolean;
+
+  // Interaction Prop
+  enableHover?: boolean;
+
+  // Layout Prop
+  noPadding?: boolean; // New prop to remove default content padding
 };
 
 export function CardComponent({
@@ -50,61 +59,100 @@ export function CardComponent({
   children,
   footer,
   className,
+  footerClassName,
   loading = false,
+  sideLabel,
+  sideLabelVariant = "default",
+  taped = false,
+  enableHover = true,
+  noPadding = false, // Defaults to false (padding enabled)
 }: FormCardProps) {
+  const showHeader =
+    loading || title || description || (actionLabel && onActionClick);
+
   return (
     <div
       className={cn(
-        // Riso Box Model: Paper background, Ink Border, Hard Blue Shadow
-        "flex flex-col w-full max-w-md h-[70vh]",
-        "bg-[var(--riso-paper)] border-2 border-[var(--riso-ink)]",
-        "shadow-[8px_8px_0px_var(--riso-blue)]",
-        "transition-transform hover:translate-x-[-2px] hover:translate-y-[-2px]", // Subtle lift effect
+        "group relative flex flex-col w-full h-[70vh]",
+        "bg-[#f2f0e9] border-2 border-[#111111]",
+        "shadow-none transition-all duration-200",
+
+        enableHover &&
+        "hover:shadow-[8px_8px_0px_#1d3b88] hover:translate-x-[-2px] hover:translate-y-[-2px]",
+
+        sideLabel || taped ? "overflow-visible" : "overflow-hidden",
         className
       )}
     >
+      {/* --- TAPE DECORATION --- */}
+      {taped && (
+        <div className="absolute -top-3 left-1/2 z-20 h-6 w-24 -translate-x-1/2 -rotate-1 bg-[#ffe800] shadow-sm opacity-90 pointer-events-none"></div>
+      )}
+
+      {/* --- SIDE LABEL TAG --- */}
+      {sideLabel && (
+        <div
+          className={cn(
+            "absolute -right-6 top-8 z-[-1] flex h-24 w-6 items-center justify-center rounded-r-md border-2 border-l-0 border-[#111111] transition-transform duration-200",
+            enableHover && "group-hover:translate-x-[2px]",
+            sideLabelVariant === "warning"
+              ? "bg-[#ffe800] text-[#111111]"
+              : "bg-[#111111] text-white"
+          )}
+        >
+          <span className="whitespace-nowrap text-[8px] font-bold tracking-widest rotate-90 transform uppercase">
+            {sideLabel}
+          </span>
+        </div>
+      )}
+
       {/* --- HEADER SECTION --- */}
-      <div className="p-6 border-b-2 border-[var(--riso-ink)] bg-[var(--riso-paper)]">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 space-y-2">
-            {loading ? (
-              <>
-                <SkeletonComponent height="1.5rem" width="60%" />
-                <SkeletonComponent height="1rem" width="80%" />
-              </>
-            ) : (
-              <>
-                {/* Title: Uppercase Display Font */}
-                <h3 className="text-2xl font-black uppercase tracking-tight text-[var(--riso-ink)] leading-none">
-                  {title}
-                </h3>
-                {/* Description: Monospace for "Technical/Document" feel */}
-                {description && (
-                  <p className="font-mono text-xs text-[var(--riso-blue)] opacity-80 uppercase tracking-wide">
-                    {description}
-                  </p>
-                )}
-              </>
+      {showHeader && (
+        <div className="p-6 border-b-2 border-[#111111] bg-[#f2f0e9] shrink-0">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1 space-y-2">
+              {loading ? (
+                <>
+                  <SkeletonComponent height="1.5rem" width="60%" />
+                  <SkeletonComponent height="1rem" width="80%" />
+                </>
+              ) : (
+                <>
+                  {title && (
+                    <h3 className="text-2xl font-black uppercase tracking-tight text-[#111111] leading-none">
+                      {title}
+                    </h3>
+                  )}
+                  {description && (
+                    <p className="font-mono text-xs text-[#1d3b88] opacity-80 uppercase tracking-wide">
+                      {description}
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+
+            {!loading && actionLabel && onActionClick && (
+              <button
+                onClick={onActionClick}
+                className="text-xs font-bold uppercase underline decoration-2 underline-offset-4 text-[#111111] hover:text-[#ff3333] hover:decoration-[#ff3333] transition-colors shrink-0"
+              >
+                {actionLabel}
+              </button>
             )}
           </div>
-
-          {/* Action Button (Link Style) */}
-          {!loading && actionLabel && onActionClick && (
-            <button
-              onClick={onActionClick}
-              className="text-xs font-bold uppercase underline decoration-2 underline-offset-4 text-[var(--riso-ink)] hover:text-[var(--riso-red)] hover:decoration-[var(--riso-red)] transition-colors shrink-0"
-            >
-              {actionLabel}
-            </button>
-          )}
         </div>
-      </div>
+      )}
 
       {/* --- CONTENT SECTION --- */}
-      {/* flex-1 allows this area to stretch/scroll if needed */}
-      <div className="flex-1 p-6 overflow-y-auto">
+      <div
+        className={cn(
+          "flex-1 overflow-y-auto relative z-10 bg-inherit",
+          noPadding ? "p-0" : "p-6" // Conditionally apply padding
+        )}
+      >
         {loading ? (
-          <div className="space-y-4">
+          <div className="space-y-4 px-6 pt-6">
             <SkeletonComponent height="3rem" width="100%" />
             <SkeletonComponent height="3rem" width="100%" />
             <SkeletonComponent height="8rem" width="100%" />
@@ -116,7 +164,12 @@ export function CardComponent({
 
       {/* --- FOOTER SECTION --- */}
       {footer && (
-        <div className="p-6 border-t-2 border-[var(--riso-ink)] bg-[var(--riso-paper)]">
+        <div
+          className={cn(
+            "p-6 border-t-2 border-[#111111] bg-[#f2f0e9] shrink-0 relative z-10",
+            footerClassName
+          )}
+        >
           {loading ? (
             <div className="flex flex-col gap-2">
               <SkeletonComponent height="2.5rem" width="100%" />

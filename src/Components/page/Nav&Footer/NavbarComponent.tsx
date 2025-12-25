@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Bell, User as UserIcon, Search } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 import { ThemeToggleButtonComponent } from "@/Components/ui/ThemeToggleComponent";
 import type { User } from "@supabase/supabase-js";
 import { GUEST_NAV_LINKS, AUTH_NAV_LINKS } from "../../../../config/route";

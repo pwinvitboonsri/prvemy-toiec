@@ -32,6 +32,7 @@ export function WelcomeHeader({ user }: { user: User | null }) {
             </p>
           </div>
         </div>
+        <Button variant="default">Hello</Button>
 
         {/* Resume Card */}
         <div className="w-full md:w-auto bg-background border-2 border-foreground p-4 flex items-center gap-4 min-w-[320px]">
