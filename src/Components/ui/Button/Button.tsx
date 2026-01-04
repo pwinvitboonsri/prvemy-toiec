@@ -33,7 +33,7 @@ const buttonVariants = cva(
         // Hover: Lifts Up + Ink Bg + Shadow
         // Active: Grey Bg + Flat
         outline:
-          "bg-white text-[#111111] shadow-none transition-all duration-200 hover:bg-[#111111] hover:text-black hover:shadow-[4px_4px_0px_#111111] hover:translate-x-[-2px] hover:translate-y-[-2px] active:bg-[#e2e2e2] active:text-[#111111] active:translate-x-0 active:translate-y-0 active:shadow-none active:duration-0",
+          "bg-white text-[#111111] shadow-none transition-all duration-200 hover:bg-[#111111] hover:text-white hover:shadow-[4px_4px_0px_#111111] hover:translate-x-[-2px] hover:translate-y-[-2px] active:bg-[#e2e2e2] active:text-[#111111] active:translate-x-0 active:translate-y-0 active:shadow-none active:duration-0",
 
         // 4. GHOST:
         // Static: Transparent
@@ -62,7 +62,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
 

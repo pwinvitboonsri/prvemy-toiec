@@ -4,8 +4,10 @@ import { BarChart2, Lock, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils/utils";
 import { CardComponent } from "@/Components/ui/CardComponent";
 import { Button } from "@/Components/ui/Button/Button";
+import Link from "next/link";
 
 interface FlightRecordsProps {
+  bookId: string; // Added for routing
   userRole?: "guest" | "free" | "premium";
   bestScore?: number | null;
   sessionsCount?: number;
@@ -15,6 +17,7 @@ interface FlightRecordsProps {
 }
 
 export function FlightRecords({
+  bookId,
   userRole = "free",
   bestScore = null,
   sessionsCount = 0,
@@ -24,14 +27,23 @@ export function FlightRecords({
 }: FlightRecordsProps) {
   const isGuest = userRole === "guest";
 
+  // Sanitize scoreTrend to ensure only valid numbers
+  const validScoreTrend = Array.isArray(scoreTrend)
+    ? scoreTrend.filter((s) => typeof s === "number" && !isNaN(s))
+    : [];
+
   // Calculate Trend Change (Last Score - Previous Score)
   let trendChange = 0;
-  if (scoreTrend.length >= 2) {
+  if (validScoreTrend.length >= 2) {
     trendChange =
-      scoreTrend[scoreTrend.length - 1] - scoreTrend[scoreTrend.length - 2];
-  } else if (scoreTrend.length === 1) {
-    trendChange = scoreTrend[0];
+      validScoreTrend[validScoreTrend.length - 1] -
+      validScoreTrend[validScoreTrend.length - 2];
+  } else if (validScoreTrend.length === 1) {
+    trendChange = validScoreTrend[0];
   }
+
+  // Debug log to verify data reception
+  console.log("FlightRecords scoreTrend:", validScoreTrend);
 
   return (
     <CardComponent
@@ -39,18 +51,22 @@ export function FlightRecords({
       className="h-full min-h-[18rem] w-full max-w-full overflow-visible z-10 bg-white"
       footerClassName="bg-white border-dashed"
       footer={
-        <div className="flex items-center justify-between">
-          <span className="font-mono text-xs font-bold uppercase text-gray-500 transition-colors group-hover:text-[#1d3b88] tracking-wider">
+        <Link
+          href={`/books/${bookId}/history`}
+          className="flex items-center justify-between w-full group"
+        >
+          <span className="font-mono text-xs font-bold uppercase text-gray-500 transition-colors tracking-wider">
             Access Full Dossier
           </span>
           <Button
             variant="outline"
             size="icon-sm"
-            className="h-8 w-8 rounded-none border-2 hover:shadow-[2px_2px_0px_#111111] hover:-translate-y-1"
+            asChild
+            className="h-8 w-8 rounded-none border-2 transition-all"
           >
             <ArrowUpRight className="h-4 w-4" />
           </Button>
-        </div>
+        </Link>
       }
     >
       <div className="flex flex-col h-full">
@@ -87,7 +103,7 @@ export function FlightRecords({
                 <div className="h-2 w-full bg-gray-300"></div>
               </div>
               <div className="absolute inset-0 z-20 flex flex-col items-center justify-center">
-                <div className="mb-2 flex items-center gap-2 border-2 border-[#ff3333] bg-white px-6 py-3 shadow-[4px_4px_0px_#1d3b88]">
+                <div className="mb-2 flex items-center gap-2 border-2 border-[#ff3333] bg-white px-6 py-3">
                   <Lock className="h-4 w-4 text-[#ff3333]" />
                   <span className="text-xs font-black uppercase tracking-widest text-[#ff3333]">
                     Restricted
@@ -117,8 +133,8 @@ export function FlightRecords({
                     {bestScore >= 800
                       ? "▲ Top 10%"
                       : bestScore >= 600
-                      ? "▲ Top 30%"
-                      : "— Avg."}
+                        ? "▲ Top 30%"
+                        : "— Avg."}
                   </div>
                 )}
               </div>
@@ -142,22 +158,25 @@ export function FlightRecords({
                   </div>
                   {/* Dynamic Bar Graph */}
                   <div className="flex h-12 w-full items-end gap-1">
-                    {scoreTrend.length > 0
-                      ? scoreTrend.map((score, idx) => (
+                    {validScoreTrend.length > 0
+                      ? validScoreTrend.map((score, idx) => {
+                        const heightPct = Math.max((score / 990) * 100, 5); // Min 5% height for visibility
+                        return (
                           <div
                             key={idx}
-                            className="flex-1 bg-gray-200 hover:bg-[#1d3b88] transition-colors relative group"
-                            style={{ height: `${(score / 990) * 100}%` }}
+                            className="flex-1 bg-gray-300 transition-colors relative group rounded-t-sm"
+                            style={{ height: `${heightPct}%` }}
                             title={`Score: ${score}`}
                           ></div>
-                        ))
+                        );
+                      })
                       : // Placeholder bars if no history
-                        [40, 50, 45, 60, 85].map((h, i) => (
-                          <div
-                            key={i}
-                            className="flex-1 bg-gray-100 h-full opacity-30"
-                          ></div>
-                        ))}
+                      [40, 50, 45, 60, 85].map((h, i) => (
+                        <div
+                          key={i}
+                          className="flex-1 bg-gray-200 h-full opacity-50 rounded-t-sm"
+                        ></div>
+                      ))}
                   </div>
                 </div>
                 {/* L/R Balance */}

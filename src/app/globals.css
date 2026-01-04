@@ -20,8 +20,10 @@
   --riso-ink: #111111;
 
   /* Base System Colors */
-  --background: #f2f0e9; /* Riso Paper */
-  --foreground: #111111; /* Riso Ink */
+  --background: #f2f0e9;
+  /* Riso Paper */
+  --foreground: #111111;
+  /* Riso Ink */
 
   /* Cards & Surfaces */
   --card: #f2f0e9;
@@ -30,32 +32,45 @@
   --popover-foreground: #111111;
 
   /* Semantic Colors */
-  --primary: #1d3b88; /* Riso Blue */
+  --primary: #1d3b88;
+  /* Riso Blue */
   --primary-foreground: #ffffff;
 
-  --secondary: #f2f0e9; /* Paper (often used with borders) */
-  --secondary-foreground: #1d3b88; /* Blue Text */
+  --secondary: #f2f0e9;
+  /* Paper (often used with borders) */
+  --secondary-foreground: #1d3b88;
+  /* Blue Text */
 
-  --muted: #e6e4dd; /* Slightly darker paper */
-  --muted-foreground: #1d3b88; /* Blue text looks great as muted in this style */
+  --muted: #e6e4dd;
+  /* Slightly darker paper */
+  --muted-foreground: #1d3b88;
+  /* Blue text looks great as muted in this style */
 
-  --accent: #ffe800; /* Riso Yellow */
+  --accent: #ffe800;
+  /* Riso Yellow */
   --accent-foreground: #111111;
 
-  --destructive: #ff3333; /* Riso Red */
+  --destructive: #ff3333;
+  /* Riso Red */
   --destructive-foreground: #ffffff;
 
   /* Borders & Inputs */
-  --border: #111111; /* Thick Ink Borders */
+  --border: #111111;
+  /* Thick Ink Borders */
   --input: #111111;
   --ring: #1d3b88;
 
   /* Chart Colors (Mapped to Riso Palette) */
-  --chart-1: #1d3b88; /* Blue */
-  --chart-2: #ff3333; /* Red */
-  --chart-3: #ffe800; /* Yellow */
-  --chart-4: #111111; /* Ink */
-  --chart-5: #888888; /* Grey */
+  --chart-1: #1d3b88;
+  /* Blue */
+  --chart-2: #ff3333;
+  /* Red */
+  --chart-3: #ffe800;
+  /* Yellow */
+  --chart-4: #111111;
+  /* Ink */
+  --chart-5: #888888;
+  /* Grey */
 
   /* Sidebar */
   --sidebar: #f2f0e9;
@@ -69,17 +84,21 @@
 
   /* Typography */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Courier New", Courier, monospace; /* Using Mono for Serif slot in this theme */
+  --font-serif: "Courier New", Courier, monospace;
+  /* Using Mono for Serif slot in this theme */
   --font-mono: "Courier New", Courier, monospace;
 
   /* Shapes & sizes */
-  --radius: 0rem; /* Sharp corners for Brutalist/Retro feel */
-  --border-width: 2px; /* Default border width for the theme */
+  --radius: 0rem;
+  /* Sharp corners for Brutalist/Retro feel */
+  --border-width: 2px;
+  /* Default border width for the theme */
 
   /* HARD SHADOWS (The "Riso" Look) 
      Replacing soft blurs with solid offset colors 
   */
-  --shadow-color: #1d3b88; /* Blue shadows by default */
+  --shadow-color: #1d3b88;
+  /* Blue shadows by default */
   --shadow-x: 4px;
   --shadow-y: 4px;
   --shadow-blur: 0px;
@@ -124,7 +143,8 @@
   --destructive: #ff5555;
   --destructive-foreground: #ffffff;
 
-  --border: #f2f0e9; /* Light borders in dark mode */
+  --border: #f2f0e9;
+  /* Light borders in dark mode */
   --input: #f2f0e9;
   --ring: #4d7aff;
 
@@ -203,6 +223,7 @@
     from {
       background-position: 50% 50%, 50% 50%;
     }
+
     to {
       background-position: 350% 50%, 350% 50%;
     }
@@ -213,6 +234,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
     /* Adding the grain texture globally to the body */
@@ -247,9 +269,35 @@
    Usage: <h1 class="glitch-text" data-text="LOGIN">LOGIN</h1>
 */
 @layer utilities {
+
+  /* Riso Shadows */
+  .riso-shadow-blue {
+    box-shadow: 6px 6px 0px var(--riso-blue);
+  }
+
+  .riso-shadow-ink {
+    box-shadow: 6px 6px 0px var(--riso-ink);
+  }
+
+  .riso-shadow-red {
+    box-shadow: 6px 6px 0px var(--riso-red);
+  }
+
+  /* Riso Borders */
+  .riso-border {
+    border: 2px solid var(--border);
+  }
+
+  /* Textures */
+  .perforated {
+    background-image: radial-gradient(var(--border) 1.5px, transparent 1.5px);
+    background-size: 12px 12px;
+  }
+
   .glitch-text {
     position: relative;
   }
+
   .glitch-text::before,
   .glitch-text::after {
     content: attr(data-text);
@@ -260,12 +308,15 @@
     height: 100%;
     background: var(--background);
   }
+
   .glitch-text::before {
     left: 2px;
     text-shadow: -1px 0 var(--destructive);
-    clip-path: inset(0 0 0 0); /* Fallback */
+    clip-path: inset(0 0 0 0);
+    /* Fallback */
     animation: glitch-anim-2 3s infinite linear alternate-reverse;
   }
+
   .glitch-text::after {
     left: -2px;
     text-shadow: -1px 0 var(--primary);
@@ -278,38 +329,49 @@
   0% {
     clip-path: inset(10px 0 30px 0);
   }
+
   20% {
     clip-path: inset(80px 0 10px 0);
   }
+
   40% {
     clip-path: inset(40px 0 60px 0);
   }
+
   60% {
     clip-path: inset(120px 0 140px 0);
   }
+
   80% {
     clip-path: inset(20px 0 10px 0);
   }
+
   100% {
     clip-path: inset(90px 0 110px 0);
   }
 }
+
 @keyframes glitch-anim-2 {
   0% {
     clip-path: inset(120px 0 140px 0);
   }
+
   20% {
     clip-path: inset(20px 0 100px 0);
   }
+
   40% {
     clip-path: inset(90px 0 110px 0);
   }
+
   60% {
     clip-path: inset(10px 0 30px 0);
   }
+
   80% {
     clip-path: inset(80px 0 100px 0);
   }
+
   100% {
     clip-path: inset(40px 0 60px 0);
   }

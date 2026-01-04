@@ -100,6 +100,7 @@ export function BookDetailClient({ book }: Props) {
 
             {/* CONNECTED REAL DATA TO FLIGHT RECORDS */}
             <FlightRecords
+              bookId={book.id}
               userRole={
                 book.userStatus === "platinum" ? "premium" : book.userStatus
               }
