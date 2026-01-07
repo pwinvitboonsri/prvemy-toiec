@@ -6,3 +6,4 @@ export { FlipButtonComponent } from "./FlipButton";
 export { IconButtonComponent } from "./IconButtonComp";
 export { LiquidButtonComponent } from "./LiquidButtonComponent";
 export { RippleButtonComponent } from "./RippleButtonComponent";
+export { Button, buttonVariants } from "./Button";

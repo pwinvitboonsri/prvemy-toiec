@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { SetupConsole, AccessType, UserStatus } from "./SetupConsole";
 import { useEffect, useState } from "react";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/button";
 import { CardComponent } from "@/Components/ui/CardComponent";
 import { useRouter } from "next/navigation";
 import { LobbySettings } from "@/types/feature/exam";

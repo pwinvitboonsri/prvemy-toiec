@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/button";
 import { CardComponent } from "@/Components/ui/CardComponent";
 
 interface ActionCardProps {

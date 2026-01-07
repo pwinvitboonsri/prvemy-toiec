@@ -8,7 +8,7 @@ import { cn } from "@/utils/utils";
 import { ThemeToggleButtonComponent } from "@/Components/ui/ThemeToggleComponent";
 import type { User } from "@supabase/supabase-js";
 import { GUEST_NAV_LINKS, AUTH_NAV_LINKS } from "../../../../config/route";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/button";
 
 interface NavbarProps {
   className?: string;
