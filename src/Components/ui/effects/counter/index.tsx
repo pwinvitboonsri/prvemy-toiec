@@ -7,7 +7,7 @@ import {
   SlidingNumber,
   type SlidingNumberProps,
 } from "@/Components/ui/effects/sliding-number";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button";
 import { cn } from "@/utils/utils";
 
 type CounterProps = HTMLMotionProps<"div"> & {

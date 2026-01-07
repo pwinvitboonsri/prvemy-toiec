@@ -20,7 +20,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/utils";
 import { useExamStore } from "@/store/exam/exam-store";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button";
 import { CardComponent } from "@/Components/ui/CardComponent";
 import { HistoryDashboard } from "./HistoryDashboard";
 import { PRICING } from "../../../../../config/constant";

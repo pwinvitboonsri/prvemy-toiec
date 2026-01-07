@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap } from "lucide-react";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button";
 
 interface ResultStickyFooterProps {
     isPremium: boolean;

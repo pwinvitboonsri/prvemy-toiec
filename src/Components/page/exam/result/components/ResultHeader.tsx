@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button";
 import { Download, Share2, Crown, Trophy, Target, Zap, Clock, Sliders, Monitor } from "lucide-react";
 import { CardComponent } from "@/Components/ui/CardComponent";
 

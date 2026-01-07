@@ -2,7 +2,7 @@
 
 import { User } from "@supabase/supabase-js";
 import NextLink from "next/link";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button";
 import { Headphones, User as UserIcon, ArrowRight } from "lucide-react";
 
 export function WelcomeHeader({ user }: { user: User | null }) {

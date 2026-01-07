@@ -1,7 +1,7 @@
 "use client";
 
 import { InputComponent } from "@/Components/ui/InputComponent";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button";
 
 export function SecurityTab() {
   return (

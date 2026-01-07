@@ -8,7 +8,7 @@ import { signUpWithEmail } from "@/lib/auth/actions";
 // Global UI Components
 import { InputComponent } from "@/Components/ui/InputComponent";
 // Ensure this path matches where you saved the new Button.tsx
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button/Button";
 
 export default function RegisterPage() {
   // 1. Logic Hooks

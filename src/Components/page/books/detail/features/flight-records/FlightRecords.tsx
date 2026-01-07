@@ -4,7 +4,7 @@ import { useState } from "react";
 import { BarChart2, Lock, ArrowUpRight, Award, Crosshair } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { CardComponent } from "@/Components/ui/CardComponent";
-import { Button } from "@/Components/ui/button";
+import { Button } from "@/Components/ui/Button";
 import Link from "next/link";
 
 export interface FlightRecordStats {

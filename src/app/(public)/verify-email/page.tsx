@@ -4,7 +4,7 @@ import React, { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Mail, CheckCircle2, ArrowRight, AlertTriangle } from "lucide-react";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button/Button";
 
 // --- CONTENT COMPONENT ---
 function VerifyContent() {

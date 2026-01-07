@@ -7,7 +7,7 @@ import { signInWithEmail } from "@/lib/auth/actions";
 
 // Global UI Components
 import { InputComponent } from "@/Components/ui/InputComponent";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button/Button";
 
 export default function LoginPage() {
   // 1. Logic Hooks

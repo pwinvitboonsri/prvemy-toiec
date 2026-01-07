@@ -19,7 +19,7 @@ import {
 import { cn } from "@/utils/utils";
 import { SwitchComponent as Switch } from "@/Components/ui/SwitchComponent";
 import { LobbySettings } from "@/types/feature/exam";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button";
 
 // --- Types ---
 export type AccessType = "guest" | "free" | "premium" | "one-time";

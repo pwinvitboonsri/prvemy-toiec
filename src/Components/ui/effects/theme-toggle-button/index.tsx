@@ -2,7 +2,7 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useCallback } from "react";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button";
 import { cn } from "@/utils/utils";
 
 type AnimationVariant = "circle" | "circle-blur" | "gif" | "polygon";

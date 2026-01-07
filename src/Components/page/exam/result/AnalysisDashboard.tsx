@@ -19,7 +19,7 @@ import {
     FileText,
 } from "lucide-react";
 import { CardComponent } from "@/Components/ui/CardComponent";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface AnalysisDashboardProps {

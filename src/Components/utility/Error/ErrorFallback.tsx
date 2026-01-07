@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { RippleButtonComponent } from "@/Components/ui/button/RippleButtonComponent";
+import { RippleButtonComponent } from "@/Components/ui/Button/RippleButtonComponent";
 
 type ErrorFallbackProps = {
   error?: Error;

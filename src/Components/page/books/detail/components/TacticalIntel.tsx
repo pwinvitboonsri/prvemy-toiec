@@ -1,7 +1,7 @@
 "use client";
 
 import { ScanEye, Lock } from "lucide-react";
-import { Button } from "@/Components/ui/button";
+import { Button } from "@/Components/ui/Button";
 import { CardComponent } from "@/Components/ui/CardComponent";
 
 interface TacticalIntelProps {

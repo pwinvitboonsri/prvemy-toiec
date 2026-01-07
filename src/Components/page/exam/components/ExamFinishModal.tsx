@@ -1,5 +1,5 @@
 import { AlertTriangle } from "lucide-react";
-import { Button } from "@/Components/ui/button/Button";
+import { Button } from "@/Components/ui/Button";
 import { CardComponent } from "@/Components/ui/CardComponent";
 
 interface ExamFinishModalProps {
