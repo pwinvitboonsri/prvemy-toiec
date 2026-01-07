@@ -47,11 +47,6 @@ export function ExamInterface({ userTier = "guest", settings }: ExamInterfacePro
     // --- ENABLE BACKGROUND SYNC (Hybrid Mode) ---
     const { syncStatus, forceSync } = useExamSync(userTier);
 
-    // --- DERIVED STATE ---
-    const { question: currentQ, group: currentGroup } = getCurrentQuestion();
-
-    if (!manifest || !currentQ || !currentGroup) return null;
-
     // --- TIMER LOGIC ---
     const isTimerRunning = secondsRemaining !== null && secondsRemaining > 0;
 
@@ -62,6 +57,11 @@ export function ExamInterface({ userTier = "guest", settings }: ExamInterfacePro
         }, 1000);
         return () => clearInterval(intervalId);
     }, [isTimerRunning, decrementTimer]);
+
+    // --- DERIVED STATE ---
+    const { question: currentQ, group: currentGroup } = getCurrentQuestion();
+
+    if (!manifest || !currentQ || !currentGroup) return null;
 
     const formatTime = (totalSeconds: number | null) => {
         if (totalSeconds === null) return "00:00:00";

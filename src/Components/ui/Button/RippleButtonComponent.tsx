@@ -3,7 +3,7 @@
 import * as React from "react";
 import type { ComponentProps } from "react";
 import { RippleButton } from "@/Components/ui/effects/ripple-button";
-import { Spinner } from "../Spinner";
+import { Spinner } from "../spinner";
 
 type RippleButtonComponentProps = ComponentProps<typeof RippleButton> & {
   loading?: boolean;

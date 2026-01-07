@@ -87,7 +87,7 @@ export function ResultHeader({
                                     Focus Notes
                                 </span>
                                 <p className="text-sm font-handwriting font-bold text-[#111111] italic leading-relaxed">
-                                    "{settings.focus_notes}"
+                                    &quot;{settings.focus_notes}&quot;
                                 </p>
                             </div>
                         )}

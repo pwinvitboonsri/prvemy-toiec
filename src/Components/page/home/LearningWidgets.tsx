@@ -202,14 +202,14 @@ export function ToolsLibrary() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 function ToolCard({
   icon: Icon,
   title,
   sub,
   notify,
 }: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   icon: any;
   title: string;
   sub: string;

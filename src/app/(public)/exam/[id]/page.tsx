@@ -28,7 +28,7 @@ export default async function ExamPage({ params }: PageProps) {
   const rawUser = await getUserWithProfile();
   const user = rawUser as unknown as CustomUser | null;
 
-  let initialAnswers = {};
+  const initialAnswers = {};
   let sessionId: string | null = null;
   let userTier = "guest"; // Default
 

@@ -16,14 +16,14 @@ export function SettingsSidebar({
   setActiveTab,
   onLogout,
 }: SettingsSidebarProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const NavButton = ({
     tab,
     icon: Icon,
     label,
   }: {
     tab: Tab;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     icon: any;
     label: string;
   }) => (

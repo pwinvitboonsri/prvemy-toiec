@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 export async function signInWithEmail(prevState: any, formData: FormData) {
   const supabase = await createClient();
 
@@ -25,7 +25,7 @@ export async function signInWithEmail(prevState: any, formData: FormData) {
   redirect("/");
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 export async function signUpWithEmail(prevState: any, formData: FormData) {
   const supabase = await createClient();
 
