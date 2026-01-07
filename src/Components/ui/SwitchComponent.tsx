@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/utils/utils";
 
 // Mimic Radix/Shadcn API
 export interface SwitchProps

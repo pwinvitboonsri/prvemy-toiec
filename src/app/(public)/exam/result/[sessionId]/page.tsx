@@ -1,5 +1,7 @@
-import { getExamResult } from "@/lib/api/result/getResult";
+import { getExamResult } from "@/services/result/getResult";
+import { getUserWithProfile } from "@/lib/auth/getUserProfile";
 import { ResultClient } from "@/Components/page/exam/result/ResultClient";
+import { UserRole } from "@/types/data/library_data";
 import { notFound } from "next/navigation";
 
 interface PageProps {
@@ -9,11 +11,17 @@ interface PageProps {
 export default async function ResultPage({ params }: PageProps) {
   const { sessionId } = await params;
   const result = await getExamResult(sessionId);
-  console.log("🚀 ~ ResultPage ~ result:", result)
+
+  const user = await getUserWithProfile();
 
   if (!result) {
     return notFound();
   }
 
-  return <ResultClient result={result} />;
+  return (
+    <ResultClient
+      result={result}
+      userStatus={user?.subscription_tier as UserRole}
+    />
+  );
 }

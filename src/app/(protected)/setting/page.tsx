@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 // Components (These must exist in your project from the previous steps)
@@ -15,6 +15,7 @@ type Tab = "profile" | "preferences" | "security";
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<Tab>("profile");
   const router = useRouter();
+  const supabase = createClient();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

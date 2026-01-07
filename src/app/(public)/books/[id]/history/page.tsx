@@ -1,16 +1,15 @@
 import React from "react";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { getUserWithProfile } from "@/lib/auth/getUserProfile";
 import { redirect, notFound } from "next/navigation";
 import { HistoryClient } from "@/Components/page/books/history/HistoryClient";
+import { UserRole } from "@/types/data/library_data";
 
-export default async function HistoryPage({ params }: { params: Promise<{ id: string }> })
-{
+export default async function HistoryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: bookId } = await params;
   const user = await getUserWithProfile();
 
-  if (!user)
-  {
+  if (!user) {
     redirect("/login");
   }
 
@@ -23,8 +22,7 @@ export default async function HistoryPage({ params }: { params: Promise<{ id: st
     .eq("id", bookId)
     .single();
 
-  if (bookError || !book)
-  {
+  if (bookError || !book) {
     return notFound();
   }
 
@@ -36,21 +34,17 @@ export default async function HistoryPage({ params }: { params: Promise<{ id: st
     .eq("user_id", user.id)
     .order("started_at", { ascending: false });
 
-  if (sessionError)
-  {
+  if (sessionError) {
     console.error("Error fetching sessions:", sessionError);
     // Continue with empty sessions or handle error UI
   }
-
-  // Transform sessions to match HistoryClient props if needed
-  // (The types currently aline fairly well, settings is jsonb -> any)
 
   return (
     <HistoryClient
       bookId={bookId}
       bookTitle={book.title}
       sessions={sessions || []}
-      userStatus={user.subscription_tier as "guest" | "free" | "premium" | "platinum"}
+      userStatus={user.subscription_tier as UserRole}
     />
   );
 }

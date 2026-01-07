@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ExamResult } from "@/lib/api/result/getResult";
-import { cn } from "@/lib/utils/utils";
+import { ExamResult } from "@/services/result/getResult";
+import { cn } from "@/utils/utils";
 import { FileCheck, Target, Headphones, BookOpen, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 

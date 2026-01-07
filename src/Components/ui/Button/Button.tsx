@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/utils/utils";
 
 // --- RISO BUTTON VARIANTS ---
 // Updated to match Riso-OS HTML prototype exactly.

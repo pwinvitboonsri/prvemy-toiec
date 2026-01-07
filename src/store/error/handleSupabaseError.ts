@@ -1,6 +1,6 @@
 import type { AuthError, PostgrestError } from "@supabase/supabase-js";
 import { useErrorStore } from "./useErrorStore";
-import type { AppError } from "@/types/error";
+import type { AppError } from "@/types/api/error";
 
 const SUPABASE_ERROR_TITLE = "Supabase Error";
 

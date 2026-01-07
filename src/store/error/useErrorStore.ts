@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { AppError } from "@/types/error";
+import type { AppError } from "@/types/api/error";
 
 type ErrorState = {
   errors: AppError[];

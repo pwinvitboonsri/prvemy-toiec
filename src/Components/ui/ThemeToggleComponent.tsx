@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import {
   ThemeToggleButton,
   useThemeTransition,
-} from "@/Components/ui/shadcn-io/theme-toggle-button";
+} from "@/Components/ui/effects/theme-toggle-button";
 
 type Props = {
   className?: string;

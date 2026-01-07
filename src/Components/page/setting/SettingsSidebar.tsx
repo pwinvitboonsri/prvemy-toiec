@@ -1,7 +1,7 @@
 "use client";
 
 import { User, Sliders, Shield, LogOut } from "lucide-react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/utils/utils";
 
 type Tab = "profile" | "preferences" | "security";
 

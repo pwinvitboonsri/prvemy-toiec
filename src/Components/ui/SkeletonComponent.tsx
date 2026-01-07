@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils/utils";
-import { Skeleton as BaseSkeleton } from "./shadcn-lib/skeleton";
+import { cn } from "@/utils/utils";
+import { Skeleton as BaseSkeleton } from "./primitives/skeleton";
 
 export type SkeletonComponentProps = {
   /** Width of the skeleton (Tailwind or numeric pixels) */

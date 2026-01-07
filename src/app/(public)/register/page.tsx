@@ -8,7 +8,7 @@ import { signUpWithEmail } from "@/lib/auth/actions";
 // Global UI Components
 import { InputComponent } from "@/Components/ui/InputComponent";
 // Ensure this path matches where you saved the new Button.tsx
-import { Button } from "@/Components/ui/Button/Button";
+import { Button } from "@/Components/ui/button/Button";
 
 export default function RegisterPage() {
   // 1. Logic Hooks
@@ -141,7 +141,7 @@ export default function RegisterPage() {
           <div className="mt-8 pt-6 border-t-2 border-border text-center">
             <p className="font-mono text-xs mb-3">ALREADY_REGISTERED?</p>
             <Link href="/login" className="w-full block">
-              <Button type="button" variant="secondary" className="w-full">
+              <Button type="button" variant="outline" className="w-full">
                 Access Existing Account
               </Button>
             </Link>

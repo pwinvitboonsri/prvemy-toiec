@@ -11,7 +11,7 @@ import {
   Star,
   ArrowRight,
 } from "lucide-react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/utils/utils";
 
 // --- WIDGET 1: GOAL TRACKER ---
 export function GoalTracker({ user }: { user: User | null }) {

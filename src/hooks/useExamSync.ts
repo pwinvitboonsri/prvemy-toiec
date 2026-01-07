@@ -6,7 +6,7 @@ import { useExamStore } from "@/store/exam/exam-store";
 const DEBOUNCE_DELAY = 2000; // Sync 2s after last answer change
 
 export function useExamSync(userTier: string = "guest") {
-  const { sessionId, answers } = useExamStore();
+  const { sessionId, answers, flags, guessed, questionTimes, manifest } = useExamStore();
   const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "error">("idle");
   
   const lastSyncedAnswers = useRef<string>(""); 
@@ -22,21 +22,51 @@ export function useExamSync(userTier: string = "guest") {
         return; 
     }
 
-    if (!sessionId) return;
+    if (!sessionId || !manifest) return;
     
-    const currentAnswersString = JSON.stringify(answers);
+    // Create a fingerprint of the current state to avoid redundant syncs
+    // We include flags and guesses now as well
+    const currentStateFingerprint = JSON.stringify({ answers, flags, guessed });
     
-    if (currentAnswersString === lastSyncedAnswers.current || Object.keys(answers).length === 0) {
+    if (currentStateFingerprint === lastSyncedAnswers.current || Object.keys(answers).length === 0) {
         return;
     }
 
     setSyncStatus("syncing");
 
     try {
+      // Construct rich payload
+      const responses = Object.entries(answers).map(([qId, option]) => {
+          // Find question in manifest to check correctness
+          // This is a bit expensive O(N) but N is small (200) and this is debounced/async
+          let question;
+          for (const part of manifest.parts) {
+              for (const group of part.groups) {
+                  const found = group.questions.find(q => q.id === qId);
+                  if (found) {
+                      question = found;
+                      break;
+                  }
+              }
+              if (question) break;
+          }
+
+          const isCorrect = question?.correct_answer === option;
+
+          return {
+              question_id: qId,
+              selected_option: option,
+              is_guessed: guessed[qId] || false,
+              is_flagged: flags[qId] || false,
+              time_taken_ms: questionTimes[qId] || 0,
+              is_correct: isCorrect
+          };
+      });
+
       const res = await fetch("/api/exam/sync", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, answers }),
+        body: JSON.stringify({ sessionId, responses }),
       });
 
       if (!res.ok) {
@@ -44,7 +74,7 @@ export function useExamSync(userTier: string = "guest") {
           throw new Error(errorData.details || "Sync failed");
       }
 
-      lastSyncedAnswers.current = currentAnswersString;
+      lastSyncedAnswers.current = currentStateFingerprint;
       setSyncStatus("idle");
     } catch (error) {
       console.error("Auto-sync error:", error);
@@ -66,23 +96,47 @@ export function useExamSync(userTier: string = "guest") {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [answers, sessionId, canSyncToCloud]);
+  }, [answers, flags, guessed, sessionId, canSyncToCloud]);
 
   // 2. Emergency Sync
   useEffect(() => {
     const handleUnload = () => {
-        if (canSyncToCloud && sessionId && Object.keys(answers).length > 0) {
+        const { answers, flags, guessed, questionTimes, manifest } = useExamStore.getState();
+
+        if (canSyncToCloud && sessionId && Object.keys(answers).length > 0 && manifest) {
+            // Duplicate logic for close hook - simpler version
+            const responses = Object.entries(answers).map(([qId, option]) => {
+                let question;
+                for (const part of manifest.parts) {
+                    for (const group of part.groups) {
+                        const found = group.questions.find(q => q.id === qId);
+                        if (found) { question = found; break; }
+                    }
+                    if (question) break;
+                }
+                const isCorrect = question?.correct_answer === option;
+
+                return {
+                    question_id: qId,
+                    selected_option: option,
+                    is_guessed: guessed[qId] || false,
+                    is_flagged: flags[qId] || false,
+                    time_taken_ms: questionTimes[qId] || 0,
+                    is_correct: isCorrect
+                };
+            });
+
             fetch('/api/exam/sync', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ sessionId, answers }),
+                body: JSON.stringify({ sessionId, responses }),
                 keepalive: true
             });
         }
     };
     window.addEventListener("beforeunload", handleUnload);
     return () => window.removeEventListener("beforeunload", handleUnload);
-  }, [answers, sessionId, canSyncToCloud]);
+  }, [sessionId, canSyncToCloud]);
 
   return { syncStatus, forceSync: syncData };
 }

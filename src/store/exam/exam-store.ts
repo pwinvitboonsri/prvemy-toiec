@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
-import { ExamManifest, Question } from "@/types/exam";
+import { ExamManifest, Question } from "@/types/feature/exam";
 import CryptoJS from "crypto-js";
 
 // --- CONFIGURATION ---
@@ -54,11 +54,15 @@ interface ExamStoreState {
   sessionId: string | null;
   answers: Record<string, string>;
   flags: Record<string, boolean>;
+  guessed: Record<string, boolean>;
   eliminated: Record<string, string[]>;
   currentIndex: number;
 
   // Timer State
   secondsRemaining: number | null;
+  questionTimes: Record<string, number>; // questionId -> ms spent
+  lastNavigationTime: number; // Timestamp of when the current question started
+
 
   // UI State
   isDrawerOpen: boolean;
@@ -71,6 +75,7 @@ interface ExamStoreState {
   ) => void;
   setAnswer: (questionId: string, answer: string) => void;
   toggleFlag: (questionId: string) => void;
+  toggleGuess: (questionId: string) => void;
   toggleEliminate: (questionId: string, optionKey: string) => void;
   jumpTo: (index: number) => void;
   nextQuestion: () => void;
@@ -98,9 +103,12 @@ export const useExamStore = create<ExamStoreState>()(
       sessionId: null,
       answers: {},
       flags: {},
+      guessed: {},
       eliminated: {},
       currentIndex: 0,
       secondsRemaining: null,
+      questionTimes: {},
+      lastNavigationTime: Date.now(),
       isDrawerOpen: false,
 
       initialize: (manifest, initialAnswers = {}, sessionId = null) => {
@@ -115,6 +123,7 @@ export const useExamStore = create<ExamStoreState>()(
           answers: { ...initialAnswers, ...state.answers },
           secondsRemaining: startTimer,
           sessionId: sessionId || state.sessionId,
+          lastNavigationTime: Date.now(),
         });
       },
 
@@ -126,6 +135,11 @@ export const useExamStore = create<ExamStoreState>()(
           flags: { ...state.flags, [qId]: !state.flags[qId] },
         })),
 
+      toggleGuess: (qId) =>
+        set((state) => ({
+          guessed: { ...state.guessed, [qId]: !state.guessed[qId] },
+        })),
+
       toggleEliminate: (qId, optionKey) =>
         set((state) => {
           const currentElims = state.eliminated[qId] || [];
@@ -135,19 +149,67 @@ export const useExamStore = create<ExamStoreState>()(
           return { eliminated: { ...state.eliminated, [qId]: newElims } };
         }),
 
-      jumpTo: (index) => set({ currentIndex: index }),
+      jumpTo: (index) =>
+        set((state) => {
+          if (!state.manifest) return {};
+          // Record time for current question before moving
+          const currentQ = state.manifest.flatQuestions[state.currentIndex];
+          const now = Date.now();
+          const timeSpent = now - state.lastNavigationTime;
+          const newTimes = { ...state.questionTimes };
+          
+          if (currentQ?.questionId) {
+             newTimes[currentQ.questionId] = (newTimes[currentQ.questionId] || 0) + timeSpent;
+          }
+
+          return { 
+            currentIndex: index,
+            questionTimes: newTimes,
+            lastNavigationTime: now
+          };
+        }),
 
       nextQuestion: () =>
         set((state) => {
           if (!state.manifest) return state;
+          
+          // Record time
+          const currentQ = state.manifest.flatQuestions[state.currentIndex];
+          const now = Date.now();
+          const timeSpent = now - state.lastNavigationTime;
+          const newTimes = { ...state.questionTimes };
+          
+          if (currentQ?.questionId) {
+             newTimes[currentQ.questionId] = (newTimes[currentQ.questionId] || 0) + timeSpent;
+          }
+
           const max = state.manifest.flatQuestions.length - 1;
-          return { currentIndex: Math.min(state.currentIndex + 1, max) };
+          return { 
+            currentIndex: Math.min(state.currentIndex + 1, max),
+            questionTimes: newTimes,
+            lastNavigationTime: now
+          };
         }),
 
       prevQuestion: () =>
-        set((state) => ({
-          currentIndex: Math.max(state.currentIndex - 1, 0),
-        })),
+        set((state) => {
+          if (!state.manifest) return {};
+           // Record time
+          const currentQ = state.manifest.flatQuestions[state.currentIndex];
+          const now = Date.now();
+          const timeSpent = now - state.lastNavigationTime;
+          const newTimes = { ...state.questionTimes };
+          
+          if (currentQ?.questionId) {
+             newTimes[currentQ.questionId] = (newTimes[currentQ.questionId] || 0) + timeSpent;
+          }
+
+          return {
+            currentIndex: Math.max(state.currentIndex - 1, 0),
+            questionTimes: newTimes,
+            lastNavigationTime: now
+          };
+        }),
 
       toggleDrawer: (val) =>
         set((state) => ({
@@ -169,8 +231,10 @@ export const useExamStore = create<ExamStoreState>()(
           sessionId: null,
           answers: {},
           flags: {},
+          guessed: {},
           eliminated: {},
           currentIndex: 0,
+          questionTimes: {},
           secondsRemaining: null,
           // We keep manifest in case they navigate back, but session data is gone
         }),
@@ -198,8 +262,10 @@ export const useExamStore = create<ExamStoreState>()(
         sessionId: state.sessionId,
         answers: state.answers,
         flags: state.flags,
+        guessed: state.guessed,
         eliminated: state.eliminated,
         currentIndex: state.currentIndex,
+        questionTimes: state.questionTimes,
         secondsRemaining: state.secondsRemaining,
       }),
     }

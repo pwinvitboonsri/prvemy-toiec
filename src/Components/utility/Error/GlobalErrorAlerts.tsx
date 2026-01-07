@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { AlertComponent } from "@/Components/ui/AlertComponent";
 import { useErrorStore } from "@/store/error/useErrorStore";
-import type { ErrorSource } from "@/types/error";
+import type { ErrorSource } from "@/types/api/error";
 
 const AUTO_DISMISS_MS = 5000;
 const EXIT_BUFFER_MS = 300;

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Counter } from "@/Components/ui/shadcn-io/counter";
+import { Counter } from "@/Components/ui/effects/counter";
 
 type CounterComponentProps = {
   defaultValue?: number;

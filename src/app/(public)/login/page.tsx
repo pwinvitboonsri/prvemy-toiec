@@ -7,7 +7,7 @@ import { signInWithEmail } from "@/lib/auth/actions";
 
 // Global UI Components
 import { InputComponent } from "@/Components/ui/InputComponent";
-import { Button } from "@/Components/ui/Button/Button";
+import { Button } from "@/Components/ui/button/Button";
 
 export default function LoginPage() {
   // 1. Logic Hooks
@@ -124,7 +124,7 @@ export default function LoginPage() {
           <div className="mt-8 pt-6 border-t-2 border-border text-center">
             <p className="font-mono text-xs mb-3">NEW_USER_DETECTED?</p>
             <Link href="/register" className="w-full block">
-              <Button type="button" variant="secondary" className="w-full">
+              <Button type="button" variant="outline" className="w-full">
                 Initialize Registration
               </Button>
             </Link>

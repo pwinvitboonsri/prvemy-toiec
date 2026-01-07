@@ -1,7 +1,7 @@
-import { createClient } from "@/utils/supabase/server";
-import { getExamContent } from "@/lib/api/exam/getExamContent";
+import { createClient } from "@/lib/supabase/server";
+import { getExamContent } from "@/services/exam/getExamContent";
 import { ExamSessionWrapper } from "@/Components/page/exam/ExamSessionWrapper";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getUserWithProfile } from "@/lib/auth/getUserProfile";
 
 type CustomUser = {
@@ -32,12 +32,15 @@ export default async function ExamPage({ params }: PageProps) {
   let sessionId: string | null = null;
   let userTier = "guest"; // Default
 
+  // Settings to pass down
+  let lobbySettings: any = undefined;
+
   if (user) {
     userTier = user.subscription_tier || "free"; // Get tier
 
     const { data: session } = await supabase
       .from("exam_sessions")
-      .select("id")
+      .select("id, settings")
       .eq("book_id", id)
       .eq("user_id", user.id)
       .eq("status", "in_progress")
@@ -48,24 +51,39 @@ export default async function ExamPage({ params }: PageProps) {
     if (session) {
       console.log("🔄 Resuming Session:", session.id);
       sessionId = session.id;
+
+      // --- APPLY SETTINGS TO MANIFEST ---
+      // If we have custom settings, we might need to filter the manifest parts
+      const settings = session.settings as any; // Cast as LobbySettings
+      lobbySettings = settings;
+
+      if (settings?.parts_enabled) {
+        const partsToInclude = new Set(settings.parts_enabled);
+
+        // Create Map of Part UUID -> Part Number (1-7)
+        const partIdToNumber = new Map<string, number>();
+        manifest.parts.forEach((p: any) => {
+          partIdToNumber.set(p.id, p.part_number);
+        });
+
+        // Filter manifest parts
+        manifest.parts = manifest.parts.filter((p: any) => partsToInclude.has(p.part_number));
+
+        // Filter flatQuestions using the Map
+        manifest.flatQuestions = manifest.flatQuestions.filter((q: any) => {
+          const pNum = partIdToNumber.get(q.partId);
+          return pNum && partsToInclude.has(pNum);
+        });
+
+        // Re-index flatQuestions
+        manifest.flatQuestions.forEach((q: any, i: number) => {
+          q.index = i;
+        });
+      }
     }
     else {
-      console.log("🆕 Creating New Session for:", id);
-      const { data: newSession, error } = await supabase
-        .from("exam_sessions")
-        .insert({
-          user_id: user.id,
-          book_id: id,
-          status: "in_progress",
-          started_at: new Date().toISOString(),
-          settings: { mode: "simulation" }
-        })
-        .select("id")
-        .single();
-
-      if (newSession) {
-        sessionId = newSession.id;
-      }
+      // ⛔ NO SESSION FOUND -> Redirect to Book Detail to Initialize
+      return redirect(`/books/${id}`);
     }
   }
 
@@ -74,7 +92,8 @@ export default async function ExamPage({ params }: PageProps) {
       manifest={manifest}
       initialAnswers={initialAnswers}
       sessionId={sessionId}
-      userTier={userTier} // <--- Pass tier
+      userTier={userTier}
+      settings={lobbySettings} // Pass settings
     />
   );
 }

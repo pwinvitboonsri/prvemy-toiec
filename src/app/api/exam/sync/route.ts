@@ -1,13 +1,13 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { getUserWithProfile } from "@/lib/auth/getUserProfile";
 
 export async function POST(req: Request) {
   const supabase = await createClient();
   const body = await req.json();
-  const { sessionId, answers } = body;
+  const { sessionId, responses } = body;
 
-  if (!sessionId || !answers) {
+  if (!sessionId || !responses || !Array.isArray(responses)) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 
@@ -18,11 +18,16 @@ export async function POST(req: Request) {
   }
 
   // 2. Prepare Data for Batch Upsert
-  const responseRows = Object.entries(answers).map(([qId, option]) => ({
+  // Payload expected: { question_id, selected_option, is_guessed, is_flagged, time_taken_ms, is_correct }
+  const responseRows = responses.map((r: any) => ({
     user_id: user.id,
     session_id: sessionId,
-    question_id: qId,
-    selected_option: String(option),
+    question_id: r.question_id,
+    selected_option: String(r.selected_option),
+    is_correct: r.is_correct, // REMOVED: Database Trigger handles grading now
+    is_guessed: r.is_guessed,
+    is_flagged: r.is_flagged,
+    time_taken_ms: r.time_taken_ms,
     updated_at: new Date().toISOString(),
   }));
 

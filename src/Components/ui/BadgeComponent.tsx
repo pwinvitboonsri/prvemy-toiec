@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Badge } from "@/Components/ui/shadcn-lib/badge";
+import { Badge } from "@/Components/ui/primitives/badge";
 import type { VariantProps } from "class-variance-authority";
 import type { LucideIcon } from "lucide-react";
 

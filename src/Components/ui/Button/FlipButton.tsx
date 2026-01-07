@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { FlipButton } from "@/Components/ui/shadcn-io/flip-button";
+import { FlipButton } from "@/Components/ui/effects/flip-button";
 
 type FlipButtonComponentProps = {
   frontText?: string;

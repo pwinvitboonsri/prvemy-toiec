@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/utils/utils";
 
 // --- RISO SKELETON ---
 // Matches the "Ink" color with low opacity for a rougher loading look
@@ -84,7 +84,7 @@ export function InputComponent({
 
               // --- ERROR STATE (Red Border + Red Shadow) ---
               error &&
-                "border-destructive text-destructive focus:shadow-[4px_4px_0px_var(--destructive)] placeholder:text-destructive/40",
+              "border-destructive text-destructive focus:shadow-[4px_4px_0px_var(--destructive)] placeholder:text-destructive/40",
 
               className
             )}

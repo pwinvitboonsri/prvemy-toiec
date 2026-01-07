@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import type { Transition } from "framer-motion";
-import { IconButton } from "@/Components/ui/shadcn-io/icon-button";
+import { IconButton } from "@/Components/ui/effects/icon-button";
 
 type IconButtonComponentProps = {
   icon: React.ElementType;

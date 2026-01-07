@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/utils/utils";
 
 // --- RISO SKELETON COMPONENT ---
 const SkeletonComponent = ({
@@ -49,6 +49,7 @@ type FormCardProps = {
 
   // Layout Prop
   noPadding?: boolean; // New prop to remove default content padding
+  scrollable?: boolean; // New prop to control scroll behavior
 };
 
 export function CardComponent({
@@ -66,6 +67,7 @@ export function CardComponent({
   taped = false,
   enableHover = true,
   noPadding = false, // Defaults to false (padding enabled)
+  scrollable = true, // Defaults to true (scroll enabled)
 }: FormCardProps) {
   const showHeader =
     loading || title || description || (actionLabel && onActionClick);
@@ -147,7 +149,8 @@ export function CardComponent({
       {/* --- CONTENT SECTION --- */}
       <div
         className={cn(
-          "flex-1 overflow-y-auto relative z-10 bg-inherit",
+          "flex-1 relative z-10 bg-inherit",
+          scrollable ? "overflow-y-auto" : "overflow-visible",
           noPadding ? "p-0" : "p-6" // Conditionally apply padding
         )}
       >

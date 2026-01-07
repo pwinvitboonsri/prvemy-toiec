@@ -2,19 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { BookCover } from "@/Components/page/books/detail/BookCover";
-import { ManifestList } from "@/Components/page/books/detail/ManifestList";
-import { ActionCard } from "@/Components/page/books/detail/ActionCard";
-import { FlightRecords } from "@/Components/page/books/detail/FlightRecords";
-import { TacticalIntel } from "@/Components/page/books/detail/TacticalIntel";
-import { LobbyModal } from "@/Components/page/books/detail/LobbyModal";
-import type { BookDetailData } from "@/types/library-data";
+import { BookCover } from "@/Components/page/books/detail/components/BookCover";
+import { ManifestList } from "@/Components/page/books/detail/components/ManifestList";
+import { ActionCard } from "@/Components/page/books/detail/components/ActionCard";
+import { FlightRecords } from "@/Components/page/books/detail/features/flight-records/FlightRecords";
+import { TacticalIntel } from "@/Components/page/books/detail/components/TacticalIntel";
+import { LobbyModal } from "@/Components/page/books/detail/features/lobby/LobbyModal";
+import type { BookDetailData } from "@/types/data/library_data";
 
 interface Props {
   book: BookDetailData;
+  flightRecordsSlot?: React.ReactNode;
 }
 
-export function BookDetailClient({ book }: Props) {
+export function BookDetailClient({ book, flightRecordsSlot }: Props) {
   const [isLobbyOpen, setIsLobbyOpen] = useState(false);
 
   const handleAction = () => {
@@ -30,14 +31,14 @@ export function BookDetailClient({ book }: Props) {
   const getBadges = () => {
     if (book.actionState === "resume") {
       return (
-        <span className="bg-yellow-300 text-yellow-900 border-2 border-[#111111] px-3 py-1 text-xs font-black uppercase shadow-sm">
+        <span className="bg-primary text-primary-foreground border-2 border-foreground px-3 py-1 text-xs font-black uppercase shadow-sm">
           Resume Session
         </span>
       );
     }
     if (book.accessType === "guest") {
       return (
-        <span className="bg-green-300 text-green-900 border-2 border-[#111111] px-3 py-1 text-xs font-black uppercase shadow-sm">
+        <span className="bg-muted text-muted-foreground border-2 border-foreground px-3 py-1 text-xs font-black uppercase shadow-sm">
           Guest Access
         </span>
       );
@@ -50,8 +51,9 @@ export function BookDetailClient({ book }: Props) {
       <div
         className="fixed inset-0 pointer-events-none opacity-[0.08] z-0"
         style={{
-          backgroundImage: "radial-gradient(#111111 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(currentColor 1px, transparent 1px)",
           backgroundSize: "6px 6px",
+          color: "hsl(var(--foreground))",
         }}
       ></div>
       <div
@@ -64,7 +66,7 @@ export function BookDetailClient({ book }: Props) {
 
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="mb-8">
-          <div className="flex items-center gap-2 text-xs font-mono opacity-60 mb-2 uppercase text-[#111111]">
+          <div className="flex items-center gap-2 text-xs font-mono opacity-60 mb-2 uppercase text-foreground">
             <Link href="/books" className="hover:underline">
               Library
             </Link>
@@ -72,8 +74,8 @@ export function BookDetailClient({ book }: Props) {
             <span className="font-bold">{book.title}</span>
           </div>
 
-          <div className="border-b-2 border-[#111111] pb-6">
-            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none mb-4 text-[#111111]">
+          <div className="border-b-2 border-foreground pb-6">
+            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none mb-4 text-foreground">
               {book.title}
             </h1>
             <div className="flex gap-3">{getBadges()}</div>
@@ -99,17 +101,33 @@ export function BookDetailClient({ book }: Props) {
             <ActionCard onEnterLobby={handleAction} />
 
             {/* CONNECTED REAL DATA TO FLIGHT RECORDS */}
-            <FlightRecords
-              bookId={book.id}
-              userRole={
-                book.userStatus === "platinum" ? "premium" : book.userStatus
-              }
-              bestScore={book.bestScore}
-              sessionsCount={book.sessionsCount}
-              listeningScore={book.listeningScore}
-              readingScore={book.readingScore}
-              scoreTrend={book.scoreTrend}
-            />
+            {flightRecordsSlot ? (
+              flightRecordsSlot
+            ) : (
+              // Fallback if slot not provided (mostly for backwards compat or tests)
+              <FlightRecords
+                bookId={book.id}
+                userRole={
+                  ["platinum", "gold", "silver"].includes(book.userStatus)
+                    ? "premium"
+                    : (book.userStatus as "guest" | "free" | "premium")
+                }
+                simulationData={{
+                  bestScore: null,
+                  sessionsCount: 0,
+                  listeningScore: null,
+                  readingScore: null,
+                  scoreTrend: []
+                }}
+                practiceData={{
+                  bestScore: book.bestScore ?? null,
+                  sessionsCount: book.sessionsCount ?? 0,
+                  listeningScore: book.listeningScore ?? null,
+                  readingScore: book.readingScore ?? null,
+                  scoreTrend: book.scoreTrend ?? []
+                }}
+              />
+            )}
 
             <TacticalIntel
               isLocked={
@@ -126,7 +144,9 @@ export function BookDetailClient({ book }: Props) {
         onClose={() => setIsLobbyOpen(false)}
         bookAccess={book.accessType}
         userStatus={
-          book.userStatus === "platinum" ? "premium" : book.userStatus
+          ["platinum", "gold", "silver"].includes(book.userStatus)
+            ? "premium"
+            : (book.userStatus as "guest" | "free" | "premium")
         }
         isOwned={book.actionState === "start" || book.actionState === "resume"}
         price={book.price || 199}

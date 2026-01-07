@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/utils/utils";
 import { ThemeProvider } from "./ThemeProvider";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/Components/utility/Error/ErrorFallback";

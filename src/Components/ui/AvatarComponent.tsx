@@ -5,7 +5,7 @@ import {
   Avatar as BaseAvatar,
   AvatarImage,
   AvatarFallback,
-} from "@/Components/ui/shadcn-lib/avatar";
+} from "@/Components/ui/primitives/avatar";
 import type { ComponentProps } from "react";
 
 export type AvatarComponentProps = {

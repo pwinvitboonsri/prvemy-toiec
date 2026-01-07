@@ -1,6 +1,6 @@
-import { createClient } from "@/utils/supabase/server";
-import { BookLibraryClient } from "@/Components/page/books/BookLibraryClient";
-import { LibraryBook, AccessType, UserRole } from "@/types/library-data";
+import { createClient } from "@/lib/supabase/server";
+import { BookLibraryClient } from "@/Components/page/books/library/BookLibraryClient";
+import { LibraryBook, AccessType, UserRole } from "@/types/data/library_data";
 import { getUserWithProfile } from "@/lib/auth/getUserProfile";
 
 type DBBook = {

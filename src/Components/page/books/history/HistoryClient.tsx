@@ -18,11 +18,13 @@ import {
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/utils/utils";
 import { useExamStore } from "@/store/exam/exam-store";
-import { Button } from "@/Components/ui/Button/Button";
+import { Button } from "@/Components/ui/button/Button";
 import { CardComponent } from "@/Components/ui/CardComponent";
 import { HistoryDashboard } from "./HistoryDashboard";
+import { PRICING } from "../../../../../config/constant";
+import { UserRole } from "@/types/data/library_data";
 
 interface HistorySession {
   id: string;
@@ -38,7 +40,7 @@ interface HistoryClientProps {
   bookId: string;
   bookTitle: string;
   sessions: HistorySession[];
-  userStatus: "guest" | "free" | "premium" | "platinum";
+  userStatus: UserRole;
 }
 
 export function HistoryClient({
@@ -50,7 +52,10 @@ export function HistoryClient({
   const router = useRouter();
   // Mock premium for now based on status, can be toggled by dev button
   const [isPremiumMode, setIsPremiumMode] = useState(
-    userStatus === "premium" || userStatus === "platinum"
+    userStatus === PRICING.TIER_NAMES.PLATINUM ||
+    userStatus === "premium" ||
+    userStatus === PRICING.TIER_NAMES.GOLD ||
+    userStatus === PRICING.TIER_NAMES.SILVER
   );
 
   const totalAttempts = sessions.length;
@@ -99,26 +104,28 @@ export function HistoryClient({
               className="riso-border bg-[#ffe800] text-[#111111] flex-1 relative overflow-hidden h-auto min-h-0"
               noPadding
             >
-              <div className="flex flex-col justify-center p-5 md:p-6 w-full h-full relative">
-                <div className="absolute top-0 right-0 bg-[#111111] text-white px-3 py-0.5 font-mono text-[8px] font-black tracking-widest uppercase">
-                  LOG_ARCHIVE
-                </div>
-
-                <div className="flex flex-col gap-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Activity size={14} className="opacity-40" />
-                    <h1 className="font-serif text-[10px] font-bold uppercase tracking-widest opacity-60 italic">
-                      Sortie History
-                    </h1>
+              <Link href={`/books/${bookId}`} className="block w-full h-full hover:opacity-80 transition-opacity">
+                <div className="flex flex-col justify-center p-5 md:p-6 w-full h-full relative">
+                  <div className="absolute top-0 right-0 bg-[#111111] text-white px-3 py-0.5 font-mono text-[8px] font-black tracking-widest uppercase">
+                    LOG_ARCHIVE
                   </div>
-                  <span className="text-2xl md:text-3xl font-black leading-tight uppercase tracking-tighter">
-                    {bookTitle}
-                  </span>
-                  <span className="font-mono text-[9px] font-black opacity-30 mt-1 uppercase tracking-tighter">
-                    VOL_ID: {bookId}
-                  </span>
+
+                  <div className="flex flex-col gap-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Activity size={14} className="opacity-40" />
+                      <h1 className="font-serif text-[10px] font-bold uppercase tracking-widest opacity-60 italic">
+                        Sortie History
+                      </h1>
+                    </div>
+                    <span className="text-2xl md:text-3xl font-black leading-tight uppercase tracking-tighter">
+                      {bookTitle}
+                    </span>
+                    <span className="font-mono text-[9px] font-black opacity-30 mt-1 uppercase tracking-tighter">
+                      VOL_ID: {bookId}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </CardComponent>
           </div>
 
@@ -149,7 +156,7 @@ export function HistoryClient({
 
         {/* SEARCH & FILTER */}
         <section className="grid grid-cols-1 md:grid-cols-12 gap-4">
-          <div className="md:col-span-8 flex riso-border bg-card overflow-hidden group transition-all">
+          <div className="md:col-span-10 flex riso-border bg-card overflow-hidden group transition-all">
             <div className="bg-foreground text-background p-3 flex items-center px-4">
               <Search size={18} />
             </div>
@@ -159,7 +166,7 @@ export function HistoryClient({
               className="flex-1 px-4 py-2 font-mono font-bold text-xs outline-none placeholder:opacity-20 uppercase tracking-widest bg-transparent"
             />
           </div>
-          <div className="md:col-span-4">
+          <div className="md:col-span-2">
             <Button variant="outline" className="w-full h-full bg-card hover:bg-[#ffe800] hover:text-[#111111] gap-3">
               <Filter size={16} /> Sort_Log
             </Button>

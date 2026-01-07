@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import type { ComponentProps } from "react";
-import { RippleButton } from "@/Components/ui/shadcn-io/ripple-button";
-import { Spinner } from "../spinner";
+import { RippleButton } from "@/Components/ui/effects/ripple-button";
+import { Spinner } from "../Spinner";
 
 type RippleButtonComponentProps = ComponentProps<typeof RippleButton> & {
   loading?: boolean;

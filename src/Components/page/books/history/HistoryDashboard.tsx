@@ -1,7 +1,7 @@
 "use client";
 
 import { CardComponent } from "@/Components/ui/CardComponent";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/utils/utils";
 import { Activity, TrendingUp, BarChart2 } from "lucide-react";
 
 interface HistorySession {
@@ -108,7 +108,7 @@ export function HistoryDashboard({ sessions }: HistoryDashboardProps) {
             <div className="lg:col-span-8">
                 <CardComponent className="bg-white h-full min-h-[12rem]" noPadding>
                     <div className="p-6 h-full flex flex-col">
-                        <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center justify-between mb-6 pb-3">
                             <div className="flex items-center gap-2">
                                 <TrendingUp size={16} className="text-[#1d3b88]" />
                                 <h3 className="font-serif text-lg font-black uppercase tracking-tight text-[#111111]">

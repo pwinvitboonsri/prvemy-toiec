@@ -4,7 +4,7 @@ import React, { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Mail, CheckCircle2, ArrowRight, AlertTriangle } from "lucide-react";
-import { Button } from "@/Components/ui/Button/Button";
+import { Button } from "@/Components/ui/button/Button";
 
 // --- CONTENT COMPONENT ---
 function VerifyContent() {
@@ -33,26 +33,25 @@ function VerifyContent() {
           {isSuccess
             ? "IDENTITY\nVERIFIED"
             : isError
-            ? "VERIFICATION\nFAILED"
-            : "TRANSMISSION\nSENT"}
+              ? "VERIFICATION\nFAILED"
+              : "TRANSMISSION\nSENT"}
         </h1>
 
         <div
-          className={`h-1 w-16 mx-auto ${
-            isSuccess
-              ? "bg-green-600"
-              : isError
+          className={`h-1 w-16 mx-auto ${isSuccess
+            ? "bg-green-600"
+            : isError
               ? "bg-destructive"
               : "bg-primary"
-          }`}
+            }`}
         ></div>
 
         <p className="font-mono text-xs opacity-70 leading-relaxed px-2 uppercase">
           {isSuccess
             ? "ACCESS GRANTED. SECURE CONNECTION ESTABLISHED. WELCOME TO THE NETWORK."
             : isError
-            ? "INVALID OR EXPIRED TOKEN. THE LINK MAY BE BROKEN OR ALREADY USED. PLEASE TRY AGAIN."
-            : "A VERIFICATION SIGNAL HAS BEEN DISPATCHED TO YOUR INBOX. CONFIRM LINK TO INITIALIZE IDENTITY."}
+              ? "INVALID OR EXPIRED TOKEN. THE LINK MAY BE BROKEN OR ALREADY USED. PLEASE TRY AGAIN."
+              : "A VERIFICATION SIGNAL HAS BEEN DISPATCHED TO YOUR INBOX. CONFIRM LINK TO INITIALIZE IDENTITY."}
         </p>
       </div>
 
@@ -69,7 +68,7 @@ function VerifyContent() {
         <div className="pt-4 border-t-2 border-border animate-in fade-in slide-in-from-bottom-4 duration-700">
           <Link href="/login" className="w-full block">
             <Button
-              variant="secondary"
+              variant="outline"
               className="w-full hover:bg-destructive hover:text-white"
             >
               RETURN TO LOGIN

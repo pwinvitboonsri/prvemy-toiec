@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { LiquidButton } from "../shadcn-io/liquid-button";
+import { LiquidButton } from "../effects/liquid-button";
 import type { ComponentProps, ReactNode } from "react";
 
 type LiquidButtonComponentProps = {

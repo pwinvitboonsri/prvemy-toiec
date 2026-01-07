@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ExamResult } from "@/lib/api/result/getResult";
-import { cn } from "@/lib/utils/utils";
+import { ExamResult } from "@/services/result/getResult";
+import { cn } from "@/utils/utils";
 import {
     Lock,
     Download,
@@ -19,7 +19,7 @@ import {
     FileText,
 } from "lucide-react";
 import { CardComponent } from "@/Components/ui/CardComponent";
-import { Button } from "@/Components/ui/Button/Button";
+import { Button } from "@/Components/ui/button/Button";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface AnalysisDashboardProps {
