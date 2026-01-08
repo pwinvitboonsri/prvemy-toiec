@@ -35,7 +35,7 @@ export function NavbarComponent({ className, user }: NavbarProps) {
 
       <nav
         className={cn(
-          "sticky top-0 z-50 w-full border-b-2 border-foreground bg-background transition-all font-sans",
+          "sticky top-0 z-50 w-full border-b-2 border-foreground bg-background transition-all font-sans pt-safe",
           className
         )}
       >

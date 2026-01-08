@@ -44,7 +44,7 @@ export function AnalysisDashboard({ result, isFreeMode }: AnalysisDashboardProps
             </div>
 
             {/* TABS */}
-            <div className="flex pl-[2px] bg-[#f0f0f0] border-b-2 border-[#1a1a1a] shrink-0">
+            <div className="flex pl-[2px] bg-[#f0f0f0] border-b-2 border-[#1a1a1a] shrink-0 overflow-x-auto">
                 {isFreeMode ? (
                     <button className="px-5 py-3 font-black uppercase text-[0.75rem] bg-white text-[#1a1a1a] border-r border-[#ddd] shadow-[inset_0_3px_0_#2d3e75] cursor-default">
                         Restricted Data

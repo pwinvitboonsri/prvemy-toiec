@@ -11,7 +11,7 @@ export function FooterComponent({ className }: { className?: string }) {
       className={cn(
         // CHANGED: Now uses standard background/foreground.
         // Added 'border-t-4 border-foreground' for that heavy ink look.
-        "w-full bg-background text-foreground py-16 border-t-4 border-foreground font-sans",
+        "w-full bg-background text-foreground pt-16 pb-[calc(4rem+env(safe-area-inset-bottom))] border-t-4 border-foreground font-sans",
         className
       )}
     >

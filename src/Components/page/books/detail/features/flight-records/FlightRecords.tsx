@@ -86,24 +86,24 @@ export function FlightRecords({
     >
       <div className="flex flex-col h-full">
         {/* Header */}
-        <div className="mb-6 flex items-start justify-between">
+        <div className="mb-6 flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-center">
           <div>
-            <h4 className="mb-2 flex items-center gap-3 text-3xl font-black uppercase leading-none text-foreground">
+            <h4 className="mb-2 flex items-center gap-3 text-2xl font-black uppercase leading-none text-foreground lg:text-3xl">
               Flight Records
-              <BarChart2 className="h-6 w-6 text-[#1d3b88]" />
+              <BarChart2 className="h-5 w-5 text-[#1d3b88] lg:h-6 lg:w-6" />
             </h4>
-            <span className="font-mono text-xs opacity-60">
+            <span className="font-mono text-[10px] opacity-60 lg:text-xs">
               PERSONAL DATABASE • ID: BK-1024
             </span>
           </div>
 
           {/* TABS */}
           {!isGuest && (
-            <div className="flex bg-gray-100 p-1 rounded-sm border border-gray-200">
+            <div className="flex w-full items-center justify-between rounded-sm border border-gray-200 bg-gray-100 p-1 lg:w-auto">
               <button
                 onClick={() => setActiveTab("simulation")}
                 className={cn(
-                  "flex items-center gap-2 px-3 py-1 text-[10px] font-black uppercase tracking-wider transition-all rounded-sm",
+                  "flex flex-1 items-center justify-center gap-2 px-3 py-2 text-[10px] font-black uppercase tracking-wider transition-all rounded-sm lg:flex-none lg:py-1",
                   activeTab === "simulation"
                     ? "bg-[#ffe800] text-black shadow-sm"
                     : "text-gray-400 hover:text-gray-600"
@@ -115,7 +115,7 @@ export function FlightRecords({
               <button
                 onClick={() => setActiveTab("practice")}
                 className={cn(
-                  "flex items-center gap-2 px-3 py-1 text-[10px] font-black uppercase tracking-wider transition-all rounded-sm",
+                  "flex flex-1 items-center justify-center gap-2 px-3 py-2 text-[10px] font-black uppercase tracking-wider transition-all rounded-sm lg:flex-none lg:py-1",
                   activeTab === "practice"
                     ? "bg-[#1d3b88] text-white shadow-sm"
                     : "text-gray-400 hover:text-gray-600"

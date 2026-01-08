@@ -133,7 +133,7 @@ export function ExamInterface({ userTier = "guest", settings }: ExamInterfacePro
     // So if mode is practice, show controls.
 
     return (
-        <div className="flex flex-col h-screen bg-[#e8e6df] text-[#1a1a1a] font-sans overflow-hidden relative">
+        <div className="flex flex-col h-dvh bg-[#e8e6df] text-[#1a1a1a] font-sans overflow-hidden relative pt-safe pl-safe pr-safe">
 
             <div className="fixed inset-0 pointer-events-none opacity-[0.4] z-0" style={{ backgroundImage: "radial-gradient(#d1d1d1 1px, transparent 1px)", backgroundSize: "8px 8px" }}></div>
 

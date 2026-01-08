@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { NavbarComponent } from "@/Components/page/Nav&Footer/NavbarComponent";
 import { FooterComponent } from "@/Components/page/Nav&Footer/Footer";
+import { useDeviceSpecs } from "@/hooks/useDeviceSpecs";
 
 interface ClientLayoutWrapperProps {
   children: React.ReactNode;
@@ -14,6 +15,9 @@ export function ClientLayoutWrapper({
   user,
 }: ClientLayoutWrapperProps) {
   const pathname = usePathname();
+
+  // Initialize device detection
+  useDeviceSpecs();
 
   // Check if we are on an exam page
   // Adjust the pattern if your route structure is different
@@ -27,10 +31,10 @@ export function ClientLayoutWrapper({
 
   // On standard pages, render the global nav and footer
   return (
-    <>
+    <div className="flex flex-col min-h-dvh">
       <NavbarComponent user={user} />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow pl-safe pr-safe">{children}</main>
       <FooterComponent />
-    </>
+    </div>
   );
 }

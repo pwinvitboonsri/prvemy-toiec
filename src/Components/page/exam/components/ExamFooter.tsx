@@ -75,7 +75,7 @@ export function ExamFooter({
   // Let's use standard controls for now.
 
   return (
-    <footer className="h-16 md:h-20 bg-white border-t-2 border-[#111111] flex items-center justify-between px-3 md:px-8 shrink-0 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] relative gap-2">
+    <footer className="h-[calc(4rem+env(safe-area-inset-bottom))] md:h-[calc(5rem+env(safe-area-inset-bottom))] pb-safe bg-white border-t-2 border-[#111111] flex items-center justify-between px-3 md:px-8 shrink-0 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] relative gap-2">
       {/* Audio Logic: Always rendered if src exists */}
       {audioSrc && (
         <div className={cn("absolute left-1/2 -translate-x-1/2 top-2", !showAudioControls && "opacity-0 pointer-events-none")}>
