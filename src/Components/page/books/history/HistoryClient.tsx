@@ -14,6 +14,8 @@ import {
   Trophy,
   Home,
   Activity,
+  Award,
+  Crosshair,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -41,6 +43,7 @@ interface HistoryClientProps {
   bookTitle: string;
   sessions: HistorySession[];
   userStatus: UserRole;
+  avgBookScore?: number | null;
 }
 
 export function HistoryClient({
@@ -48,6 +51,7 @@ export function HistoryClient({
   bookTitle,
   sessions,
   userStatus,
+  avgBookScore,
 }: HistoryClientProps) {
   const router = useRouter();
   // Mock premium for now based on status, can be toggled by dev button
@@ -58,7 +62,15 @@ export function HistoryClient({
     userStatus === PRICING.TIER_NAMES.SILVER
   );
 
-  const totalAttempts = sessions.length;
+  const [activeTab, setActiveTab] = useState<"simulation" | "practice">("simulation");
+
+  // Filter sessions based on active tab
+  const filteredSessions = sessions.filter((session) => {
+    const isSimulation = session.settings?.mode === "simulation";
+    return activeTab === "simulation" ? isSimulation : !isSimulation;
+  });
+
+  const totalAttempts = filteredSessions.length;
   const initializeExam = useExamStore((state) => state.initialize);
 
   const handleResume = (sessionId: string) => {
@@ -151,11 +163,37 @@ export function HistoryClient({
           </aside>
         </section>
 
+        {/* MODE TABS (New Design) */}
+        <div className="flex items-end border-b-2 border-border gap-8">
+          <button
+            onClick={() => setActiveTab("simulation")}
+            className={cn(
+              "pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all relative",
+              activeTab === "simulation"
+                ? "text-foreground after:absolute after:bottom-[-2px] after:left-0 after:w-full after:h-1 after:bg-[#ffe800]"
+                : "text-gray-400 hover:text-foreground"
+            )}
+          >
+            Full Test
+          </button>
+          <button
+            onClick={() => setActiveTab("practice")}
+            className={cn(
+              "pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all relative",
+              activeTab === "practice"
+                ? "text-foreground after:absolute after:bottom-[-2px] after:left-0 after:w-full after:h-1 after:bg-[#1d3b88]"
+                : "text-gray-400 hover:text-foreground"
+            )}
+          >
+            Custom Practice
+          </button>
+        </div>
+
         {/* PERFORMANCE DASHBOARD */}
-        <HistoryDashboard sessions={sessions} />
+        <HistoryDashboard sessions={filteredSessions} mode={activeTab} globalAvgScore={avgBookScore} />
 
         {/* SEARCH & FILTER */}
-        <section className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        {/* <section className="grid grid-cols-1 md:grid-cols-12 gap-4">
           <div className="md:col-span-10 flex riso-border bg-card overflow-hidden group transition-all">
             <div className="bg-foreground text-background p-3 flex items-center px-4">
               <Search size={18} />
@@ -171,18 +209,21 @@ export function HistoryClient({
               <Filter size={16} /> Sort_Log
             </Button>
           </div>
-        </section>
+        </section> */}
 
         {/* MISSION LOG */}
         <section className="space-y-4">
-          <div className="flex items-center gap-3 border-b-2 border-border pb-3">
-            <FileText size={24} className="text-primary" />
-            <h2 className="font-serif text-xl font-black uppercase tracking-tight">
-              Mission Records
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-border pb-3">
+            <div className="flex items-center gap-3">
+              <FileText size={24} className="text-primary" />
+              <h2 className="font-serif text-xl font-black uppercase tracking-tight">
+                Mission Records
+              </h2>
+            </div>
+            {/* TABS REMOVED FROM HERE */}
           </div>
 
-          {sessions.length === 0 ? (
+          {filteredSessions.length === 0 ? (
             <EmptyState />
           ) : (
             <div className="riso-border bg-foreground overflow-hidden">
@@ -194,7 +235,7 @@ export function HistoryClient({
                 <div className="col-span-3 text-right">Operation</div>
               </div>
 
-              {sessions.map((session) => {
+              {filteredSessions.map((session) => {
                 const isInProgress = session.status === "in_progress";
                 const dateStr = new Date(session.started_at).toLocaleString('en-US', {
                   month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false

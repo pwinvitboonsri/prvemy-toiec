@@ -37,7 +37,7 @@ export function ManifestList({ items = [] }: ManifestListProps) {
           {/* Header */}
           <div className="mb-4 flex items-end justify-between border-b-2 border-foreground pb-2">
             <h3 className="text-xl font-black uppercase text-foreground">
-              Manifest
+              Test Content
             </h3>
             <span className="font-mono text-xs font-bold text-foreground">
               {totalQs} Qs

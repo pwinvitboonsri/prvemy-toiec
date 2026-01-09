@@ -6,8 +6,9 @@ import { BookCover } from "@/Components/page/books/detail/components/BookCover";
 import { ManifestList } from "@/Components/page/books/detail/components/ManifestList";
 import { ActionCard } from "@/Components/page/books/detail/components/ActionCard";
 import { FlightRecords } from "@/Components/page/books/detail/features/flight-records/FlightRecords";
-import { TacticalIntel } from "@/Components/page/books/detail/components/TacticalIntel";
+
 import { LobbyModal } from "@/Components/page/books/detail/features/lobby/LobbyModal";
+import { CommunityIntelligence } from "@/Components/page/books/detail/components/CommunityIntelligence";
 import type { BookDetailData } from "@/types/data/library_data";
 
 interface Props {
@@ -100,6 +101,15 @@ export function BookDetailClient({ book, flightRecordsSlot }: Props) {
           <div className="md:col-span-7 flex flex-col gap-8 h-full">
             <ActionCard onEnterLobby={handleAction} />
 
+            {/* GLOBAL STATS - Social Proof */}
+            {book.globalStats && (
+              <CommunityIntelligence
+                avgScore={book.globalStats.avgScore}
+                totalTakers={book.globalStats.totalTakers}
+                updatedAt={book.globalStats.updatedAt}
+              />
+            )}
+
             {/* CONNECTED REAL DATA TO FLIGHT RECORDS */}
             {flightRecordsSlot ? (
               flightRecordsSlot
@@ -129,11 +139,7 @@ export function BookDetailClient({ book, flightRecordsSlot }: Props) {
               />
             )}
 
-            <TacticalIntel
-              isLocked={
-                book.userStatus === "guest" || book.userStatus === "free"
-              }
-            />
+
           </div>
         </div>
       </div>

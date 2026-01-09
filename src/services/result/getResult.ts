@@ -18,6 +18,12 @@ export interface ExamResult {
   totalQuestions: number;
   // Feature Flag
   isFullAnalysisAvailable: boolean;
+  // Global Stats for Benchmarking
+  globalStats?: {
+    avgScore: number;
+    avgListening: number;
+    avgReading: number;
+  };
   // New Dynamic Data
   sectionAnalytics: Array<{
     name: string; // e.g. "P1"
@@ -66,7 +72,13 @@ export async function getExamResult(
       status,
       settings,
       final_results_json,
-      books ( title )
+      final_results_json,
+      books ( 
+        title,
+        avg_total_score,
+        avg_listening_score,
+        avg_reading_score
+      )
     `
     )
     .eq("id", sessionId)
@@ -149,6 +161,11 @@ export async function getExamResult(
     skippedCount: summary?.skipped ?? null,
     totalQuestions: totalQuestions,
     isFullAnalysisAvailable: !!finalResults,
+    globalStats: {
+      avgScore: Number(bookData?.avg_total_score) || 0,
+      avgListening: Number(bookData?.avg_listening_score) || 0,
+      avgReading: Number(bookData?.avg_reading_score) || 0,
+    },
     sectionAnalytics,
     detailedReview
   };

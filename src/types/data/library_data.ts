@@ -41,6 +41,14 @@ export type BookDetailData = {
   scoreTrend?: number[]; // Added: Array of recent scores
   sessionsCount?: number;
   lastSessionId: string | null;
+  // Global Stats (Community Intelligence)
+  globalStats?: {
+    avgScore: number;
+    avgListening: number;
+    avgReading: number;
+    totalTakers: number;
+    updatedAt: string | null;
+  };
   // Content
   manifest: ManifestItem[];
 };

@@ -56,7 +56,7 @@ export default function LoginPage() {
         {/* Floating Badge */}
         <div className="absolute -top-8 -left-8 z-20 hidden md:block animate-bounce duration-[3000ms]">
           <div className="bg-destructive text-destructive-foreground font-mono text-xs font-bold px-3 py-1 border-2 border-border shadow-[4px_4px_0px_var(--primary)] -rotate-6">
-            SECURE_ACCESS
+            LOGIN
           </div>
         </div>
 
@@ -68,7 +68,7 @@ export default function LoginPage() {
               href="/"
               className="inline-block border-2 border-border px-2 py-0.5 font-mono text-[10px] mb-2 bg-accent text-accent-foreground hover:bg-destructive hover:text-white transition-colors"
             >
-              RETURN_TO_BASE
+              Back to Home
             </Link>
 
             <h1
@@ -78,7 +78,7 @@ export default function LoginPage() {
               LOGIN
             </h1>
             <p className="font-mono text-xs opacity-60 text-primary font-bold">
-              {">"} ENTER CREDENTIALS TO PROCEED_
+              Sign in to your account
             </p>
           </div>
 
@@ -88,7 +88,7 @@ export default function LoginPage() {
               id="email"
               name="email"
               type="email"
-              label="USER_ID // EMAIL"
+              label="Email Address"
               placeholder="name@example.com"
               required
               disabled={isPending}
@@ -99,7 +99,7 @@ export default function LoginPage() {
                 id="password"
                 name="password"
                 type="password"
-                label="PASSCODE // KEY"
+                label="Password"
                 placeholder="••••••••"
                 required
                 disabled={isPending}
@@ -107,7 +107,7 @@ export default function LoginPage() {
               <div className="flex justify-end mt-2">
                 <Link href="/forgot-password">
                   <span className="bg-transparent text-foreground underline decoration-2 underline-offset-4 hover:text-destructive font-mono text-xs cursor-pointer">
-                    Forgot_Code?
+                    Forgot Password?
                   </span>
                 </Link>
               </div>
@@ -115,27 +115,24 @@ export default function LoginPage() {
 
             <div className="pt-2">
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "AUTHENTICATING..." : "AUTHENTICATE"}
+                {isPending ? "Signing in..." : "Sign In"}
               </Button>
             </div>
           </form>
 
           {/* Footer / Register Link */}
           <div className="mt-8 pt-6 border-t-2 border-border text-center">
-            <p className="font-mono text-xs mb-3">NEW_USER_DETECTED?</p>
+            <p className="font-mono text-xs mb-3">New here?</p>
             <Link href="/register" className="w-full block">
               <Button type="button" variant="outline" className="w-full">
-                Initialize Registration
+                Create an account
               </Button>
             </Link>
           </div>
         </div>
 
         {/* Decorative Bottom Tag */}
-        <div className="mt-4 flex justify-between font-mono text-[10px] px-2 opacity-70 font-bold">
-          <span>SYS: RISO_OS</span>
-          <span>ENCRYPTION: MAX</span>
-        </div>
+        {/* Decorative Bottom Tag removed */}
       </div>
     </div>
   );

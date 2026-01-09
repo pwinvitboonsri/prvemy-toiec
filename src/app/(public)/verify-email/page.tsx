@@ -31,10 +31,10 @@ function VerifyContent() {
       <div className="space-y-4">
         <h1 className="text-3xl font-black font-sans tracking-tighter uppercase leading-none">
           {isSuccess
-            ? "IDENTITY\nVERIFIED"
+            ? "EMAIL\nVERIFIED"
             : isError
               ? "VERIFICATION\nFAILED"
-              : "TRANSMISSION\nSENT"}
+              : "EMAIL\nSENT"}
         </h1>
 
         <div
@@ -48,10 +48,10 @@ function VerifyContent() {
 
         <p className="font-mono text-xs opacity-70 leading-relaxed px-2 uppercase">
           {isSuccess
-            ? "ACCESS GRANTED. SECURE CONNECTION ESTABLISHED. WELCOME TO THE NETWORK."
+            ? "Your email has been verified. You can now login."
             : isError
-              ? "INVALID OR EXPIRED TOKEN. THE LINK MAY BE BROKEN OR ALREADY USED. PLEASE TRY AGAIN."
-              : "A VERIFICATION SIGNAL HAS BEEN DISPATCHED TO YOUR INBOX. CONFIRM LINK TO INITIALIZE IDENTITY."}
+              ? "Invalid or expired link. Please try again."
+              : "We have sent a verification email to your inbox."}
         </p>
       </div>
 
@@ -60,7 +60,7 @@ function VerifyContent() {
         <div className="pt-4 border-t-2 border-border animate-in fade-in slide-in-from-bottom-4 duration-700">
           <Link href="/" className="w-full block">
             <Button className="w-full bg-foreground text-background hover:bg-primary hover:text-white">
-              ENTER HOME <ArrowRight className="ml-2 w-4 h-4" />
+              Go to Home <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
           </Link>
         </div>
@@ -71,14 +71,14 @@ function VerifyContent() {
               variant="outline"
               className="w-full hover:bg-destructive hover:text-white"
             >
-              RETURN TO LOGIN
+              Back to Login
             </Button>
           </Link>
         </div>
       ) : (
         <div className="flex items-center justify-center gap-2 font-mono text-[10px] text-destructive font-bold animate-pulse">
           <div className="w-2 h-2 bg-destructive rounded-full"></div>
-          AWAITING_CONFIRMATION...
+          Verifying...
         </div>
       )}
     </div>
@@ -108,7 +108,7 @@ export default function VerifyEmailPage() {
         {/* Floating Badge */}
         <div className="absolute -top-8 -left-8 z-20 hidden md:block animate-bounce duration-[3000ms]">
           <div className="bg-destructive text-destructive-foreground font-mono text-xs font-bold px-3 py-1 border-2 border-border shadow-[4px_4px_0px_var(--primary)] -rotate-6">
-            STATUS: SYSTEM_MSG
+            Status: Notification
           </div>
         </div>
 
@@ -116,7 +116,7 @@ export default function VerifyEmailPage() {
         <Suspense
           fallback={
             <div className="bg-card border-2 border-border p-12 text-center font-mono animate-pulse">
-              INITIALIZING_INTERFACE...
+              Loading...
             </div>
           }
         >
@@ -124,10 +124,7 @@ export default function VerifyEmailPage() {
         </Suspense>
 
         {/* Decorative Bottom Tag */}
-        <div className="mt-4 flex justify-between font-mono text-[10px] px-2 opacity-70 font-bold">
-          <span>SYS: RISO_OS</span>
-          <span>ENCRYPTION: MAX</span>
-        </div>
+        {/* Decorative Bottom Tag removed */}
       </div>
     </div>
   );

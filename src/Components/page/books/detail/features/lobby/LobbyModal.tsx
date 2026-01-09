@@ -241,7 +241,7 @@ export function LobbyModal({
         {/* Main Flex Column Container */}
         <div className="flex flex-col h-full overflow-hidden">
           {/* HEADER: Fixed at Top (shrink-0) */}
-          <div className="bg-foreground text-background p-4 pt-safe flex justify-between items-center border-b-2 border-foreground shrink-0 z-10 relative">
+          <div className="bg-foreground text-background p-4 pt-2 flex justify-between items-center border-b-2 border-foreground shrink-0 z-10 relative">
             <div className="flex items-center gap-2">
               <Settings2 className="w-5 h-5" />
               <h2 className="text-lg font-black uppercase tracking-wider">
@@ -269,7 +269,7 @@ export function LobbyModal({
 
           {/* FOOTER: Fixed at Bottom (shrink-0) */}
           {/* Added flex-wrap for very small screens to prevent button squashing */}
-          <div className="p-4 pb-safe border-t-2 border-foreground bg-muted dark:bg-neutral-800 flex flex-wrap items-center justify-end gap-4 shrink-0 z-10 relative">
+          <div className="p-4 pb-4 border-t-2 border-foreground bg-muted dark:bg-neutral-800 flex flex-wrap items-center justify-end gap-4 shrink-0 z-10 relative">
             {config.badge && (
               <span className="px-2 py-1 text-[10px] font-bold uppercase bg-[#86efac] border border-foreground shadow-[2px_2px_0px_rgba(0,0,0,0.1)]">
                 {config.badge}

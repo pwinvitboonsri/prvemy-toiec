@@ -62,7 +62,7 @@ export function FlightRecords({
 
   return (
     <CardComponent
-      sideLabel="CONFIDENTIAL"
+      sideLabel="YOUR PROGRESS"
       className="h-full min-h-[18rem] w-full max-w-full overflow-visible z-10 bg-white dark:bg-neutral-900"
       footerClassName="bg-white dark:bg-neutral-900 border-dashed"
       footer={
@@ -71,7 +71,7 @@ export function FlightRecords({
           className="flex items-center justify-between w-full group"
         >
           <span className="font-mono text-xs font-bold uppercase text-gray-500 transition-colors tracking-wider">
-            Access Full Dossier
+            View Full History
           </span>
           <Button
             variant="outline"
@@ -89,11 +89,11 @@ export function FlightRecords({
         <div className="mb-6 flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-center">
           <div>
             <h4 className="mb-2 flex items-center gap-3 text-2xl font-black uppercase leading-none text-foreground lg:text-3xl">
-              Flight Records
+              Test History
               <BarChart2 className="h-5 w-5 text-[#1d3b88] lg:h-6 lg:w-6" />
             </h4>
             <span className="font-mono text-[10px] opacity-60 lg:text-xs">
-              PERSONAL DATABASE • ID: BK-1024
+              YOUR PERSONAL PROGRESS
             </span>
           </div>
 
@@ -110,7 +110,7 @@ export function FlightRecords({
                 )}
               >
                 <Award size={12} />
-                Simulation
+                Full Test
               </button>
               <button
                 onClick={() => setActiveTab("practice")}
@@ -122,7 +122,7 @@ export function FlightRecords({
                 )}
               >
                 <Crosshair size={12} />
-                Practice
+                Custom Practice
               </button>
             </div>
           )}
@@ -175,9 +175,9 @@ export function FlightRecords({
                   )}>
                     {bestScore ?? 0}
                   </span>
-                  <span className="text-xs font-bold text-gray-400">/ 990</span>
+                  {activeTab === "simulation" && <span className="text-xs font-bold text-gray-400">/ 990</span>}
                 </div>
-                {bestScore !== null && bestScore > 0 && (
+                {activeTab === "simulation" && bestScore !== null && bestScore > 0 && (
                   <div className="mt-2 inline-block border border-green-200 bg-green-50 px-1 font-mono text-[10px] text-green-600">
                     {bestScore >= 800
                       ? "▲ Top 10%"
@@ -193,61 +193,91 @@ export function FlightRecords({
                 <div className="mb-4">
                   <div className="mb-1 flex items-center justify-between">
                     <p className="text-[10px] font-bold uppercase text-gray-400">
-                      Score Trend
+                      {activeTab === "simulation" ? "Score Trend" : "Recent Activity"}
                     </p>
-                    <span
-                      className={cn(
-                        "font-mono text-[10px]",
-                        trendChange >= 0 ? "text-[#1d3b88]" : "text-[#ff3333]"
-                      )}
-                    >
-                      {trendChange > 0 ? "+" : ""}
-                      {trendChange}pts
-                    </span>
+                    {activeTab === "simulation" && (
+                      <span
+                        className={cn(
+                          "font-mono text-[10px]",
+                          trendChange >= 0 ? "text-[#1d3b88]" : "text-[#ff3333]"
+                        )}
+                      >
+                        {trendChange > 0 ? "+" : ""}
+                        {trendChange}pts
+                      </span>
+                    )}
                   </div>
-                  {/* Dynamic Bar Graph */}
-                  <div className="flex h-12 w-full items-end gap-1">
-                    {validScoreTrend.length > 0
-                      ? validScoreTrend.map((score, idx) => {
-                        const heightPct = Math.max((score / 990) * 100, 5); // Min 5% height for visibility
-                        return (
+
+                  {activeTab === "simulation" ? (
+                    /* SIMULATION: BAR GRAPH */
+                    <div className="flex h-12 w-full items-end gap-1">
+                      {validScoreTrend.length > 0
+                        ? validScoreTrend.map((score, idx) => {
+                          const heightPct = Math.max((score / 990) * 100, 5); // Min 5% height for visibility
+                          return (
+                            <div
+                              key={idx}
+                              className={cn(
+                                "flex-1 transition-colors relative group rounded-t-sm",
+                                "bg-gray-300 hover:bg-[#ffe800]"
+                              )}
+                              style={{ height: `${heightPct}%` }}
+                              title={`Score: ${score}`}
+                            ></div>
+                          );
+                        })
+                        : // Placeholder bars if no history
+                        [40, 50, 45, 60, 85].map((h, i) => (
                           <div
-                            key={idx}
-                            className={cn(
-                              "flex-1 transition-colors relative group rounded-t-sm",
-                              activeTab === "simulation" ? "bg-gray-300 hover:bg-[#ffe800]" : "bg-gray-800 hover:bg-[#1d3b88]"
-                            )}
-                            style={{ height: `${heightPct}%` }}
-                            title={`Score: ${score}`}
+                            key={i}
+                            className="flex-1 bg-gray-200 h-full opacity-50 rounded-t-sm"
                           ></div>
-                        );
-                      })
-                      : // Placeholder bars if no history
-                      [40, 50, 45, 60, 85].map((h, i) => (
-                        <div
-                          key={i}
-                          className="flex-1 bg-gray-200 h-full opacity-50 rounded-t-sm"
-                        ></div>
-                      ))}
-                  </div>
+                        ))}
+                    </div>
+                  ) : (
+                    /* PRACTICE: VERTICAL LOG */
+                    <div className="flex flex-col h-32 overflow-y-auto w-full pr-1 space-y-1 scrollbar-thin scrollbar-thumb-gray-200">
+                      {validScoreTrend.length > 0 ? (
+                        validScoreTrend.slice().reverse().map((score, i) => (
+                          <div key={i} className="flex items-center justify-between border-b border-dashed border-gray-200 py-1.5 last:border-0 hover:bg-gray-50 transition-colors">
+                            <div className="flex items-center gap-2">
+                              <div className="h-1.5 w-1.5 rounded-full bg-[#1d3b88]"></div>
+                              <span className="font-mono text-[10px] text-gray-500 uppercase tracking-tight">
+                                Session #{validScoreTrend.length - i}
+                              </span>
+                            </div>
+                            <span className="font-mono text-xs font-bold text-foreground">
+                              {score} <span className="text-[9px] text-gray-400 font-normal">pts</span>
+                            </span>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="flex flex-col items-center justify-center h-full opacity-40">
+                          <span className="text-[10px] font-mono uppercase">No Data Logged</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
-                {/* L/R Balance */}
-                <div>
-                  <div className="mb-1 flex justify-between text-[8px] font-bold uppercase text-gray-400">
-                    <span>L: {listeningScore}</span>
-                    <span>R: {readingScore}</span>
+                {/* L/R Balance - Only for Simulation */}
+                {activeTab === "simulation" && (
+                  <div>
+                    <div className="mb-1 flex justify-between text-[8px] font-bold uppercase text-gray-400">
+                      <span>L: {listeningScore}</span>
+                      <span>R: {readingScore}</span>
+                    </div>
+                    <div className="flex h-1.5 w-full border border-gray-200 bg-gray-100 overflow-hidden">
+                      <div
+                        className="h-full bg-[#1d3b88]"
+                        style={{ width: `${(listeningScore || 0) / 4.95}%` }} // Approx % of 990 half
+                      ></div>
+                      <div
+                        className="h-full bg-[#ff3333]"
+                        style={{ width: `${(readingScore || 0) / 4.95}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="flex h-1.5 w-full border border-gray-200 bg-gray-100 overflow-hidden">
-                    <div
-                      className="h-full bg-[#1d3b88]"
-                      style={{ width: `${(listeningScore || 0) / 4.95}%` }} // Approx % of 990 half
-                    ></div>
-                    <div
-                      className="h-full bg-[#ff3333]"
-                      style={{ width: `${(readingScore || 0) / 4.95}%` }}
-                    ></div>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           )}

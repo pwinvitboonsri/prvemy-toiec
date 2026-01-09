@@ -57,7 +57,7 @@ export default function RegisterPage() {
         {/* Floating Badge */}
         <div className="absolute -top-8 -right-8 z-20 hidden md:block animate-bounce duration-[3000ms]">
           <div className="bg-accent text-accent-foreground font-mono text-xs font-bold px-3 py-1 border-2 border-border shadow-[4px_4px_0px_var(--primary)] rotate-3">
-            JOIN_US
+            REGISTER
           </div>
         </div>
 
@@ -69,7 +69,7 @@ export default function RegisterPage() {
               href="/"
               className="inline-block border-2 border-border px-2 py-0.5 font-mono text-[10px] mb-2 bg-background text-foreground hover:bg-primary hover:text-white transition-colors"
             >
-              INIT_SEQUENCE
+              Back to Home
             </Link>
 
             <h1
@@ -79,7 +79,7 @@ export default function RegisterPage() {
               CREATE ACCOUNT
             </h1>
             <p className="font-mono text-xs opacity-60 text-primary font-bold">
-              {">"} ESTABLISH NEW IDENTITY_
+              Create your account
             </p>
           </div>
 
@@ -99,7 +99,7 @@ export default function RegisterPage() {
               id="email"
               name="email"
               type="email"
-              label="USER_ID // EMAIL"
+              label="Email Address"
               placeholder="name@example.com"
               required
               disabled={isPending}
@@ -109,7 +109,7 @@ export default function RegisterPage() {
               id="password"
               name="password"
               type="password"
-              label="PASSCODE // KEY"
+              label="Password"
               placeholder="••••••••"
               required
               disabled={isPending}
@@ -119,7 +119,7 @@ export default function RegisterPage() {
               id="confirmPassword"
               name="confirmPassword"
               type="password"
-              label="CONFIRM PASSCODE"
+              label="Confirm Password"
               placeholder="••••••••"
               required
               disabled={isPending}
@@ -132,14 +132,14 @@ export default function RegisterPage() {
                 className="w-full bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 disabled={isPending}
               >
-                {isPending ? "REGISTERING..." : "INITIALIZE"}
+                {isPending ? "Creating account..." : "Sign Up"}
               </Button>
             </div>
           </form>
 
           {/* Footer / Login Link */}
           <div className="mt-8 pt-6 border-t-2 border-border text-center">
-            <p className="font-mono text-xs mb-3">ALREADY_REGISTERED?</p>
+            <p className="font-mono text-xs mb-3">Already have an account?</p>
             <Link href="/login" className="w-full block">
               <Button type="button" variant="outline" className="w-full">
                 Access Existing Account
@@ -149,10 +149,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Decorative Bottom Tag */}
-        <div className="mt-4 flex justify-between font-mono text-[10px] px-2 opacity-70 font-bold">
-          <span>SYS: RISO_OS</span>
-          <span>VER: 2.0.4</span>
-        </div>
+        {/* Decorative Bottom Tag removed */}
       </div>
     </div>
   );

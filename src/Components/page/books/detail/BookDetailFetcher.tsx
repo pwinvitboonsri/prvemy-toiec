@@ -150,6 +150,13 @@ export async function BookDetailFetcher({ id }: BookDetailFetcherProps) {
         userStatus: userTier,
         actionState,
         lastSessionId: activeSessionId,
+        globalStats: {
+            avgScore: Number(book.avg_total_score) || 0,
+            avgListening: Number(book.avg_listening_score) || 0,
+            avgReading: Number(book.avg_reading_score) || 0,
+            totalTakers: Number(book.total_test_takers) || 0,
+            updatedAt: book.stats_updated_at || null,
+        },
         manifest,
     };
 

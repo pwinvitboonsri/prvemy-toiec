@@ -16,9 +16,11 @@ interface HistorySession {
 
 interface HistoryDashboardProps {
     sessions: HistorySession[];
+    mode: "simulation" | "practice";
+    globalAvgScore?: number | null;
 }
 
-export function HistoryDashboard({ sessions }: HistoryDashboardProps) {
+export function HistoryDashboard({ sessions, mode, globalAvgScore }: HistoryDashboardProps) {
     // 1. Process Data
     const completedSessions = sessions
         .filter((s) => s.status === "completed" && s.total_score !== null)
@@ -58,6 +60,11 @@ export function HistoryDashboard({ sessions }: HistoryDashboardProps) {
     // 3. Prepare Trend Data (Last 10 sessions)
     const trendData = completedSessions.slice(-10).map((s) => s.total_score || 0);
 
+    // PRACTICE MODE: Hide Dashboard for now
+    if (mode === "practice") {
+        return null;
+    }
+
     return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mb-8">
             {/* LEFT: SUMMARY STATS (4 cols) */}
@@ -83,23 +90,25 @@ export function HistoryDashboard({ sessions }: HistoryDashboardProps) {
                             </div>
                         </div>
 
-                        {/* Proficiency Split */}
-                        <div className="mt-8">
-                            <div className="flex justify-between text-[9px] font-mono font-black uppercase text-gray-400 mb-2">
-                                <span>Listening: {avgListening}</span>
-                                <span>Reading: {avgReading}</span>
+                        {/* Proficiency Split - Only show for simulation or if data exists */}
+                        {mode === "simulation" && (
+                            <div className="mt-8">
+                                <div className="flex justify-between text-[9px] font-mono font-black uppercase text-gray-400 mb-2">
+                                    <span>Listening: {avgListening}</span>
+                                    <span>Reading: {avgReading}</span>
+                                </div>
+                                <div className="flex h-2 w-full bg-gray-800 borderborder-gray-700 overflow-hidden">
+                                    <div
+                                        className="h-full bg-[#1d3b88]"
+                                        style={{ width: `${(avgListening / 495) * 50 + 25}%` }} // Simplified visual balancing
+                                    ></div>
+                                    <div
+                                        className="h-full bg-[#ff3333]"
+                                        style={{ width: `${(avgReading / 495) * 50 + 25}%` }}
+                                    ></div>
+                                </div>
                             </div>
-                            <div className="flex h-2 w-full bg-gray-800 borderborder-gray-700 overflow-hidden">
-                                <div
-                                    className="h-full bg-[#1d3b88]"
-                                    style={{ width: `${(avgListening / 495) * 50 + 25}%` }} // Simplified visual balancing
-                                ></div>
-                                <div
-                                    className="h-full bg-[#ff3333]"
-                                    style={{ width: `${(avgReading / 495) * 50 + 25}%` }}
-                                ></div>
-                            </div>
-                        </div>
+                        )}
                     </div>
                 </CardComponent>
             </div>
@@ -112,41 +121,91 @@ export function HistoryDashboard({ sessions }: HistoryDashboardProps) {
                             <div className="flex items-center gap-2">
                                 <TrendingUp size={16} className="text-[#1d3b88]" />
                                 <h3 className="font-serif text-lg font-black uppercase tracking-tight text-[#111111]">
-                                    Performance Trajectory
+                                    {mode === "simulation" ? "Performance Trajectory" : "Recent Sorties"}
                                 </h3>
                             </div>
                             <span className="font-mono text-[9px] font-bold bg-[#f2f0e9] px-2 py-1 uppercase tracking-widest border border-[#111111]">
-                                Last {trendData.length} Sorties
+                                {mode === "simulation" ? `Last ${trendData.length} Sorties` : "Latest Reports"}
                             </span>
                         </div>
 
-                        {/* BAR GRAPH CONTAINER */}
-                        <div className="flex-1 flex items-end gap-2 w-full h-full relative">
-                            {/* Grid Lines */}
-                            <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
-                                <div className="w-full h-px bg-[#111111] border-dashed"></div>
-                                <div className="w-full h-px bg-[#111111] border-dashed"></div>
-                                <div className="w-full h-px bg-[#111111] border-dashed"></div>
-                            </div>
+                        {/* MODE SPECIFIC CONTENT */}
+                        {mode === "simulation" ? (
+                            /* SIMULATION: BAR GRAPH */
+                            <div className="flex-1 flex items-end gap-2 w-full h-full relative">
+                                {/* Grid Lines */}
+                                <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+                                    <div className="w-full h-px bg-[#111111] border-dashed"></div>
+                                    <div className="w-full h-px bg-[#111111] border-dashed"></div>
+                                    <div className="w-full h-px bg-[#111111] border-dashed"></div>
+                                </div>
 
-                            {trendData.map((score, idx) => {
-                                const heightPct = Math.max((score / 990) * 100, 10);
-                                return (
-                                    <div key={idx} className="flex-1 flex flex-col justify-end group h-full relative z-10">
-                                        <div className="text-center opacity-0 group-hover:opacity-100 transition-opacity mb-2 font-mono text-[10px] font-bold bg-[#111111] text-white py-0.5 rounded-sm absolute bottom-full left-1/2 -translate-x-1/2 w-max px-1 pointer-events-none">
-                                            {score} pts
-                                        </div>
-                                        <div
-                                            className="w-full bg-[#e2e2e2] hover:bg-[#1d3b88] transition-colors rounded-t-sm relative border-t-2 border-x border-[#111111]/10 group-hover:border-[#1d3b88]"
-                                            style={{ height: `${heightPct}%` }}
-                                        ></div>
-                                        <div className="mt-2 text-center font-mono text-[8px] font-bold text-gray-300 group-hover:text-[#111111]">
-                                            {idx + 1}
-                                        </div>
+                                {/* GLOBAL AVG BASELINE */}
+                                {globalAvgScore && (
+                                    <div
+                                        className="absolute w-full border-t-2 border-dashed border-gray-400 z-0 pointer-events-none flex items-center"
+                                        style={{ bottom: `${Math.max((globalAvgScore / 990) * 100, 0)}%` }}
+                                    >
+                                        <span className="bg-white px-1 text-[9px] font-mono font-bold text-gray-500 absolute -top-2 right-0">
+                                            AVG STUDENT SCORE: {globalAvgScore}
+                                        </span>
                                     </div>
-                                );
-                            })}
-                        </div>
+                                )}
+
+                                {trendData.map((score, idx) => {
+                                    const heightPct = Math.max((score / 990) * 100, 10);
+                                    return (
+                                        <div key={idx} className="flex-1 flex flex-col justify-end group h-full relative z-10">
+                                            <div className="text-center opacity-0 group-hover:opacity-100 transition-opacity mb-2 font-mono text-[10px] font-bold bg-[#111111] text-white py-0.5 rounded-sm absolute bottom-full left-1/2 -translate-x-1/2 w-max px-1 pointer-events-none">
+                                                {score} pts
+                                            </div>
+                                            <div
+                                                className="w-full bg-[#e2e2e2] hover:bg-[#1d3b88] transition-colors rounded-t-sm relative border-t-2 border-x border-[#111111]/10 group-hover:border-[#1d3b88]"
+                                                style={{ height: `${heightPct}%` }}
+                                            ></div>
+                                            <div className="mt-2 text-center font-mono text-[8px] font-bold text-gray-300 group-hover:text-[#111111]">
+                                                {idx + 1}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            /* PRACTICE: RECENT SORTIES GRID */
+                            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 h-full">
+                                {completedSessions.slice(-4).reverse().map((session, idx) => {
+                                    const dateStr = new Date(session.started_at).toLocaleString('en-US', {
+                                        month: 'short', day: 'numeric'
+                                    }).toUpperCase();
+
+                                    return (
+                                        <div key={session.id} className="bg-gray-50 border-2 border-dashed border-gray-200 p-4 flex flex-col justify-between hover:border-[#1d3b88] transition-colors group">
+                                            <div className="flex justify-between items-start">
+                                                <span className="font-mono text-[9px] font-black opacity-40 uppercase tracking-widest">
+                                                    {dateStr}
+                                                </span>
+                                                <div className="h-1.5 w-1.5 rounded-full bg-gray-200 group-hover:bg-[#1d3b88] transition-colors"></div>
+                                            </div>
+
+                                            <div className="mt-2">
+                                                <span className="text-3xl font-black text-[#111111] leading-none block">
+                                                    {session.total_score}
+                                                </span>
+                                                <span className="font-mono text-[9px] font-bold text-gray-400 uppercase">
+                                                    Points
+                                                </span>
+                                            </div>
+
+                                            <div className="mt-4 pt-3 border-t border-gray-200 group-hover:border-[#1d3b88]/20">
+                                                <span className="font-mono text-[8px] font-bold uppercase text-[#1d3b88] opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    Sortie #{completedSessions.length - idx}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
                 </CardComponent>
             </div>

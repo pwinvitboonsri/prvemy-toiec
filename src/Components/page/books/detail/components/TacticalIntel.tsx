@@ -12,7 +12,7 @@ export function TacticalIntel({ isLocked = false }: TacticalIntelProps) {
   return (
     <CardComponent
       // 1. Configure Side Tag (Yellow/Restricted)
-      sideLabel="RESTRICTED"
+      sideLabel="LOCKED"
       sideLabelVariant="warning" // Uses the Yellow style
       // 2. Container Styling
       className="h-full min-h-[280px] w-full max-w-full overflow-visible z-10 bg-white dark:bg-neutral-900 text-foreground dark:text-white"
@@ -26,7 +26,7 @@ export function TacticalIntel({ isLocked = false }: TacticalIntelProps) {
               <ScanEye className="h-4 w-4" />
             </div>
             <span className="text-sm font-black uppercase tracking-wider text-foreground dark:text-white">
-              Tactical Intel
+              Key Insights
             </span>
           </div>
           <span className="font-mono text-[10px] opacity-50">REF: V-2024</span>
@@ -53,10 +53,10 @@ export function TacticalIntel({ isLocked = false }: TacticalIntelProps) {
                   <Lock className="h-6 w-6 text-foreground" />
                 </div>
                 <h5 className="mb-2 text-sm font-black uppercase text-foreground">
-                  Classified Data
+                  Premium Content
                 </h5>
                 <p className="mb-4 font-mono text-[10px] leading-tight text-muted-foreground">
-                  Advanced threat analysis and keyword recon available for
+                  Advanced analysis and keyword recon available for
                   Premium Agents only.
                 </p>
                 <Button
@@ -64,7 +64,7 @@ export function TacticalIntel({ isLocked = false }: TacticalIntelProps) {
                   size="sm"
                   className="w-full h-auto py-3 text-[10px] font-bold uppercase rounded-none border-0 shadow-none hover:shadow-none hover:bg-[#1d3b88]"
                 >
-                  Upgrade Clearance
+                  Upgrade Plan
                 </Button>
               </div>
             </div>
@@ -75,7 +75,7 @@ export function TacticalIntel({ isLocked = false }: TacticalIntelProps) {
               <div className="grid grid-cols-2 gap-8">
                 <div>
                   <p className="mb-2 text-[10px] font-bold uppercase text-muted-foreground">
-                    Threat Level
+                    Difficulty
                   </p>
                   <div className="mb-1 flex gap-1 h-3">
                     <div className="h-full w-full bg-foreground"></div>

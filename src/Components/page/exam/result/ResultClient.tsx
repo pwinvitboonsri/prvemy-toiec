@@ -12,6 +12,7 @@ import { ResultHeader } from "./components/ResultHeader";
 import { ResultAnalytics } from "./components/ResultAnalytics";
 import { ResultReview } from "./components/ResultReview";
 import { ResultStickyFooter } from "./components/ResultStickyFooter";
+import { MissionComparison } from "./components/MissionComparison";
 
 import { PRICING } from "../../../../../config/constant";
 import { UserRole } from "@/types/data/library_data";
@@ -84,6 +85,16 @@ export function ResultClient({ result, userStatus }: ResultClientProps) {
           isPremium={isPremium}
           onUpgrade={() => setIsPremium(true)}
         />
+        {result?.globalStats && (
+          <MissionComparison
+            userScore={{
+              total: scoreData.total,
+              listening: scoreData.listening,
+              reading: scoreData.reading
+            }}
+            globalStats={result.globalStats}
+          />
+        )}
         <ResultReview
           detailedReview={result?.detailedReview || []}
           isPremium={isPremium}

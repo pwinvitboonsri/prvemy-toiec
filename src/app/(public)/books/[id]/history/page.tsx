@@ -18,7 +18,7 @@ export default async function HistoryPage({ params }: { params: Promise<{ id: st
   // 1. Fetch Book Details (Title, etc.)
   const { data: book, error: bookError } = await supabase
     .from("books")
-    .select("title")
+    .select("title, avg_total_score")
     .eq("id", bookId)
     .single();
 
@@ -45,6 +45,7 @@ export default async function HistoryPage({ params }: { params: Promise<{ id: st
       bookTitle={book.title}
       sessions={sessions || []}
       userStatus={user.subscription_tier as UserRole}
+      avgBookScore={book.avg_total_score}
     />
   );
 }

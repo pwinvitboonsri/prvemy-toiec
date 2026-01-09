@@ -21,7 +21,7 @@ export function ActionCard({ onEnterLobby }: ActionCardProps) {
         {/* Custom Header Bar */}
         <div className="flex items-center justify-between border-b-2 border-foreground bg-foreground px-6 py-3 text-background shrink-0">
           <span className="text-xs font-black uppercase tracking-wider">
-            Mission Status: READY
+            Status: Ready
           </span>
           <div className="h-3 w-3 animate-pulse rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]"></div>
         </div>
@@ -30,12 +30,10 @@ export function ActionCard({ onEnterLobby }: ActionCardProps) {
           <div className="flex-1">
             {/* Increased text size to 5xl/6xl to match the reference image */}
             <h2 className="mb-2 text-4xl md:text-5xl font-black uppercase leading-[0.9] text-foreground tracking-tighter">
-              Initialize
-              <br />
-              Mission
+              Start Test
             </h2>
             <p className="max-w-sm font-mono text-xs md:text-sm leading-relaxed opacity-60 text-foreground mt-2">
-              Configure test parameters and launch simulation.
+              Configure settings and start test.
               <br />
               <span className="text-[#1d3b88] font-bold">
                 Est. Duration: 2h 00m
@@ -51,7 +49,7 @@ export function ActionCard({ onEnterLobby }: ActionCardProps) {
               size="lg"
               className="w-full md:w-auto h-14 text-base px-8" // Ensure large hit area
             >
-              Enter Lobby <ArrowRight className="ml-2 h-5 w-5" />
+              Setup Test <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </div>

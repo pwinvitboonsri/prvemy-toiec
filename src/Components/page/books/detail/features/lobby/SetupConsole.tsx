@@ -199,19 +199,19 @@ export const SetupConsole = React.memo(function SetupConsole({
               {/* 1. Operation Mode */}
               <div>
                 <h4 className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase text-muted-foreground">
-                  <Target className="h-3 w-3" /> Operation Mode
+                  <Target className="h-3 w-3" /> Test Mode
                 </h4>
                 <div className="flex">
                   <ModeTab
                     active={settings.mode === "simulation"}
                     icon={Target}
-                    label="Simulation"
+                    label="Full Test"
                     onClick={() => handleModeChange("simulation")}
                   />
                   <ModeTab
                     active={settings.mode === "practice"}
                     icon={Wrench}
-                    label="Practice"
+                    label="Custom Practice"
                     onClick={() => handleModeChange("practice")}
                     isLast
                   />
@@ -237,7 +237,7 @@ export const SetupConsole = React.memo(function SetupConsole({
               >
                 <div className="mb-3 flex items-end justify-between">
                   <h4 className="flex items-center gap-2 text-[10px] font-bold uppercase text-muted-foreground">
-                    <Layers className="h-3 w-3" /> Mission Scope
+                    <Layers className="h-3 w-3" /> Select Sections
                   </h4>
                   {!isSim && (
                     <button
@@ -338,7 +338,7 @@ export const SetupConsole = React.memo(function SetupConsole({
               {/* Audio Pre-Flight */}
               <div className="p-4 border-2 border-dashed border-border bg-muted/30">
                 <h4 className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase text-muted-foreground">
-                  <Volume2 className="h-3 w-3" /> Audio Pre-Flight
+                  <Volume2 className="h-3 w-3" /> Audio Check
                 </h4>
                 <div className="flex flex-col gap-3">
                   <Button
@@ -364,7 +364,7 @@ export const SetupConsole = React.memo(function SetupConsole({
               {/* Objectives */}
               <div>
                 <h4 className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase text-gray-500">
-                  <Flag className="h-3 w-3" /> Mission Objectives
+                  <Flag className="h-3 w-3" /> My Goals
                 </h4>
                 <div className="space-y-3">
                   <div className="flex flex-col gap-1">
@@ -400,7 +400,7 @@ export const SetupConsole = React.memo(function SetupConsole({
               {/* Hardcore & Environment */}
               <div className="space-y-2">
                 <h4 className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase text-gray-500">
-                  <Monitor className="h-3 w-3" /> Hardcore Flags
+                  <Monitor className="h-3 w-3" /> Strict Mode Settings
                 </h4>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <Switch
