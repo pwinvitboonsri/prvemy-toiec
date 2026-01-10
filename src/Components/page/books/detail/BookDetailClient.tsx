@@ -8,7 +8,6 @@ import { ActionCard } from "@/Components/page/books/detail/components/ActionCard
 import { FlightRecords } from "@/Components/page/books/detail/features/flight-records/FlightRecords";
 
 import { LobbyModal } from "@/Components/page/books/detail/features/lobby/LobbyModal";
-import { CommunityIntelligence } from "@/Components/page/books/detail/components/CommunityIntelligence";
 import type { BookDetailData } from "@/types/data/library_data";
 
 interface Props {
@@ -85,7 +84,7 @@ export function BookDetailClient({ book, flightRecordsSlot }: Props) {
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
           {/* LEFT COL */}
-          <div className="md:col-span-5 flex flex-col gap-8">
+          <div className="md:col-span-5 flex flex-col gap-8 md:sticky md:top-8 h-fit">
             <BookCover
               title={book.title}
               description={book.description}
@@ -101,14 +100,7 @@ export function BookDetailClient({ book, flightRecordsSlot }: Props) {
           <div className="md:col-span-7 flex flex-col gap-8 h-full">
             <ActionCard onEnterLobby={handleAction} />
 
-            {/* GLOBAL STATS - Social Proof */}
-            {book.globalStats && (
-              <CommunityIntelligence
-                avgScore={book.globalStats.avgScore}
-                totalTakers={book.globalStats.totalTakers}
-                updatedAt={book.globalStats.updatedAt}
-              />
-            )}
+
 
             {/* CONNECTED REAL DATA TO FLIGHT RECORDS */}
             {flightRecordsSlot ? (
@@ -136,6 +128,8 @@ export function BookDetailClient({ book, flightRecordsSlot }: Props) {
                   readingScore: book.readingScore ?? null,
                   scoreTrend: book.scoreTrend ?? []
                 }}
+                globalStats={book.globalStats}
+                difficulty={book.difficulty}
               />
             )}
 

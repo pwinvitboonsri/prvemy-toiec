@@ -169,6 +169,8 @@ export async function BookDetailFetcher({ id }: BookDetailFetcherProps) {
                         bookId={book.id}
                         userId={user?.id}
                         userRole={userTier}
+                        globalStats={bookData.globalStats}
+                        difficulty={bookData.difficulty}
                     />
                 </Suspense>
             }

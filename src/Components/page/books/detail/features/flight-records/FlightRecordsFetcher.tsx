@@ -5,12 +5,22 @@ interface FlightRecordsFetcherProps {
     bookId: string;
     userId?: string;
     userRole: "guest" | "free" | "premium" | "platinum";
+    globalStats?: {
+        avgScore: number;
+        totalTakers: number;
+        avgListening: number;
+        avgReading: number;
+        updatedAt: string | null;
+    };
+    difficulty?: "EASY" | "MEDIUM" | "HARD";
 }
 
 export async function FlightRecordsFetcher({
     bookId,
     userId,
     userRole,
+    globalStats,
+    difficulty,
 }: FlightRecordsFetcherProps) {
     const emptyStats = {
         bestScore: null,
@@ -118,6 +128,8 @@ export async function FlightRecordsFetcher({
             userRole={userRole !== "platinum" ? userRole : "premium"}
             simulationData={simulationStats}
             practiceData={practiceStats}
+            globalStats={globalStats}
+            difficulty={difficulty}
         />
     );
 }
